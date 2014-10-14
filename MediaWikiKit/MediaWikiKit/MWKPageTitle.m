@@ -1,18 +1,19 @@
 //  Created by Brion on 11/1/13.
 //  Copyright (c) 2013 Wikimedia Foundation. Provided under MIT-style license; please copy and modify!
 
-#import "MWKPageTitle.h"
+#import "MediaWikiKit.h"
 
 @implementation MWKPageTitle {
+    MWKSite *_site;
     NSString *_text;
     NSString *_fragment;
 }
 
 #pragma mark - Class methods
 
-+(MWKPageTitle *)titleWithString:(NSString *)str
++(MWKPageTitle *)titleWithString:(NSString *)str site:(MWKSite *)site
 {
-    return [[MWKPageTitle alloc] initWithString:str];
+    return [[MWKPageTitle alloc] initWithString:str site:site];
 }
 
 +(NSString *)normalize:(NSString *)str
@@ -23,10 +24,11 @@
 
 #pragma mark - Initializers
 
--(instancetype)initWithString:(NSString *)str
+-(instancetype)initWithString:(NSString *)str site:(MWKSite *)site
 {
     self = [self init];
     if (self) {
+        _site = site;
         NSArray *bits = [str componentsSeparatedByString:@"#"];
         _text = [MWKPageTitle normalize:bits[0]];
         if (bits.count > 1) {
@@ -39,6 +41,11 @@
 }
 
 #pragma mark - Property getters
+
+-(MWKSite *)site
+{
+    return _site;
+}
 
 -(NSString *)namespace
 {

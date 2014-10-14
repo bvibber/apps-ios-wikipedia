@@ -6,8 +6,24 @@
 //  Copyright (c) 2014 Wikimedia Foundation. All rights reserved.
 //
 
+#pragma once
+
 #import <Foundation/Foundation.h>
 
+// Forward decls
+@class MWKPageTitle;
+@class MWKArticle;
+@class MWKSection;
+
 @interface MWKArticleFetcher : NSObject
+
+@property (readonly) MWKArticle *article;
+@property (readonly) NSArray *sections;
+-(MWKSection *)sectionAtIndex:(int)index;
+
+-(instancetype)initWithTitle:(MWKPageTitle *)title;
+
+-(void)importJSON:(NSDictionary *)jsonDict;
+
 
 @end

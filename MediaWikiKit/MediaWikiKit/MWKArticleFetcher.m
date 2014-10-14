@@ -6,8 +6,27 @@
 //  Copyright (c) 2014 Wikimedia Foundation. All rights reserved.
 //
 
-#import "MWKArticleFetcher.h"
+#import "MediaWikiKit.h"
 
-@implementation MWKArticleFetcher
+@implementation MWKArticleFetcher {
+    MWKSite *_site;
+    MWKPageTitle *_title;
+}
+
+-(instancetype)initWithTitle:(MWKPageTitle *)title;
+{
+    self = [self init];
+    if (self) {
+        _article = nil;
+        _site = title.site;
+        _title = title;
+    }
+    return self;
+}
+
+-(void)importJSON:(NSDictionary *)dict
+{
+    [[MWKArticle alloc] initWithTitle:_title dict:dict];
+}
 
 @end

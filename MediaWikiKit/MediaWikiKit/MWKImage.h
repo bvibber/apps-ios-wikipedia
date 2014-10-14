@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Wikimedia Foundation. All rights reserved.
 //
 
+#pragma once
+
 #import <Foundation/Foundation.h>
 
 @interface MWKImage : NSObject

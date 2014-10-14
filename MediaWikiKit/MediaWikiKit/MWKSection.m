@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Wikimedia Foundation. All rights reserved.
 //
 
-#import "MWKSection.h"
+#import "MediaWikiKit.h"
 
 @implementation MWKSection
 

@@ -15,11 +15,14 @@
 
 @end
 
-@implementation MWKPageTitleTests
+@implementation MWKPageTitleTests {
+    MWKSite *site;
+}
 
 - (void)setUp {
     [super setUp];
     // Put setup code here. This method is called before the invocation of each test method in the class.
+    site = [[MWKSite alloc] initWithDomain:@"en.wikipedia.org"];
 }
 
 - (void)tearDown {
@@ -28,7 +31,7 @@
 }
 
 - (void)testSimple {
-    MWKPageTitle *title = [MWKPageTitle titleWithString:@"Simple"];
+    MWKPageTitle *title = [MWKPageTitle titleWithString:@"Simple" site:site];
 
     XCTAssertNil(title.namespace, @"Namespace is nil");
     XCTAssertEqualObjects(title.prefixedDBKey, @"Simple", @"DB key form is full");
@@ -39,8 +42,8 @@
 }
 
 - (void)testFancy {
-    NSArray *inputs = @[[MWKPageTitle titleWithString:@"Fancy title with spaces"],
-                        [MWKPageTitle titleWithString:@"Fancy_title with_spaces"]
+    NSArray *inputs = @[[MWKPageTitle titleWithString:@"Fancy title with spaces" site:site],
+                        [MWKPageTitle titleWithString:@"Fancy_title with_spaces" site:site]
                         ];
     for (MWKPageTitle *title in inputs) {
         XCTAssertNil(title.namespace, @"Namespace is nil");
@@ -53,7 +56,7 @@
 }
 
 - (void)testUnicode {
-    MWKPageTitle *title = [MWKPageTitle titleWithString:@"Éclair"];
+    MWKPageTitle *title = [MWKPageTitle titleWithString:@"Éclair" site:site];
     XCTAssertNil(title.namespace, @"Namespace is nil");
     XCTAssertEqualObjects(title.prefixedDBKey, @"Éclair", @"DB key form has unicode");
     XCTAssertEqualObjects(title.prefixedText, @"Éclair", @"Text form has unicode");

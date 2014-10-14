@@ -1,25 +1,34 @@
 //  Created by Brion on 11/1/13.
 //  Copyright (c) 2013 Wikimedia Foundation. Provided under MIT-style license; please copy and modify!
 
+#pragma once
+
 #import <Foundation/Foundation.h>
+
+#import "MWKSite.h"
 
 @interface MWKPageTitle : NSObject
 
 /**
  * Initialize a new MWPageTitle object from string input
  */
--(instancetype)initWithString:(NSString *)str;
+-(instancetype)initWithString:(NSString *)str site:(MWKSite *)site;
 
 /**
  * Create a new MWPageTitle object from string input
  */
-+(MWKPageTitle *)titleWithString:(NSString *)str;
++(MWKPageTitle *)titleWithString:(NSString *)str site:(MWKSite *)site;
 
 /**
  * Normalize a title string portion to text form
  */
 +(NSString *)normalize:(NSString *)str;
 
+
+/**
+ * The site this title belongs to
+ */
+@property (readonly) MWKSite *site;
 
 /**
  * Normalized namespace (decoded, no underscores)

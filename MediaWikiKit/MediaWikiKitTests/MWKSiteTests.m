@@ -40,12 +40,19 @@
     XCTAssertEqualObjects(site, otherSite);
 }
 
+- (void)testStrings
+{
+    XCTAssertEqualObjects([site titleWithString:@"India"].prefixedText, @"India");
+    XCTAssertEqualObjects([site titleWithString:@"Talk:India"].prefixedText, @"Talk:India");
+    XCTAssertEqualObjects([site titleWithString:@"Talk:India#History"].prefixedText, @"Talk:India");
+}
+
 - (void)testLinks
 {
-    XCTAssertEqualObjects([site titleForInternalLink:@"/wiki/India"].prefixedText, @"India");
-    XCTAssertEqualObjects([site titleForInternalLink:@"/wiki/Talk:India"].prefixedText, @"Talk:India");
-    XCTAssertEqualObjects([site titleForInternalLink:@"/wiki/Talk:India#History"].prefixedText, @"Talk:India");
-    //    XCTAssertThrows([site titleForInternalLink:@"/upload/foobar"]);
+    XCTAssertEqualObjects([site titleWithInternalLink:@"/wiki/India"].prefixedText, @"India");
+    XCTAssertEqualObjects([site titleWithInternalLink:@"/wiki/Talk:India"].prefixedText, @"Talk:India");
+    XCTAssertEqualObjects([site titleWithInternalLink:@"/wiki/Talk:India#History"].prefixedText, @"Talk:India");
+    //    XCTAssertThrows([site titleWithInternalLink:@"/upload/foobar"]);
 }
 
 @end

@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Wikimedia Foundation. All rights reserved.
 //
 
-#import "MWKImage.h"
+#import "MediaWikiKit.h"
 
 @implementation MWKImage
 

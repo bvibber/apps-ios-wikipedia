@@ -6,25 +6,32 @@
 //  Copyright (c) 2014 Wikimedia Foundation. All rights reserved.
 //
 
+#pragma once
+
 #import <Foundation/Foundation.h>
+
+// forward decls
+@class MWKSite;
+@class MWKPageTitle;
+@class MWKUser;
+@class MWKSection;
 
 @interface MWKArticle : NSObject
 
 // Identifiers
-@property NSString *site;
-@property NSString *language;
-@property MWKPageTitle *title;
+@property (readonly) MWKSite *site;
+@property (readonly) MWKPageTitle *title;
 
-// Metadata that could change
-@property long articleId;
+// Metadata
+@property (readonly) NSString *redirected; // may be nil. should this be a title as well?
+@property (readonly) NSDate *lastmodified;
+@property (readonly) MWKUser *lastmodifiedby;
+@property (readonly) int articleId; // -> 'id'
+@property (readonly) int languagecount;
+@property (readonly) NSString *displaytitle;
+@property (readonly) NSDictionary *protection;
+@property (readonly) bool editable;
 
-// Last-revision metadata
-@property NSDate *lastmodified;
-@property NSString *lastmodifiedby;
-@property NSString *protectionStatus;
-@property NSString *redirected;
-
-
-
+-(instancetype)initWithTitle:(MWKPageTitle *)title dict:(NSDictionary *)dict;
 
 @end

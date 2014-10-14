@@ -1,7 +1,7 @@
 //  Created by Brion on 11/6/13.
 //  Copyright (c) 2013 Wikimedia Foundation. Provided under MIT-style license; please copy and modify!
 
-#import "MWKSite.h"
+#import "MediaWikiKit.h"
 
 @implementation MWKSite
 
@@ -26,15 +26,45 @@
     return [self.domain isEqualToString:otherSite.domain];
 }
 
+
+#pragma mark - Title methods
+
+- (MWKPageTitle *)titleWithString:(NSString *)string
+{
+    return [MWKPageTitle titleWithString:string site:self];
+}
+
 static NSString *localLinkPrefix = @"/wiki/";
 
-- (MWKPageTitle *)titleForInternalLink:(NSString *)path
+- (MWKPageTitle *)titleWithInternalLink:(NSString *)path
 {
     if ([path hasPrefix:localLinkPrefix]) {
         NSString *remainder = [path substringFromIndex:localLinkPrefix.length];
-        return [MWKPageTitle titleWithString:remainder];
+        return [self titleWithString:remainder];
     } else {
         @throw [NSException exceptionWithName:@"SiteBadLinkFormatException" reason:@"unexpected local link format" userInfo:nil];
+    }
+}
+
+
+#pragma mark - User methods
+
+- (MWKUser *)userWithName:(NSString *)name gender:(NSString *)gender
+{
+    return [[MWKUser alloc] initWithSite:self name:name gender:gender];
+}
+
+- (MWKUser *)userWithAnonymous
+{
+    return [[MWKUser alloc] initWithSite:self anonymous:YES];
+}
+
+- (MWKUser *)userWithJSON:(NSDictionary *)dict
+{
+    if ([dict isKindOfClass:[NSNull class]]) {
+        return [self userWithAnonymous];
+    } else {
+        return [self userWithName:dict[@"name"] gender:dict[@"gender"]];
     }
 }
 
