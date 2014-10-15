@@ -3,7 +3,7 @@
 
 #import "MediaWikiKit.h"
 
-@implementation MWKPageTitle {
+@implementation MWKTitle {
     MWKSite *_site;
     NSString *_text;
     NSString *_fragment;
@@ -11,9 +11,9 @@
 
 #pragma mark - Class methods
 
-+(MWKPageTitle *)titleWithString:(NSString *)str site:(MWKSite *)site
++(MWKTitle *)titleWithString:(NSString *)str site:(MWKSite *)site
 {
-    return [[MWKPageTitle alloc] initWithString:str site:site];
+    return [[MWKTitle alloc] initWithString:str site:site];
 }
 
 +(NSString *)normalize:(NSString *)str
@@ -30,7 +30,7 @@
     if (self) {
         _site = site;
         NSArray *bits = [str componentsSeparatedByString:@"#"];
-        _text = [MWKPageTitle normalize:bits[0]];
+        _text = [MWKTitle normalize:bits[0]];
         if (bits.count > 1) {
             _fragment = bits[1];
         } else {

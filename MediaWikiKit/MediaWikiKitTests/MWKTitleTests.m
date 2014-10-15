@@ -1,5 +1,5 @@
 //
-//  MWKPageTitleTests.m
+//  MWKTitleTests.m
 //  MediaWikiKit
 //
 //  Created by Brion on 10/7/14.
@@ -11,11 +11,11 @@
 
 #include "MediaWikiKit.h"
 
-@interface MWKPageTitleTests : XCTestCase
+@interface MWKTitleTests : XCTestCase
 
 @end
 
-@implementation MWKPageTitleTests {
+@implementation MWKTitleTests {
     MWKSite *site;
 }
 
@@ -31,7 +31,7 @@
 }
 
 - (void)testSimple {
-    MWKPageTitle *title = [MWKPageTitle titleWithString:@"Simple" site:site];
+    MWKTitle *title = [MWKTitle titleWithString:@"Simple" site:site];
 
     XCTAssertNil(title.namespace, @"Namespace is nil");
     XCTAssertEqualObjects(title.prefixedDBKey, @"Simple", @"DB key form is full");
@@ -42,10 +42,10 @@
 }
 
 - (void)testFancy {
-    NSArray *inputs = @[[MWKPageTitle titleWithString:@"Fancy title with spaces" site:site],
-                        [MWKPageTitle titleWithString:@"Fancy_title with_spaces" site:site]
+    NSArray *inputs = @[[MWKTitle titleWithString:@"Fancy title with spaces" site:site],
+                        [MWKTitle titleWithString:@"Fancy_title with_spaces" site:site]
                         ];
-    for (MWKPageTitle *title in inputs) {
+    for (MWKTitle *title in inputs) {
         XCTAssertNil(title.namespace, @"Namespace is nil");
         XCTAssertEqualObjects(title.prefixedDBKey, @"Fancy_title_with_spaces", @"DB key form has underscores");
         XCTAssertEqualObjects(title.prefixedText, @"Fancy title with spaces", @"Text form has spaces");
@@ -56,7 +56,7 @@
 }
 
 - (void)testUnicode {
-    MWKPageTitle *title = [MWKPageTitle titleWithString:@"Éclair" site:site];
+    MWKTitle *title = [MWKTitle titleWithString:@"Éclair" site:site];
     XCTAssertNil(title.namespace, @"Namespace is nil");
     XCTAssertEqualObjects(title.prefixedDBKey, @"Éclair", @"DB key form has unicode");
     XCTAssertEqualObjects(title.prefixedText, @"Éclair", @"Text form has unicode");

@@ -14,7 +14,7 @@
 
 @interface MWKSection : MWKDataObject
 
-@property (readonly) MWKPageTitle *title;
+@property (readonly) MWKTitle *title;
 @property (readonly) MWKArticle *article;
 
 @property (readonly) NSNumber *toclevel;      // optional
@@ -22,7 +22,7 @@
 @property (readonly) NSString *line;          // optional; HTML
 @property (readonly) NSString *number;        // optional; can be "1.2.3"
 @property (readonly) NSString *index;         // optional; can be "T-3" for transcluded sections
-@property (readonly) MWKPageTitle *fromtitle; // optional
+@property (readonly) MWKTitle *fromtitle; // optional
 @property (readonly) NSString *anchor;        // optional
 @property (readonly) int       sectionId;     // required; -> id
 @property (readonly) NSString *references;    // optional; marked by presence of key with empty string in JSON

@@ -11,7 +11,7 @@
 #import <Foundation/Foundation.h>
 
 // Forward decls
-@class MWKPageTitle;
+@class MWKTitle;
 @class MWKArticle;
 @class MWKSection;
 
@@ -21,7 +21,7 @@
 @property (readonly) NSArray *sections;
 -(MWKSection *)sectionAtIndex:(int)index;
 
--(instancetype)initWithTitle:(MWKPageTitle *)title;
+-(instancetype)initWithTitle:(MWKTitle *)title;
 
 -(void)importMobileViewJSON:(NSDictionary *)jsonDict;
 

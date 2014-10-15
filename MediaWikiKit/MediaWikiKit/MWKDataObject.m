@@ -91,7 +91,7 @@
 
 #pragma mark - title methods
 
-- (MWKPageTitle *)optionalTitle:(NSString *)key dict:(NSDictionary *)dict
+- (MWKTitle *)optionalTitle:(NSString *)key dict:(NSDictionary *)dict
 {
     NSString *str = [self optionalString:key dict:dict];
     if (str == nil) {
@@ -101,7 +101,7 @@
     }
 }
 
-- (MWKPageTitle *)requiredTitle:(NSString *)key dict:(NSDictionary *)dict
+- (MWKTitle *)requiredTitle:(NSString *)key dict:(NSDictionary *)dict
 {
     NSString *str = [self requiredString:key dict:dict];
     return [self.site titleWithString:str];

@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 
 // forward decl
-@class MWKPageTitle;
+@class MWKTitle;
 @class MWKUser;
 
 @interface MWKSite : NSObject
@@ -15,8 +15,8 @@
 
 - (instancetype)initWithDomain:(NSString *)domain;
 
-- (MWKPageTitle *)titleWithString:(NSString *)string;
-- (MWKPageTitle *)titleWithInternalLink:(NSString *)path;
+- (MWKTitle *)titleWithString:(NSString *)string;
+- (MWKTitle *)titleWithInternalLink:(NSString *)path;
 
 - (MWKUser *)userWithName:(NSString *)name gender:(NSString *)gender;
 - (MWKUser *)userWithAnonymous;

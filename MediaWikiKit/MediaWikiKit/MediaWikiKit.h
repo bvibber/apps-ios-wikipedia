@@ -12,7 +12,7 @@
 
 #import "MWKDataObject.h"
 
-#import "MWKPageTitle.h"
+#import "MWKTitle.h"
 #import "MWKSite.h"
 #import "MWKUser.h"
 

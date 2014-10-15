@@ -10,7 +10,7 @@
 
 @implementation MWKArticle
 
--(instancetype)initWithTitle:(MWKPageTitle *)title dict:(NSDictionary *)dict
+-(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict
 {
     self = [self initWithSite:title.site];
     if (self) {

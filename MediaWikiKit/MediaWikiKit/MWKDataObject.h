@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class MWKPageTitle;
+@class MWKTitle;
 @class MWKSite;
 @class MWKUser;
 
@@ -25,8 +25,8 @@
 - (NSNumber *)requiredNumber:(NSString *)key dict:(NSDictionary *)dict;
 - (NSNumber *)numberWithString:(NSString *)str;
 
-- (MWKPageTitle *)optionalTitle:(NSString *)key dict:(NSDictionary *)dict;
-- (MWKPageTitle *)requiredTitle:(NSString *)key dict:(NSDictionary *)dict;
+- (MWKTitle *)optionalTitle:(NSString *)key dict:(NSDictionary *)dict;
+- (MWKTitle *)requiredTitle:(NSString *)key dict:(NSDictionary *)dict;
 
 - (NSDate *)optionalDate:(NSString *)key dict:(NSDictionary *)dict;
 - (NSDate *)requiredDate:(NSString *)key dict:(NSDictionary *)dict;

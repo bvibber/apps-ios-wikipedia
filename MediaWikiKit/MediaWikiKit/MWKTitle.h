@@ -7,7 +7,7 @@
 
 #import "MWKSite.h"
 
-@interface MWKPageTitle : NSObject
+@interface MWKTitle : NSObject
 
 /**
  * Initialize a new MWPageTitle object from string input
@@ -17,7 +17,7 @@
 /**
  * Create a new MWPageTitle object from string input
  */
-+(MWKPageTitle *)titleWithString:(NSString *)str site:(MWKSite *)site;
++(MWKTitle *)titleWithString:(NSString *)str site:(MWKSite *)site;
 
 /**
  * Normalize a title string portion to text form

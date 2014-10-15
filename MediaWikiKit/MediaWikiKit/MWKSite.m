@@ -29,14 +29,14 @@
 
 #pragma mark - Title methods
 
-- (MWKPageTitle *)titleWithString:(NSString *)string
+- (MWKTitle *)titleWithString:(NSString *)string
 {
-    return [MWKPageTitle titleWithString:string site:self];
+    return [MWKTitle titleWithString:string site:self];
 }
 
 static NSString *localLinkPrefix = @"/wiki/";
 
-- (MWKPageTitle *)titleWithInternalLink:(NSString *)path
+- (MWKTitle *)titleWithInternalLink:(NSString *)path
 {
     if ([path hasPrefix:localLinkPrefix]) {
         NSString *remainder = [path substringFromIndex:localLinkPrefix.length];

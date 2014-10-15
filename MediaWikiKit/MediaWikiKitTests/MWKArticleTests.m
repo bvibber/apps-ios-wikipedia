@@ -17,7 +17,7 @@
 
 @implementation MWKArticleTests {
     MWKSite *site;
-    MWKPageTitle *title;
+    MWKTitle *title;
     NSDictionary *json;
     MWKArticle *article;
 }

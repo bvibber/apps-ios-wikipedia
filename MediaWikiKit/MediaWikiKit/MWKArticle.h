@@ -14,7 +14,7 @@
 
 // forward decls
 @class MWKSite;
-@class MWKPageTitle;
+@class MWKTitle;
 @class MWKUser;
 @class MWKSection;
 
@@ -22,10 +22,10 @@
 
 // Identifiers
 @property (readonly) MWKSite *site;
-@property (readonly) MWKPageTitle *title;
+@property (readonly) MWKTitle *title;
 
 // Metadata
-@property (readonly) MWKPageTitle *redirected;     // optional
+@property (readonly) MWKTitle *redirected;     // optional
 @property (readonly) NSDate       *lastmodified;   // required
 @property (readonly) MWKUser      *lastmodifiedby; // required
 @property (readonly) int           articleId;      // required; -> 'id'
@@ -34,6 +34,6 @@
 @property (readonly) NSDictionary *protection;     // required
 @property (readonly) BOOL          editable;       // required
 
--(instancetype)initWithTitle:(MWKPageTitle *)title dict:(NSDictionary *)dict;
+-(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict;
 
 @end

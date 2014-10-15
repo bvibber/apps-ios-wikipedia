@@ -10,11 +10,11 @@
 
 @implementation MWKArticleStore {
     MWKSite *_site;
-    MWKPageTitle *_title;
+    MWKTitle *_title;
     MWKArticle *_article;
 }
 
--(instancetype)initWithTitle:(MWKPageTitle *)title;
+-(instancetype)initWithTitle:(MWKTitle *)title;
 {
     self = [self init];
     if (self) {
