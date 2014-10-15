@@ -8,9 +8,10 @@
 
 #import "MediaWikiKit.h"
 
-@implementation MWKArticleFetcher {
+@implementation MWKArticleStore {
     MWKSite *_site;
     MWKPageTitle *_title;
+    MWKArticle *_article;
 }
 
 -(instancetype)initWithTitle:(MWKPageTitle *)title;
@@ -24,9 +25,9 @@
     return self;
 }
 
--(void)importJSON:(NSDictionary *)dict
+-(void)importMobileViewJSON:(NSDictionary *)dict
 {
-    [[MWKArticle alloc] initWithTitle:_title dict:dict];
+    _article = [[MWKArticle alloc] initWithTitle:_title dict:dict];
 }
 
 @end

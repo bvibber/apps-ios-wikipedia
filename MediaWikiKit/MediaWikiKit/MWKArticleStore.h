@@ -15,7 +15,7 @@
 @class MWKArticle;
 @class MWKSection;
 
-@interface MWKArticleFetcher : NSObject
+@interface MWKArticleStore : NSObject
 
 @property (readonly) MWKArticle *article;
 @property (readonly) NSArray *sections;
@@ -23,7 +23,7 @@
 
 -(instancetype)initWithTitle:(MWKPageTitle *)title;
 
--(void)importJSON:(NSDictionary *)jsonDict;
+-(void)importMobileViewJSON:(NSDictionary *)jsonDict;
 
 
 @end

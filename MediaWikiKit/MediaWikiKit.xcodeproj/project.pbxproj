@@ -17,8 +17,8 @@
 		D48405C819E47542006F4139 /* MWKImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405C619E47542006F4139 /* MWKImage.m */; };
 		D48405CB19E47559006F4139 /* MWKPageTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CA19E47559006F4139 /* MWKPageTitle.m */; };
 		D48405CC19E47559006F4139 /* MWKPageTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CA19E47559006F4139 /* MWKPageTitle.m */; };
-		D48405CF19E47572006F4139 /* MWKArticleFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleFetcher.m */; };
-		D48405D019E47572006F4139 /* MWKArticleFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleFetcher.m */; };
+		D48405CF19E47572006F4139 /* MWKArticleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleStore.m */; };
+		D48405D019E47572006F4139 /* MWKArticleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleStore.m */; };
 		D48405D319E4757D006F4139 /* MWKImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405D219E4757D006F4139 /* MWKImageFetcher.m */; };
 		D48405D419E4757D006F4139 /* MWKImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405D219E4757D006F4139 /* MWKImageFetcher.m */; };
 		D4C3FA5519E4783A00EB08CC /* MWKSite.m in Sources */ = {isa = PBXBuildFile; fileRef = D4C3FA5419E4783A00EB08CC /* MWKSite.m */; };
@@ -32,6 +32,8 @@
 		D4DDF45719EDCED100C6BC10 /* section1-end.json in Resources */ = {isa = PBXBuildFile; fileRef = D4DDF45619EDCED100C6BC10 /* section1-end.json */; };
 		D4DDF45A19EDD22200C6BC10 /* MWKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF45919EDD22200C6BC10 /* MWKUser.m */; };
 		D4DDF45B19EDD22200C6BC10 /* MWKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF45919EDD22200C6BC10 /* MWKUser.m */; };
+		D4DDF45E19EE1FD900C6BC10 /* MWKDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */; };
+		D4DDF45F19EE1FD900C6BC10 /* MWKDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,8 +63,8 @@
 		D48405C619E47542006F4139 /* MWKImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKImage.m; sourceTree = "<group>"; };
 		D48405C919E47559006F4139 /* MWKPageTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKPageTitle.h; sourceTree = "<group>"; };
 		D48405CA19E47559006F4139 /* MWKPageTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKPageTitle.m; sourceTree = "<group>"; };
-		D48405CD19E47572006F4139 /* MWKArticleFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKArticleFetcher.h; sourceTree = "<group>"; };
-		D48405CE19E47572006F4139 /* MWKArticleFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKArticleFetcher.m; sourceTree = "<group>"; };
+		D48405CD19E47572006F4139 /* MWKArticleStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKArticleStore.h; sourceTree = "<group>"; };
+		D48405CE19E47572006F4139 /* MWKArticleStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKArticleStore.m; sourceTree = "<group>"; };
 		D48405D119E4757D006F4139 /* MWKImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKImageFetcher.h; sourceTree = "<group>"; };
 		D48405D219E4757D006F4139 /* MWKImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKImageFetcher.m; sourceTree = "<group>"; };
 		D4C3FA5319E4783A00EB08CC /* MWKSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKSite.h; sourceTree = "<group>"; };
@@ -76,6 +78,8 @@
 		D4DDF45619EDCED100C6BC10 /* section1-end.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "section1-end.json"; sourceTree = "<group>"; };
 		D4DDF45819EDD22200C6BC10 /* MWKUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKUser.h; sourceTree = "<group>"; };
 		D4DDF45919EDD22200C6BC10 /* MWKUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKUser.m; sourceTree = "<group>"; };
+		D4DDF45C19EE1FD900C6BC10 /* MWKDataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKDataObject.h; sourceTree = "<group>"; };
+		D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKDataObject.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +162,8 @@
 				D48405BE19E47526006F4139 /* MWKSection.m */,
 				D48405C519E47542006F4139 /* MWKImage.h */,
 				D48405C619E47542006F4139 /* MWKImage.m */,
+				D4DDF45C19EE1FD900C6BC10 /* MWKDataObject.h */,
+				D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */,
 			);
 			name = "Data classes";
 			sourceTree = "<group>";
@@ -178,8 +184,8 @@
 		D4C3FA5819E478CC00EB08CC /* Data i/o */ = {
 			isa = PBXGroup;
 			children = (
-				D48405CD19E47572006F4139 /* MWKArticleFetcher.h */,
-				D48405CE19E47572006F4139 /* MWKArticleFetcher.m */,
+				D48405CD19E47572006F4139 /* MWKArticleStore.h */,
+				D48405CE19E47572006F4139 /* MWKArticleStore.m */,
 				D48405D119E4757D006F4139 /* MWKImageFetcher.h */,
 				D48405D219E4757D006F4139 /* MWKImageFetcher.m */,
 			);
@@ -281,9 +287,10 @@
 				D48405BF19E47526006F4139 /* MWKSection.m in Sources */,
 				D48405D319E4757D006F4139 /* MWKImageFetcher.m in Sources */,
 				D48405CB19E47559006F4139 /* MWKPageTitle.m in Sources */,
+				D4DDF45E19EE1FD900C6BC10 /* MWKDataObject.m in Sources */,
 				D48405C319E47535006F4139 /* MWKArticle.m in Sources */,
 				D48405A819E473E6006F4139 /* MediaWikiKit.m in Sources */,
-				D48405CF19E47572006F4139 /* MWKArticleFetcher.m in Sources */,
+				D48405CF19E47572006F4139 /* MWKArticleStore.m in Sources */,
 				D4DDF45A19EDD22200C6BC10 /* MWKUser.m in Sources */,
 				D48405C719E47542006F4139 /* MWKImage.m in Sources */,
 			);
@@ -300,9 +307,10 @@
 				D48405C019E47526006F4139 /* MWKSection.m in Sources */,
 				D48405C819E47542006F4139 /* MWKImage.m in Sources */,
 				D4C3FA5D19E47D4700EB08CC /* MWKPageTitleTests.m in Sources */,
-				D48405D019E47572006F4139 /* MWKArticleFetcher.m in Sources */,
+				D48405D019E47572006F4139 /* MWKArticleStore.m in Sources */,
 				D48405CC19E47559006F4139 /* MWKPageTitle.m in Sources */,
 				D4C3FA5A19E47AA500EB08CC /* MWKSiteTests.m in Sources */,
+				D4DDF45F19EE1FD900C6BC10 /* MWKDataObject.m in Sources */,
 				D4DDF45B19EDD22200C6BC10 /* MWKUser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -10,6 +10,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "MWKDataObject.h"
+
 #import "MWKPageTitle.h"
 #import "MWKSite.h"
 #import "MWKUser.h"
@@ -18,7 +20,7 @@
 #import "MWKSection.h"
 #import "MWKImage.h"
 
-#import "MWKArticleFetcher.h"
+#import "MWKArticleStore.h"
 #import "MWKImageFetcher.h"
 
 @interface MediaWikiKit : NSObject

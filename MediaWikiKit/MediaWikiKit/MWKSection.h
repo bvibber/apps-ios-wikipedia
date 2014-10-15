@@ -10,14 +10,26 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MWKSection : NSObject
+#import "MWKDataObject.h"
 
-@property NSString *anchor;
-@property NSString *index; //??
-@property int tocLevel;
-@property int sectionId;
+@interface MWKSection : MWKDataObject
 
-@property NSDate *dateRetrieved;
-@property NSString *html; //??
+@property (readonly) MWKPageTitle *title;
+@property (readonly) MWKArticle *article;
+
+@property (readonly) NSNumber *toclevel;      // optional
+@property (readonly) NSNumber *level;         // optional; string in JSON, but seems to be number-safe?
+@property (readonly) NSString *line;          // optional; HTML
+@property (readonly) NSString *number;        // optional; can be "1.2.3"
+@property (readonly) NSString *index;         // optional; can be "T-3" for transcluded sections
+@property (readonly) MWKPageTitle *fromtitle; // optional
+@property (readonly) NSString *anchor;        // optional
+@property (readonly) NSNumber sectionId;      // required; -> id
+@property (readonly) NSString references;     // optional; marked by presence of key with empty string in JSON
+
+// Should this be here?
+@property (readonly) NSString *text;          // may be nil
+
+-(instancetype)initWithArticle:(MWKArticle *)article dict:(NSDictionary *)dict;
 
 @end
