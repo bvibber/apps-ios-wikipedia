@@ -28,11 +28,11 @@
 @property (readonly) MWKPageTitle *redirected;     // optional
 @property (readonly) NSDate       *lastmodified;   // required
 @property (readonly) MWKUser      *lastmodifiedby; // required
-@property (readonly) NSNumber     *articleId;      // required; -> 'id'
-@property (readonly) NSNumber     *languagecount;  // required; int
+@property (readonly) int           articleId;      // required; -> 'id'
+@property (readonly) int           languagecount;  // required; int
 @property (readonly) NSString     *displaytitle;   // optional
 @property (readonly) NSDictionary *protection;     // required
-@property (readonly) NSNumber     *editable;       // required; bool
+@property (readonly) BOOL          editable;       // required
 
 -(instancetype)initWithTitle:(MWKPageTitle *)title dict:(NSDictionary *)dict;
 

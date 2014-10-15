@@ -24,8 +24,8 @@
 @property (readonly) NSString *index;         // optional; can be "T-3" for transcluded sections
 @property (readonly) MWKPageTitle *fromtitle; // optional
 @property (readonly) NSString *anchor;        // optional
-@property (readonly) NSNumber sectionId;      // required; -> id
-@property (readonly) NSString references;     // optional; marked by presence of key with empty string in JSON
+@property (readonly) int       sectionId;     // required; -> id
+@property (readonly) NSString *references;    // optional; marked by presence of key with empty string in JSON
 
 // Should this be here?
 @property (readonly) NSString *text;          // may be nil

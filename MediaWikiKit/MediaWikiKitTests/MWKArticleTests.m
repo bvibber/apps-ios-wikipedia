@@ -11,11 +11,11 @@
 
 #import "MediaWikiKit.h"
 
-@interface MWKArticleFetcherTests : XCTestCase
+@interface MWKArticleTests : XCTestCase
 
 @end
 
-@implementation MWKArticleFetcherTests {
+@implementation MWKArticleTests {
     MWKSite *site;
     MWKPageTitle *title;
     NSDictionary *json;
@@ -28,10 +28,9 @@
     site = [[MWKSite alloc] initWithDomain:@"en.wikipedia.org"];
     title = [site titleWithString:@"San Francisco"];
     
-    NSDictionary *json = [self loadJSON:@"section0"];
+    json = [self loadJSON:@"section0"];
     
-    MWKArticle *article = [MWKArticleFetcher fetcherWithTitle:title];
-    [article importJSON:json];
+    article = [[MWKArticle alloc] initWithTitle:title dict:json];
 }
 
 - (void)tearDown {
@@ -40,16 +39,27 @@
 
 - (void)testFromJSON {
     XCTAssertNotNil(json, @"Loaded JSON");
-    XCTAssertNotNil(article, "@Got an article");
-    
+    XCTAssertNotNil(article, @"Got an article");
 }
 
+- (void)testRequiredFieldsPresent {
+    XCTAssertNotNil(article.lastmodified, @"lastmodified is required");
+    XCTAssertNotNil(article.lastmodifiedby, @"lastmodifiedby is required");
+}
+
+- (void)testOptionalFieldsPresent {
+    XCTAssertNil(article.redirected, @"redirected is empty");
+    XCTAssertEqualObjects(article.displaytitle, @"San Francisco", @"displaytitle is present");
+}
 
 - (NSDictionary *)loadJSON:(NSString *)name
 {
     NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:path];
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:nil error:nil];
+    NSError *err = nil;
+    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
+    assert(err == nil);
+    assert(dict);
     return dict;
 }
 

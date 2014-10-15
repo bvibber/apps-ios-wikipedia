@@ -30,4 +30,23 @@
     _article = [[MWKArticle alloc] initWithTitle:_title dict:dict];
 }
 
+#pragma mark - io
+
+#pragma mark - getters
+
+-(NSArray *)sections
+{
+    return @[];
+}
+
+-(MWKSection *)sectionAtIndex:(int)index
+{
+    return nil;
+}
+
+-(NSString *)sectionTextAtIndex:(int)index
+{
+    return @"";
+}
+
 @end
