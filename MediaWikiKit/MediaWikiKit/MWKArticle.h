@@ -10,29 +10,25 @@
 
 #import <Foundation/Foundation.h>
 
-#include "MWKDataObject.h"
+#import "MWKSiteDataObject.h"
 
-// forward decls
-@class MWKSite;
-@class MWKTitle;
-@class MWKUser;
-@class MWKSection;
+@class MWKProtectionStatus;
 
-@interface MWKArticle : MWKDataObject
+@interface MWKArticle : MWKSiteDataObject
 
 // Identifiers
 @property (readonly) MWKSite *site;
 @property (readonly) MWKTitle *title;
 
 // Metadata
-@property (readonly) MWKTitle *redirected;     // optional
-@property (readonly) NSDate       *lastmodified;   // required
-@property (readonly) MWKUser      *lastmodifiedby; // required
-@property (readonly) int           articleId;      // required; -> 'id'
-@property (readonly) int           languagecount;  // required; int
-@property (readonly) NSString     *displaytitle;   // optional
-@property (readonly) NSDictionary *protection;     // required
-@property (readonly) BOOL          editable;       // required
+@property (readonly) MWKTitle            *redirected;     // optional
+@property (readonly) NSDate              *lastmodified;   // required
+@property (readonly) MWKUser             *lastmodifiedby; // required
+@property (readonly) int                  articleId;      // required; -> 'id'
+@property (readonly) int                  languagecount;  // required; int
+@property (readonly) NSString            *displaytitle;   // optional
+@property (readonly) MWKProtectionStatus *protection;     // required
+@property (readonly) BOOL                 editable;       // required
 
 -(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict;
 

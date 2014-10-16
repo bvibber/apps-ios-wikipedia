@@ -10,9 +10,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "MWKDataObject.h"
+#import "MWKSiteDataObject.h"
 
-@interface MWKSection : MWKDataObject
+@interface MWKSection : MWKSiteDataObject
 
 @property (readonly) MWKTitle *title;
 @property (readonly) MWKArticle *article;

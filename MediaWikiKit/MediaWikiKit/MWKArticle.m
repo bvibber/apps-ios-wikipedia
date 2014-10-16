@@ -16,14 +16,14 @@
     if (self) {
         _title = title;
 
-        _redirected     =  [self optionalTitle:     @"redirected"     dict:dict];
-        _lastmodified   =  [self requiredDate:      @"lastmodified"   dict:dict];
-        _lastmodifiedby =  [self requiredUser:      @"lastmodifiedby" dict:dict];
-        _articleId      = [[self requiredNumber:    @"id"             dict:dict] intValue];
-        _languagecount  = [[self requiredNumber:    @"languagecount"  dict:dict] intValue];
-        _displaytitle   =  [self optionalString:    @"displaytitle"   dict:dict];
-        _protection     =  [self requiredDictionary:@"protection"     dict:dict];
-        _editable       = [[self requiredNumber:    @"editable"       dict:dict] boolValue];
+        _redirected     =  [self optionalTitle:           @"redirected"     dict:dict];
+        _lastmodified   =  [self requiredDate:            @"lastmodified"   dict:dict];
+        _lastmodifiedby =  [self requiredUser:            @"lastmodifiedby" dict:dict];
+        _articleId      = [[self requiredNumber:          @"id"             dict:dict] intValue];
+        _languagecount  = [[self requiredNumber:          @"languagecount"  dict:dict] intValue];
+        _displaytitle   =  [self optionalString:          @"displaytitle"   dict:dict];
+        _protection     =  [self requiredProtectionStatus:@"protection"     dict:dict];
+        _editable       = [[self requiredNumber:          @"editable"       dict:dict] boolValue];
     }
     return self;
 }
@@ -42,7 +42,7 @@
     if (self.displaytitle) {
         dict[@"displaytitle"] = self.displaytitle;
     }
-    dict[@"protection"] = self.protection;
+    dict[@"protection"] = [self.protection dataExport];
     dict[@"editable"] = @(self.editable);
 
     return [NSDictionary dictionaryWithDictionary:dict];
@@ -61,15 +61,31 @@
     } else {
         MWKArticle *other = object;
         return [self.site isEqual:other.site] &&
-            [self.redirected isEqual:other.redirected] &&
+            (self.redirected == other.redirected || [self.redirected isEqual:other.redirected]) &&
             [self.lastmodified isEqual:other.lastmodified] &&
             [self.lastmodifiedby isEqual:other.lastmodifiedby] &&
             self.articleId == other.articleId &&
             self.languagecount == other.languagecount &&
             [self.displaytitle isEqualToString:other.displaytitle] &&
-            [self.protection isEqualToDictionary:other.protection] &&
+            [self.protection isEqual:other.protection] &&
             self.editable == other.editable;
         
     }
 }
+
+
+#pragma mark - protection status methods
+
+-(MWKProtectionStatus *)requiredProtectionStatus:(NSString *)key dict:(NSDictionary *)dict
+{
+    NSDictionary *obj = [self requiredDictionary:key dict:dict];
+    if (obj == nil) {
+        @throw [NSException exceptionWithName:@"MWKDataObjectException"
+                                       reason:@"missing required protection status field"
+                                     userInfo:@{@"key": key}];
+    } else {
+        return [[MWKProtectionStatus alloc] initWithData:obj];
+    }
+}
+
 @end

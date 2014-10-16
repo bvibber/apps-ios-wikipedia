@@ -76,4 +76,27 @@
     }
 }
 
+-(BOOL)isEqual:(id)object
+{
+    if (object == nil) {
+        return NO;
+    } else if (![object isKindOfClass:[MWKTitle class]]) {
+        return NO;
+    } else {
+        MWKTitle *other = object;
+        return [self.site isEqual:other.site] &&
+            [self.prefixedText isEqualToString:other.prefixedText] &&
+            ((self.fragment == nil && other.fragment == nil) || [self.fragment isEqualToString:other.fragment]);
+    }
+}
+
+-(NSString *)description
+{
+    if (self.fragment) {
+        return [NSString stringWithFormat:@"%@:%@:%@#%@", self.site.domain, self.site.language, self.prefixedText, self.fragment];
+    } else {
+        return [NSString stringWithFormat:@"%@:%@:%@", self.site.domain, self.site.language, self.prefixedText];
+    }
+}
+
 @end

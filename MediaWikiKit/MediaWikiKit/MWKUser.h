@@ -10,12 +10,9 @@
 
 #import <Foundation/Foundation.h>
 
-#include "MWKDataObject.h"
+#import "MWKSiteDataObject.h"
 
-// forward decls
-@class MWKSite;
-
-@interface MWKUser : MWKDataObject
+@interface MWKUser : MWKSiteDataObject
 
 @property (readonly) bool anonymous;
 @property (readonly) NSString *name;

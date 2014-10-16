@@ -25,7 +25,7 @@
 - (void)setUp {
     [super setUp];
 
-    site = [[MWKSite alloc] initWithDomain:@"en.wikipedia.org"];
+    site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"en"];
     title = [site titleWithString:@"San Francisco"];
     
     json = [self loadJSON:@"section0"];

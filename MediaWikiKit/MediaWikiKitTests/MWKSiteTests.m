@@ -21,7 +21,7 @@
 
 - (void)setUp {
     [super setUp];
-    site = [[MWKSite alloc] initWithDomain:@"en.wikipedia.org"];
+    site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"en"];
 }
 
 - (void)tearDown {
@@ -31,13 +31,24 @@
 
 - (void)testDomain
 {
-    XCTAssertEqualObjects(site.domain, @"en.wikipedia.org");
+    XCTAssertEqualObjects(site.domain, @"wikipedia.org");
+}
+
+- (void)testLanguage
+{
+    XCTAssertEqualObjects(site.language, @"en");
 }
 
 - (void)testEquals
 {
-    MWKSite *otherSite = [[MWKSite alloc] initWithDomain:@"en.wikipedia.org"];
+    MWKSite *otherSite = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"en"];
     XCTAssertEqualObjects(site, otherSite);
+
+    otherSite = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"fr"];
+    XCTAssertNotEqualObjects(site, otherSite);
+    
+    otherSite = [[MWKSite alloc] initWithDomain:@"wiktionary.org" language:@"en"];
+    XCTAssertNotEqualObjects(site, otherSite);
 }
 
 - (void)testStrings

@@ -21,8 +21,7 @@
 
 - (void)setUp {
     [super setUp];
-    // Put setup code here. This method is called before the invocation of each test method in the class.
-    site = [[MWKSite alloc] initWithDomain:@"en.wikipedia.org"];
+    site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"en"];
 }
 
 - (void)tearDown {
@@ -63,6 +62,22 @@
     XCTAssertEqualObjects(title.prefixedURL, @"%C3%89clair", @"URL form has percent encoding");
     XCTAssertNil(title.fragment, @"Fragment is nil");
     XCTAssertEqualObjects(title.fragmentForURL, @"", @"Fragment for URL is empty string");
+}
+
+- (void)testEquals {
+    MWKTitle *title = [site titleWithString:@"Foobie foo"];
+    MWKTitle *title2 = [site titleWithString:@"Foobie foo"];
+    XCTAssertEqualObjects(title, title2);
+    
+    MWKTitle *title3 = [site titleWithString:@"Foobie_foo"];
+    XCTAssertEqualObjects(title, title3);
+
+    MWKTitle *title4 = [site titleWithString:@"Foobie_Foo"];
+    XCTAssertNotEqualObjects(title, title4);
+    
+    MWKSite *site2 = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"fr"];
+    MWKTitle *title5 = [site2 titleWithString:@"Foobie foo"];
+    XCTAssertNotEqualObjects(title, title5);
 }
 
 @end

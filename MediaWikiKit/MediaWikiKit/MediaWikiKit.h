@@ -11,6 +11,7 @@
 #import <Foundation/Foundation.h>
 
 #import "MWKDataObject.h"
+#import "MWKSiteDataObject.h"
 
 #import "MWKTitle.h"
 #import "MWKSite.h"
@@ -19,6 +20,8 @@
 #import "MWKArticle.h"
 #import "MWKSection.h"
 #import "MWKImage.h"
+#import "MWKProtectionStatus.h"
+
 
 #import "MWKArticleStore.h"
 #import "MWKImageFetcher.h"

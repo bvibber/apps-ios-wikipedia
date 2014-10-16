@@ -5,25 +5,14 @@
 
 @implementation MWKSite
 
-- (instancetype)initWithDomain:(NSString *)domain
+- (instancetype)initWithDomain:(NSString *)domain language:(NSString *)language
 {
     self = [super init];
     if (self) {
-        self.domain = domain;
+        _domain = [domain copy];
+        _language = [language copy];
     }
     return self;
-}
-
-- (BOOL)isEqual:(id)other
-{
-    if (other == nil) {
-        return NO;
-    }
-    if (![other isKindOfClass:self.class]) {
-        return NO;
-    }
-    MWKSite *otherSite = other;
-    return [self.domain isEqualToString:otherSite.domain];
 }
 
 
@@ -46,4 +35,18 @@ static NSString *localLinkPrefix = @"/wiki/";
     }
 }
 
+#pragma mark - NSObject methods
+
+- (BOOL)isEqual:(id)object
+{
+    if (object == nil) {
+        return NO;
+    } else if (![object isKindOfClass:[MWKSite class]]) {
+        return NO;
+    } else {
+        MWKSite *other = object;
+        return [self.domain isEqualToString:other.domain] &&
+               [self.language isEqualToString:other.language];
+    }
+}
 @end
