@@ -48,4 +48,28 @@
     return [NSDictionary dictionaryWithDictionary:dict];
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"%@", [self dataExport]];
+}
+
+- (BOOL)isEqual:(id)object
+{
+    if (object == nil) {
+        return NO;
+    } else if (![object isKindOfClass:[MWKArticle class]]) {
+        return NO;
+    } else {
+        MWKArticle *other = object;
+        return [self.site isEqual:other.site] &&
+            [self.redirected isEqual:other.redirected] &&
+            [self.lastmodified isEqual:other.lastmodified] &&
+            [self.lastmodifiedby isEqual:other.lastmodifiedby] &&
+            self.articleId == other.articleId &&
+            self.languagecount == other.languagecount &&
+            [self.displaytitle isEqualToString:other.displaytitle] &&
+            [self.protection isEqualToDictionary:other.protection] &&
+            self.editable == other.editable;
+        
+    }
+}
 @end
