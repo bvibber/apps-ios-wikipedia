@@ -46,26 +46,4 @@ static NSString *localLinkPrefix = @"/wiki/";
     }
 }
 
-
-#pragma mark - User methods
-
-- (MWKUser *)userWithName:(NSString *)name gender:(NSString *)gender
-{
-    return [[MWKUser alloc] initWithSite:self name:name gender:gender];
-}
-
-- (MWKUser *)userWithAnonymous
-{
-    return [[MWKUser alloc] initWithSite:self anonymous:YES];
-}
-
-- (MWKUser *)userWithJSON:(NSDictionary *)dict
-{
-    if ([dict isKindOfClass:[NSNull class]]) {
-        return [self userWithAnonymous];
-    } else {
-        return [self userWithName:dict[@"name"] gender:dict[@"gender"]];
-    }
-}
-
 @end

@@ -27,10 +27,21 @@
 
 -(void)importMobileViewJSON:(NSDictionary *)dict
 {
+    // Populate article metadata
     _article = [[MWKArticle alloc] initWithTitle:_title dict:dict];
+    [self saveArticle];
+    
+    // Populate sections
+    
 }
 
 #pragma mark - io
+
+-(void)saveArticle
+{
+    assert(self.article);
+    NSDictionary *dict = [self.article dataExport];
+}
 
 #pragma mark - getters
 

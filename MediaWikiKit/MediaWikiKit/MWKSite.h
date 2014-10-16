@@ -18,8 +18,4 @@
 - (MWKTitle *)titleWithString:(NSString *)string;
 - (MWKTitle *)titleWithInternalLink:(NSString *)path;
 
-- (MWKUser *)userWithName:(NSString *)name gender:(NSString *)gender;
-- (MWKUser *)userWithAnonymous;
-- (MWKUser *)userWithJSON:(NSDictionary *)dict;
-
 @end

@@ -34,6 +34,9 @@
 		D4DDF45B19EDD22200C6BC10 /* MWKUser.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF45919EDD22200C6BC10 /* MWKUser.m */; };
 		D4DDF45E19EE1FD900C6BC10 /* MWKDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */; };
 		D4DDF45F19EE1FD900C6BC10 /* MWKDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */; };
+		D4DDF46119F055C800C6BC10 /* MWKUserTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D4DDF46019F055C800C6BC10 /* MWKUserTests.m */; };
+		D4DDF46319F0560400C6BC10 /* user-loggedin.json in Resources */ = {isa = PBXBuildFile; fileRef = D4DDF46219F0560400C6BC10 /* user-loggedin.json */; };
+		D4DDF46519F0561500C6BC10 /* user-anon.json in Resources */ = {isa = PBXBuildFile; fileRef = D4DDF46419F0561500C6BC10 /* user-anon.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -80,6 +83,9 @@
 		D4DDF45919EDD22200C6BC10 /* MWKUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKUser.m; sourceTree = "<group>"; };
 		D4DDF45C19EE1FD900C6BC10 /* MWKDataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKDataObject.h; sourceTree = "<group>"; };
 		D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKDataObject.m; sourceTree = "<group>"; };
+		D4DDF46019F055C800C6BC10 /* MWKUserTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKUserTests.m; sourceTree = "<group>"; };
+		D4DDF46219F0560400C6BC10 /* user-loggedin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-loggedin.json"; sourceTree = "<group>"; };
+		D4DDF46419F0561500C6BC10 /* user-anon.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-anon.json"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,12 +141,15 @@
 			children = (
 				D48405AF19E473E7006F4139 /* Supporting Files */,
 				D4C3FA5919E47AA500EB08CC /* MWKSiteTests.m */,
+				D4DDF46019F055C800C6BC10 /* MWKUserTests.m */,
 				D4C3FA5C19E47D4700EB08CC /* MWKTitleTests.m */,
 				D4DDF44E19EDCD6800C6BC10 /* MWKArticleTests.m */,
 				D4DDF45019EDCE6800C6BC10 /* section0.json */,
 				D4DDF45619EDCED100C6BC10 /* section1-end.json */,
 				D4DDF45119EDCE6800C6BC10 /* TemplateIcon2x.png */,
 				D4DDF45419EDCE9000C6BC10 /* test-notes.txt */,
+				D4DDF46219F0560400C6BC10 /* user-loggedin.json */,
+				D4DDF46419F0561500C6BC10 /* user-anon.json */,
 			);
 			path = MediaWikiKitTests;
 			sourceTree = "<group>";
@@ -156,14 +165,16 @@
 		D4C3FA5619E478AA00EB08CC /* Data classes */ = {
 			isa = PBXGroup;
 			children = (
+				D4DDF45C19EE1FD900C6BC10 /* MWKDataObject.h */,
+				D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */,
+				D4DDF45819EDD22200C6BC10 /* MWKUser.h */,
+				D4DDF45919EDD22200C6BC10 /* MWKUser.m */,
 				D48405C119E47535006F4139 /* MWKArticle.h */,
 				D48405C219E47535006F4139 /* MWKArticle.m */,
 				D48405BD19E47526006F4139 /* MWKSection.h */,
 				D48405BE19E47526006F4139 /* MWKSection.m */,
 				D48405C519E47542006F4139 /* MWKImage.h */,
 				D48405C619E47542006F4139 /* MWKImage.m */,
-				D4DDF45C19EE1FD900C6BC10 /* MWKDataObject.h */,
-				D4DDF45D19EE1FD900C6BC10 /* MWKDataObject.m */,
 			);
 			name = "Data classes";
 			sourceTree = "<group>";
@@ -175,8 +186,6 @@
 				D4C3FA5419E4783A00EB08CC /* MWKSite.m */,
 				D48405C919E47559006F4139 /* MWKTitle.h */,
 				D48405CA19E47559006F4139 /* MWKTitle.m */,
-				D4DDF45819EDD22200C6BC10 /* MWKUser.h */,
-				D4DDF45919EDD22200C6BC10 /* MWKUser.m */,
 			);
 			name = "Metadata classes";
 			sourceTree = "<group>";
@@ -271,8 +280,10 @@
 			files = (
 				D4DDF45319EDCE6800C6BC10 /* TemplateIcon2x.png in Resources */,
 				D4DDF45519EDCE9000C6BC10 /* test-notes.txt in Resources */,
+				D4DDF46519F0561500C6BC10 /* user-anon.json in Resources */,
 				D4DDF45219EDCE6800C6BC10 /* section0.json in Resources */,
 				D4DDF45719EDCED100C6BC10 /* section1-end.json in Resources */,
+				D4DDF46319F0560400C6BC10 /* user-loggedin.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +317,7 @@
 				D48405D419E4757D006F4139 /* MWKImageFetcher.m in Sources */,
 				D48405C019E47526006F4139 /* MWKSection.m in Sources */,
 				D48405C819E47542006F4139 /* MWKImage.m in Sources */,
+				D4DDF46119F055C800C6BC10 /* MWKUserTests.m in Sources */,
 				D4C3FA5D19E47D4700EB08CC /* MWKTitleTests.m in Sources */,
 				D48405D019E47572006F4139 /* MWKArticleStore.m in Sources */,
 				D48405CC19E47559006F4139 /* MWKTitle.m in Sources */,

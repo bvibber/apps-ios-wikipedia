@@ -30,7 +30,7 @@
     
     json = [self loadJSON:@"section0"];
     
-    article = [[MWKArticle alloc] initWithTitle:title dict:json];
+    article = [[MWKArticle alloc] initWithTitle:title dict:json[@"mobileview"]];
 }
 
 - (void)tearDown {
@@ -50,6 +50,14 @@
 - (void)testOptionalFieldsPresent {
     XCTAssertNil(article.redirected, @"redirected is empty");
     XCTAssertEqualObjects(article.displaytitle, @"San Francisco", @"displaytitle is present");
+}
+
+- (void)testRoundTrip {
+    NSDictionary *export = [article dataExport];
+    XCTAssertNotNil(export, @"Got a data export");
+    MWKArticle *article2 = [[MWKArticle alloc] initWithTitle:title dict:export];
+    XCTAssertNotNil(article2, @"Got an article round-tripped");
+    XCTAssertEqualObjects(article, article2, @"round-trip is same");
 }
 
 - (NSDictionary *)loadJSON:(NSString *)name

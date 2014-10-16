@@ -19,6 +19,13 @@
     return self;
 }
 
+- (id)dataExport;
+{
+    @throw [NSException exceptionWithName:@"MWKDataObjectException"
+                                   reason:@"dataExport not implemented"
+                                 userInfo:@{}];
+}
+
 #pragma mark - string methods
 
 - (NSString *)optionalString:(NSString *)key dict:(NSDictionary *)dict
@@ -133,30 +140,36 @@
 }
 
 
-- (NSDate *)getDateFromIso8601DateString:(NSString *)string
+#pragma mark - date methods
+
+- (NSDateFormatter *)iso8601Formatter
 {
     // See: https://www.mediawiki.org/wiki/Manual:WfTimestamp
     NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
     [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
     [formatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
-    return  [formatter dateFromString:string];
+    return formatter;
+}
+
+- (NSDate *)getDateFromIso8601DateString:(NSString *)string
+{
+    return  [[self iso8601Formatter] dateFromString:string];
+}
+
+- (NSString *)iso8601DateString:(NSDate *)date
+{
+    return [[self iso8601Formatter] stringFromDate:date];
 }
 
 #pragma mark - user methods
 
 - (MWKUser *)optionalUser:(NSString *)key dict:(NSDictionary *)dict
 {
-    NSDictionary *user = dict[key];
+    id user = dict[key];
     if (user == nil) {
         return nil;
-    } else if ([user isKindOfClass:[NSNull class]]) {
-        return [self.site userWithAnonymous];
-    } else if ([user isKindOfClass:[NSDictionary class]]) {
-        return [self.site userWithName:dict[@"name"] gender:dict[@"gender"]];
     } else {
-        @throw [NSException exceptionWithName:@"MWKDataObjectException"
-                                       reason:@"expected user, got something else"
-                                     userInfo:@{@"key": key}];
+        return [[MWKUser alloc] initWithSite:self.site data:user];
     }
 }
 

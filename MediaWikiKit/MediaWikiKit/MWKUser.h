@@ -10,17 +10,17 @@
 
 #import <Foundation/Foundation.h>
 
+#include "MWKDataObject.h"
+
 // forward decls
 @class MWKSite;
 
-@interface MWKUser : NSObject
+@interface MWKUser : MWKDataObject
 
-@property (readonly) MWKSite *site;
 @property (readonly) bool anonymous;
 @property (readonly) NSString *name;
 @property (readonly) NSString *gender; // used to format UI messages on-wiki
 
--(instancetype)initWithSite:(MWKSite *)site name:(NSString *)name gender:(NSString *)gender;
--(instancetype)initWithSite:(MWKSite *)site anonymous:(BOOL)anonymous;
+-(instancetype)initWithSite:(MWKSite *)site data:(id)data;
 
 @end

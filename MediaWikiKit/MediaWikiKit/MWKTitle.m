@@ -3,11 +3,7 @@
 
 #import "MediaWikiKit.h"
 
-@implementation MWKTitle {
-    MWKSite *_site;
-    NSString *_text;
-    NSString *_fragment;
-}
+@implementation MWKTitle
 
 #pragma mark - Class methods
 
@@ -42,26 +38,11 @@
 
 #pragma mark - Property getters
 
--(MWKSite *)site
-{
-    return _site;
-}
-
 -(NSString *)namespace
 {
     // @todo implement namespace detection and normalization
     // doing this right requires some site info
     return nil;
-}
-
--(NSString *)text
-{
-    return _text;
-}
-
--(NSString *)fragment
-{
-    return _fragment;
 }
 
 -(NSString *)_prefix

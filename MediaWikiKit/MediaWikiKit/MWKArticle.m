@@ -15,21 +15,37 @@
     self = [self initWithSite:title.site];
     if (self) {
         _title = title;
-        NSDictionary *mobileview = dict[@"mobileview"];
-        if (mobileview) {
-            _redirected     =  [self optionalTitle:     @"redirected"     dict:mobileview];
-            _lastmodified   =  [self requiredDate:      @"lastmodified"   dict:mobileview];
-            _lastmodifiedby =  [self requiredUser:      @"lastmodifiedby" dict:mobileview];
-            _articleId      = [[self requiredNumber:    @"id"             dict:mobileview] intValue];
-            _languagecount  = [[self requiredNumber:    @"languagecount"  dict:mobileview] intValue];
-            _displaytitle   =  [self optionalString:    @"displaytitle"   dict:mobileview];
-            _protection     =  [self requiredDictionary:@"protection"     dict:mobileview];
-            _editable       = [[self requiredNumber:    @"editable"       dict:mobileview] boolValue];
-        } else {
-            // throw error
-        }
+
+        _redirected     =  [self optionalTitle:     @"redirected"     dict:dict];
+        _lastmodified   =  [self requiredDate:      @"lastmodified"   dict:dict];
+        _lastmodifiedby =  [self requiredUser:      @"lastmodifiedby" dict:dict];
+        _articleId      = [[self requiredNumber:    @"id"             dict:dict] intValue];
+        _languagecount  = [[self requiredNumber:    @"languagecount"  dict:dict] intValue];
+        _displaytitle   =  [self optionalString:    @"displaytitle"   dict:dict];
+        _protection     =  [self requiredDictionary:@"protection"     dict:dict];
+        _editable       = [[self requiredNumber:    @"editable"       dict:dict] boolValue];
     }
     return self;
+}
+
+-(id)dataExport
+{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+
+    if (self.redirected) {
+        dict[@"redirected"] = self.redirected.prefixedText;
+    }
+    dict[@"lastmodified"] = [self iso8601DateString:self.lastmodified];
+    dict[@"lastmodifiedby"] = [self.lastmodifiedby dataExport];
+    dict[@"id"] = @(self.articleId);
+    dict[@"languagecount"] = @(self.languagecount);
+    if (self.displaytitle) {
+        dict[@"displaytitle"] = self.displaytitle;
+    }
+    dict[@"protection"] = self.protection;
+    dict[@"editable"] = @(self.editable);
+
+    return [NSDictionary dictionaryWithDictionary:dict];
 }
 
 @end
