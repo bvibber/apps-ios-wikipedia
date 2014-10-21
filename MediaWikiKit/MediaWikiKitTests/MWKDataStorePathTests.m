@@ -74,4 +74,9 @@
     XCTAssertEqualObjects([dataStore pathForSection:section35], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section35");
 }
 
+- (void)testSectionIdPath {
+    XCTAssertEqualObjects([dataStore pathForSectionId:0 title:title], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section0");
+    XCTAssertEqualObjects([dataStore pathForSectionId:35 title:title], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section35");
+}
+
 @end

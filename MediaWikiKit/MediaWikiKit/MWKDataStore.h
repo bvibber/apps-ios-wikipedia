@@ -26,6 +26,7 @@
 -(NSString *)pathForTitle:(MWKTitle *)title;
 -(NSString *)pathForArticle:(MWKArticle *)article;
 -(NSString *)pathForSectionsWithTitle:(MWKTitle *)title;
+-(NSString *)pathForSectionId:(int)sectionId title:(MWKTitle *)title;
 -(NSString *)pathForSection:(MWKSection *)section;
 
 @end

@@ -60,11 +60,16 @@
     return [articlePath stringByAppendingPathComponent:@"sections"];
 }
 
+-(NSString *)pathForSectionId:(int)sectionId title:(MWKTitle *)title
+{
+    NSString *sectionsPath = [self pathForSectionsWithTitle:title];
+    NSString *sectionName = [NSString stringWithFormat:@"section%d", sectionId];
+    return [sectionsPath stringByAppendingPathComponent:sectionName];
+}
+
 -(NSString *)pathForSection:(MWKSection *)section
 {
-    NSString *sectionsPath = [self pathForSectionsWithTitle:section.title];
-    NSString *sectionName = [NSString stringWithFormat:@"section%d", section.sectionId];
-    return [sectionsPath stringByAppendingPathComponent:sectionName];
+    return [self pathForSectionId:section.sectionId title:section.title];
 }
 
 @end

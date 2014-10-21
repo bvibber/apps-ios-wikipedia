@@ -170,21 +170,15 @@
 				D494A71619F7103D0098AA18 /* MWKTestCase.h */,
 				D494A71719F7103D0098AA18 /* MWKTestCase.m */,
 				D4DDF45119EDCE6800C6BC10 /* TemplateIcon2x.png */,
-				D4DDF45419EDCE9000C6BC10 /* test-notes.txt */,
+				D494A71919F7113A0098AA18 /* Test data */,
 				D4C3FA5919E47AA500EB08CC /* MWKSiteTests.m */,
 				D4C3FA5C19E47D4700EB08CC /* MWKTitleTests.m */,
 				D4DDF46019F055C800C6BC10 /* MWKUserTests.m */,
-				D4DDF46219F0560400C6BC10 /* user-loggedin.json */,
-				D4DDF46419F0561500C6BC10 /* user-anon.json */,
 				D494A70019F6CAB30098AA18 /* MWKProtectionStatusTests.m */,
-				D494A70219F6CADA0098AA18 /* protection-obama.json */,
-				D494A70419F6CB090098AA18 /* protection-empty.json */,
 				D4DDF44E19EDCD6800C6BC10 /* MWKArticleTests.m */,
-				D4DDF45019EDCE6800C6BC10 /* section0.json */,
-				D4DDF45619EDCED100C6BC10 /* section1-end.json */,
 				D494A71019F6ECC10098AA18 /* MWKDataStorePathTests.m */,
-				D494A70A19F6E2FF0098AA18 /* MWKArticleStoreTests.m */,
 				D494A71219F70F910098AA18 /* MWKDataStoreStorageTests.m */,
+				D494A70A19F6E2FF0098AA18 /* MWKArticleStoreTests.m */,
 			);
 			path = MediaWikiKitTests;
 			sourceTree = "<group>";
@@ -195,6 +189,20 @@
 				D48405B019E473E7006F4139 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D494A71919F7113A0098AA18 /* Test data */ = {
+			isa = PBXGroup;
+			children = (
+				D4DDF45419EDCE9000C6BC10 /* test-notes.txt */,
+				D4DDF46219F0560400C6BC10 /* user-loggedin.json */,
+				D4DDF46419F0561500C6BC10 /* user-anon.json */,
+				D494A70219F6CADA0098AA18 /* protection-obama.json */,
+				D494A70419F6CB090098AA18 /* protection-empty.json */,
+				D4DDF45019EDCE6800C6BC10 /* section0.json */,
+				D4DDF45619EDCED100C6BC10 /* section1-end.json */,
+			);
+			name = "Test data";
 			sourceTree = "<group>";
 		};
 		D4C3FA5619E478AA00EB08CC /* Data classes */ = {
