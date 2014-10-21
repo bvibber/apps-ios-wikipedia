@@ -23,6 +23,7 @@
 #import "MWKProtectionStatus.h"
 
 
+#import "MWKDataStore.h"
 #import "MWKArticleStore.h"
 #import "MWKImageFetcher.h"
 

@@ -11,11 +11,11 @@
 
 #import "MediaWikiKit.h"
 
-@interface MWArticleStoreTests : XCTestCase
+@interface MWKArticleStoreTests : XCTestCase
 
 @end
 
-@implementation MWArticleStoreTests {
+@implementation MWKArticleStoreTests {
     MWKSite *site;
     MWKTitle *title;
     NSDictionary *json0;
