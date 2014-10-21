@@ -45,7 +45,7 @@
 -(NSString *)pathForTitle:(MWKTitle *)title
 {
     NSString *articlesPath = [self pathForArticlesWithSite:title.site];
-    NSString *encTitle = [title.prefixedDBKey stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *encTitle = [self safeFilenameWithString:title.prefixedDBKey];
     return [articlesPath stringByAppendingPathComponent:encTitle];
 }
 
@@ -70,6 +70,18 @@
 -(NSString *)pathForSection:(MWKSection *)section
 {
     return [self pathForSectionId:section.sectionId title:section.title];
+}
+
+-(NSString *)safeFilenameWithString:(NSString *)str
+{
+    // This handy function does most of the percent-escaping
+    NSString *encodedStr = [str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    // But it leaves "/" and "&" intact. Naughty!
+    encodedStr = [encodedStr stringByReplacingOccurrencesOfString:@"/" withString:@"%2F"];
+    encodedStr = [encodedStr stringByReplacingOccurrencesOfString:@"&" withString:@"%26"];
+
+    return encodedStr;
 }
 
 @end

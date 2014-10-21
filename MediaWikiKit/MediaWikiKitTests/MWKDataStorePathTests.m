@@ -14,6 +14,8 @@
 @interface MWKDataStorePathTests : MWKTestCase {
     MWKSite *site;
     MWKTitle *title;
+    MWKTitle *titleUnicode;
+    MWKTitle *titleEvil;
     NSDictionary *json;
     MWKArticle *article;
     MWKDataStore *dataStore;
@@ -27,6 +29,8 @@
     [super setUp];
     site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"en"];
     title = [site titleWithString:@"San Francisco"];
+    titleUnicode = [site titleWithString:@"Éclair"];
+    titleEvil = [site titleWithString:@"AT&T/SBC \"merger\""];
     
     json = [self loadJSON:@"section0"];
     article = [[MWKArticle alloc] initWithTitle:title dict:json[@"mobileview"]];
@@ -56,6 +60,14 @@
 
 - (void)testTitlePath {
     XCTAssertEqualObjects([dataStore pathForTitle:title], @"/sites/wikipedia.org/en/articles/San_Francisco");
+}
+
+- (void)testTitleUnicodePath {
+    XCTAssertEqualObjects([dataStore pathForTitle:titleUnicode], @"/sites/wikipedia.org/en/articles/%C3%89clair");
+}
+
+- (void)testTitleEvilPath {
+    XCTAssertEqualObjects([dataStore pathForTitle:titleEvil], @"/sites/wikipedia.org/en/articles/AT%26T%2FSBC_%22merger%22");
 }
 
 - (void)testArticlePath {
