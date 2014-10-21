@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "MediaWikiKit.h"
+#import "MWKTestCase.h"
 
-@interface MWKArticleStoreTests : XCTestCase
+@interface MWKArticleStoreTests : MWKTestCase
 
 @end
 
@@ -61,17 +61,6 @@
         MWKSection *section1 = [store sectionAtIndex:i];
         XCTAssertEqual(section0, section1);
     }
-}
-
-- (NSDictionary *)loadJSON:(NSString *)name
-{
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSError *err = nil;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
-    assert(err == nil);
-    assert(dict);
-    return dict;
 }
 
 

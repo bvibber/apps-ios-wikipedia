@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "MediaWikiKit.h"
+#import "MWKTestCase.h"
 
-@interface MWKProtectionStatusTests : XCTestCase
+@interface MWKProtectionStatusTests : MWKTestCase
 
 @end
 
@@ -83,17 +83,6 @@
 
     MWKProtectionStatus *protectionEmpty2 = [[MWKProtectionStatus alloc] initWithData:[protectionEmpty1 dataExport]];
     MWKProtectionStatus *protectionObama2 = [[MWKProtectionStatus alloc] initWithData:[protectionObama1 dataExport]];
-}
-
-- (id)loadJSON:(NSString *)name
-{
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSError *err = nil;
-    id dictOrArray = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
-    assert(err == nil);
-    assert(dictOrArray);
-    return dictOrArray;
 }
 
 

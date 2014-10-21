@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "MediaWikiKit.h"
+#import "MWKTestCase.h"
 
-@interface MWKArticleTests : XCTestCase
+@interface MWKArticleTests : MWKTestCase
 
 @end
 
@@ -60,15 +60,5 @@
     XCTAssertEqualObjects(article, article2, @"round-trip is same");
 }
 
-- (NSDictionary *)loadJSON:(NSString *)name
-{
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSError *err = nil;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
-    assert(err == nil);
-    assert(dict);
-    return dict;
-}
 
 @end

@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "MediaWikiKit.h"
+#import "MWKTestCase.h"
 
-@interface MWKUserTests : XCTestCase {
+@interface MWKUserTests : MWKTestCase {
     MWKSite *site;
 }
 
@@ -53,16 +53,6 @@
     XCTAssert(user.anonymous, @"user is anon");
     XCTAssertNil(user.name, @"user has no name");
     XCTAssertNil(user.gender, @"user has no gender field");
-}
-
-- (NSDictionary *)loadJSON:(NSString*)name {
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSError *err = nil;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
-    assert(err == nil);
-    assert(dict);
-    return dict;
 }
 
 - (MWKUser *)loadUser:(NSString *)name {

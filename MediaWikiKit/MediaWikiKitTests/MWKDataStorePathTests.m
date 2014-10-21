@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "MediaWikiKit.h"
+#import "MWKTestCase.h"
 
-@interface MWKDataStoreTests : XCTestCase {
+@interface MWKDataStorePathTests : MWKTestCase {
     MWKSite *site;
     MWKTitle *title;
     NSDictionary *json;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation MWKDataStoreTests
+@implementation MWKDataStorePathTests
 
 - (void)setUp {
     [super setUp];
@@ -72,17 +72,6 @@
 
     XCTAssertEqualObjects([dataStore pathForSection:section0], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section0");
     XCTAssertEqualObjects([dataStore pathForSection:section35], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section35");
-}
-
-- (NSDictionary *)loadJSON:(NSString *)name
-{
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
-    NSError *err = nil;
-    NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
-    assert(err == nil);
-    assert(dict);
-    return dict;
 }
 
 @end

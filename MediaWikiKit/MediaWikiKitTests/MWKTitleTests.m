@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#include "MediaWikiKit.h"
+#include "MWKTestCase.h"
 
-@interface MWKTitleTests : XCTestCase
+@interface MWKTitleTests : MWKTestCase
 
 @end
 
