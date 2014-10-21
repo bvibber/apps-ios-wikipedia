@@ -19,6 +19,8 @@
     return self;
 }
 
+#pragma mark - path methods
+
 -(NSString *)pathForPath:(NSString *)path
 {
     return [self.basePath stringByAppendingPathComponent:path];
@@ -83,5 +85,109 @@
 
     return encodedStr;
 }
+
+
+#pragma mark - save methods
+
+-(void)ensurePathExists:(NSString *)path
+{
+    NSError *err;
+    [[NSFileManager defaultManager] createDirectoryAtPath:path
+                              withIntermediateDirectories:YES
+                                               attributes:nil
+                                                    error:&err];
+    if (err) {
+        @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                       reason:@"path creation failure"
+                                     userInfo:@{@"path": path, @"error": err}];
+    }
+}
+
+-(void)saveDictionary:(NSDictionary *)dict path:(NSString *)path name:(NSString *)name
+{
+    [self ensurePathExists:path];
+    
+    NSString *filePath = [path stringByAppendingPathComponent:name];
+    if (![dict writeToFile:filePath atomically:YES]) {
+        @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                       reason:@"dictionary file atomic write failure"
+                                     userInfo:@{@"filePath": filePath}];
+    }
+}
+
+-(void)saveString:(NSString *)string path:(NSString *)path name:(NSString *)name
+{
+    [self ensurePathExists:path];
+    
+    NSError *err;
+    NSString *filePath = [path stringByAppendingPathComponent:name];
+    if (![string writeToFile:filePath atomically:YES encoding:NSUTF8StringEncoding error:&err]) {
+        if (err) {
+            @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                           reason:[err description]
+                                         userInfo:@{@"filePath": filePath, @"err": err}];
+        } else {
+            @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                           reason:@"string file atomic write failure"
+                                         userInfo:@{@"filePath": filePath}];
+        }
+    }
+}
+
+-(void)saveArticle:(MWKArticle *)article
+{
+    NSString *path = [self pathForArticle:article];
+    NSDictionary *export = [article dataExport];
+    [self saveDictionary:export path:path name:@"Article.plist"];
+}
+
+-(void)saveSection:(MWKSection *)section
+{
+    NSString *path = [self pathForSection:section];
+    NSDictionary *export = [section dataExport];
+    [self saveDictionary:export path:path name:@"Section.plist"];
+}
+
+-(void)saveSectionText:(NSString *)html section:(MWKSection *)section
+{
+    NSString *path = [self pathForSection:section];
+    [self saveString:html path:path name:@"Section.html"];
+}
+
+
+#pragma mark - load methods
+
+-(MWKArticle *)articleWithTitle:(MWKTitle *)title
+{
+    NSString *path = [self pathForTitle:title];
+    NSString *filePath = [path stringByAppendingPathComponent:@"Article.plist"];
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    return [[MWKArticle alloc] initWithTitle:title dict:dict];
+}
+
+-(MWKSection *)sectionWithId:(int)sectionId article:(MWKArticle *)article
+{
+    NSString *path = [self pathForSectionId:sectionId title:article.title];
+    NSString *filePath = [path stringByAppendingPathComponent:@"Section.plist"];
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    return [[MWKSection alloc] initWithArticle:article dict:dict];
+}
+
+-(NSString *)sectionTextWithId:(int)sectionId article:(MWKArticle *)article
+{
+    NSString *path = [self pathForSectionId:sectionId title:article.title];
+    NSString *filePath = [path stringByAppendingPathComponent:@"Section.plist"];
+    
+    NSError *err;
+    NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&err];
+    if (err) {
+        @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                       reason:err.description
+                                     userInfo:@{@"filePath": filePath, @"err": err}];
+    }
+
+    return html;
+}
+
 
 @end

@@ -45,25 +45,15 @@
     [[NSFileManager defaultManager] removeItemAtPath:basePath error:nil];
 }
 
-- (void)testWriteReadFile
+- (void)testWriteReadArticle
 {
-    NSString *path = [dataStore pathForArticle:article];
-    [[NSFileManager defaultManager] createDirectoryAtPath:[path stringByDeletingLastPathComponent]
-                              withIntermediateDirectories:YES
-                                               attributes:nil
-                                                    error:nil];
-
-    XCTAssertFalse([[NSFileManager defaultManager] fileExistsAtPath:path], @"file does not exist before we save it");
-
-    NSDictionary *articleExport = [article dataExport];
-    [articleExport writeToFile:path atomically:YES];
-
-    XCTAssert([[NSFileManager defaultManager] fileExistsAtPath:path], @"file does exist after we wrote it");
-
-    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:path];
-    XCTAssertNotNil(dict);
+    XCTAssertThrows([dataStore articleWithTitle:title], @"article cannot be loaded before we save it");
     
-    MWKArticle *article2 = [[MWKArticle alloc] initWithTitle:title dict:dict];
+    XCTAssertNoThrow([dataStore saveArticle:article]);
+    
+    MWKArticle *article2;
+    XCTAssertNoThrow(article2 = [dataStore articleWithTitle:title], @"article can be loaded after saving it");
+    
     XCTAssertEqualObjects(article, article2);
 }
 

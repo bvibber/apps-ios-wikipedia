@@ -19,6 +19,7 @@
 
 -(instancetype)initWithBasePath:(NSString *)basePath;
 
+// Path methods
 -(NSString *)pathForPath:(NSString *)path;
 -(NSString *)pathForSites;
 -(NSString *)pathForSite:(MWKSite *)site;
@@ -28,5 +29,15 @@
 -(NSString *)pathForSectionsWithTitle:(MWKTitle *)title;
 -(NSString *)pathForSectionId:(int)sectionId title:(MWKTitle *)title;
 -(NSString *)pathForSection:(MWKSection *)section;
+
+// Save methods
+-(void)saveArticle:(MWKArticle *)article;
+-(void)saveSection:(MWKSection *)section;
+-(void)saveSectionText:(NSString *)html section:(MWKSection *)section;
+
+// Load methods
+-(MWKArticle *)articleWithTitle:(MWKTitle *)title;
+-(MWKSection *)sectionWithId:(int)sectionId article:(MWKArticle *)article;
+-(NSString *)sectionTextWithId:(int)sectionId article:(MWKArticle *)article;
 
 @end
