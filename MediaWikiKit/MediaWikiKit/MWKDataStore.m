@@ -189,5 +189,11 @@
     return html;
 }
 
+#pragma mark - helper methods
+
+-(MWKArticleStore *)articleStoreWithTitle:(MWKTitle *)title
+{
+    return [[MWKArticleStore alloc] initWithTitle:title dataStore:self];
+}
 
 @end

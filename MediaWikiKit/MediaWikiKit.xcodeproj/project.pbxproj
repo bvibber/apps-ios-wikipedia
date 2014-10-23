@@ -28,7 +28,6 @@
 		D494A70519F6CB090098AA18 /* protection-empty.json in Resources */ = {isa = PBXBuildFile; fileRef = D494A70419F6CB090098AA18 /* protection-empty.json */; };
 		D494A70819F6CC5B0098AA18 /* MWKSiteDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A70719F6CC5B0098AA18 /* MWKSiteDataObject.m */; };
 		D494A70919F6CC5B0098AA18 /* MWKSiteDataObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A70719F6CC5B0098AA18 /* MWKSiteDataObject.m */; };
-		D494A70B19F6E2FF0098AA18 /* MWKArticleStoreTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A70A19F6E2FF0098AA18 /* MWKArticleStoreTests.m */; };
 		D494A70E19F6E8F20098AA18 /* MWKDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A70D19F6E8F20098AA18 /* MWKDataStore.m */; };
 		D494A70F19F6E8F20098AA18 /* MWKDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A70D19F6E8F20098AA18 /* MWKDataStore.m */; };
 		D494A71119F6ECC10098AA18 /* MWKDataStorePathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A71019F6ECC10098AA18 /* MWKDataStorePathTests.m */; };
@@ -90,7 +89,6 @@
 		D494A70419F6CB090098AA18 /* protection-empty.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "protection-empty.json"; sourceTree = "<group>"; };
 		D494A70619F6CC5B0098AA18 /* MWKSiteDataObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKSiteDataObject.h; sourceTree = "<group>"; };
 		D494A70719F6CC5B0098AA18 /* MWKSiteDataObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKSiteDataObject.m; sourceTree = "<group>"; };
-		D494A70A19F6E2FF0098AA18 /* MWKArticleStoreTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKArticleStoreTests.m; sourceTree = "<group>"; };
 		D494A70C19F6E8F20098AA18 /* MWKDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKDataStore.h; sourceTree = "<group>"; };
 		D494A70D19F6E8F20098AA18 /* MWKDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKDataStore.m; sourceTree = "<group>"; };
 		D494A71019F6ECC10098AA18 /* MWKDataStorePathTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKDataStorePathTests.m; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 				D4DDF44E19EDCD6800C6BC10 /* MWKArticleTests.m */,
 				D494A71019F6ECC10098AA18 /* MWKDataStorePathTests.m */,
 				D494A71219F70F910098AA18 /* MWKDataStoreStorageTests.m */,
-				D494A70A19F6E2FF0098AA18 /* MWKArticleStoreTests.m */,
 			);
 			path = MediaWikiKitTests;
 			sourceTree = "<group>";
@@ -383,7 +380,6 @@
 				D48405CC19E47559006F4139 /* MWKTitle.m in Sources */,
 				D4C3FA5A19E47AA500EB08CC /* MWKSiteTests.m in Sources */,
 				D4DDF45F19EE1FD900C6BC10 /* MWKDataObject.m in Sources */,
-				D494A70B19F6E2FF0098AA18 /* MWKArticleStoreTests.m in Sources */,
 				D4DDF45B19EDD22200C6BC10 /* MWKUser.m in Sources */,
 				D494A70F19F6E8F20098AA18 /* MWKDataStore.m in Sources */,
 			);

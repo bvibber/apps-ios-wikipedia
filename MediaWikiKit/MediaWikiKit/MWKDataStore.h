@@ -12,6 +12,7 @@
 @class MWKTitle;
 @class MWKArticle;
 @class MWKSection;
+@class MWKArticleStore;
 
 @interface MWKDataStore : NSObject
 
@@ -30,14 +31,17 @@
 -(NSString *)pathForSectionId:(int)sectionId title:(MWKTitle *)title;
 -(NSString *)pathForSection:(MWKSection *)section;
 
-// Save methods
+// Raw save methods
 -(void)saveArticle:(MWKArticle *)article;
 -(void)saveSection:(MWKSection *)section;
 -(void)saveSectionText:(NSString *)html section:(MWKSection *)section;
 
-// Load methods
+// Raw load methods
 -(MWKArticle *)articleWithTitle:(MWKTitle *)title;
 -(MWKSection *)sectionWithId:(int)sectionId article:(MWKArticle *)article;
 -(NSString *)sectionTextWithId:(int)sectionId article:(MWKArticle *)article;
+
+// Storage helper methods
+-(MWKArticleStore *)articleStoreWithTitle:(MWKTitle *)title;
 
 @end

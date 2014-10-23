@@ -9,19 +9,17 @@
 #import "MediaWikiKit.h"
 
 @implementation MWKArticleStore {
-    MWKSite *_site;
-    MWKTitle *_title;
     MWKArticle *_article;
     NSArray *_sections;
 }
 
--(instancetype)initWithTitle:(MWKTitle *)title;
+-(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore;
 {
     self = [self init];
     if (self) {
-        _article = nil;
-        _site = title.site;
         _title = title;
+        _dataStore = dataStore;
+        _article = nil;
         _sections = nil;
     }
     return self;
@@ -50,35 +48,48 @@
     for (NSDictionary *sectionData in sectionsData) {
         MWKSection *section = [[MWKSection alloc] initWithArticle:self.article dict:sectionData];
         [sections addObject:section];
+        [self.dataStore saveSection:section];
+        if (sectionData[@"text"]) {
+            [self.dataStore saveSectionText:sectionData[@"text"] section:section];
+        }
     }
     _sections = [NSArray arrayWithArray:sections];
 
-    [self saveArticle];
-}
-
-#pragma mark - io
-
--(void)saveArticle
-{
-    assert(self.article);
-    NSDictionary *dict = [self.article dataExport];
+    [self.dataStore saveArticle:self.article];
 }
 
 #pragma mark - getters
 
+-(MWKArticle *)article
+{
+    if (!_article) {
+        _article = [self.dataStore articleWithTitle:self.title];
+    }
+    return _article;
+}
 -(NSArray *)sections
 {
-    return _sections;
+    if (_sections) {
+        return _sections;
+    } else {
+        @throw [NSException exceptionWithName:@"MWKArticleStoreException"
+                                       reason:@"not yet implmemented sections loader"
+                                     userInfo:@{}];
+    }
 }
 
 -(MWKSection *)sectionAtIndex:(int)index
 {
-    return _sections[index];
+    if (_sections) {
+        return _sections[index];
+    } else {
+        return [self.dataStore sectionWithId:index article:self.article];
+    }
 }
 
 -(NSString *)sectionTextAtIndex:(int)index
 {
-    return @"";
+    return [self.dataStore sectionTextWithId:index article:self.article];
 }
 
 @end

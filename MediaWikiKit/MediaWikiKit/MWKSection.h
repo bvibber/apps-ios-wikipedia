@@ -25,7 +25,7 @@
 @property (readonly) MWKTitle *fromtitle; // optional
 @property (readonly) NSString *anchor;        // optional
 @property (readonly) int       sectionId;     // required; -> id
-@property (readonly) NSString *references;    // optional; marked by presence of key with empty string in JSON
+@property (readonly) BOOL      references;    // optional; marked by presence of key with empty string in JSON
 
 // Should this be here?
 @property (readonly) NSString *text;          // may be nil
