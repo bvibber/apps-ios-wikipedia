@@ -25,7 +25,6 @@
 
 #import "MWKDataStore.h"
 #import "MWKArticleStore.h"
-#import "MWKImageFetcher.h"
 
 @interface MediaWikiKit : NSObject
 

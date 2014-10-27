@@ -19,8 +19,6 @@
 		D48405CC19E47559006F4139 /* MWKTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CA19E47559006F4139 /* MWKTitle.m */; };
 		D48405CF19E47572006F4139 /* MWKArticleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleStore.m */; };
 		D48405D019E47572006F4139 /* MWKArticleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleStore.m */; };
-		D48405D319E4757D006F4139 /* MWKImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405D219E4757D006F4139 /* MWKImageFetcher.m */; };
-		D48405D419E4757D006F4139 /* MWKImageFetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405D219E4757D006F4139 /* MWKImageFetcher.m */; };
 		D494A6FE19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */; };
 		D494A6FF19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */; };
 		D494A70119F6CAB30098AA18 /* MWKProtectionStatusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A70019F6CAB30098AA18 /* MWKProtectionStatusTests.m */; };
@@ -80,8 +78,6 @@
 		D48405CA19E47559006F4139 /* MWKTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKTitle.m; sourceTree = "<group>"; };
 		D48405CD19E47572006F4139 /* MWKArticleStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKArticleStore.h; sourceTree = "<group>"; };
 		D48405CE19E47572006F4139 /* MWKArticleStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKArticleStore.m; sourceTree = "<group>"; };
-		D48405D119E4757D006F4139 /* MWKImageFetcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKImageFetcher.h; sourceTree = "<group>"; };
-		D48405D219E4757D006F4139 /* MWKImageFetcher.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKImageFetcher.m; sourceTree = "<group>"; };
 		D494A6FC19F6C7C30098AA18 /* MWKProtectionStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKProtectionStatus.h; sourceTree = "<group>"; };
 		D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKProtectionStatus.m; sourceTree = "<group>"; };
 		D494A70019F6CAB30098AA18 /* MWKProtectionStatusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKProtectionStatusTests.m; sourceTree = "<group>"; };
@@ -241,8 +237,6 @@
 				D494A70D19F6E8F20098AA18 /* MWKDataStore.m */,
 				D48405CD19E47572006F4139 /* MWKArticleStore.h */,
 				D48405CE19E47572006F4139 /* MWKArticleStore.m */,
-				D48405D119E4757D006F4139 /* MWKImageFetcher.h */,
-				D48405D219E4757D006F4139 /* MWKImageFetcher.m */,
 			);
 			name = "Data i/o";
 			sourceTree = "<group>";
@@ -344,7 +338,6 @@
 			files = (
 				D4C3FA5519E4783A00EB08CC /* MWKSite.m in Sources */,
 				D48405BF19E47526006F4139 /* MWKSection.m in Sources */,
-				D48405D319E4757D006F4139 /* MWKImageFetcher.m in Sources */,
 				D494A70819F6CC5B0098AA18 /* MWKSiteDataObject.m in Sources */,
 				D48405CB19E47559006F4139 /* MWKTitle.m in Sources */,
 				D4DDF45E19EE1FD900C6BC10 /* MWKDataObject.m in Sources */,
@@ -366,7 +359,6 @@
 				D4C3FA5B19E47ABE00EB08CC /* MWKSite.m in Sources */,
 				D48405C419E47535006F4139 /* MWKArticle.m in Sources */,
 				D494A70919F6CC5B0098AA18 /* MWKSiteDataObject.m in Sources */,
-				D48405D419E4757D006F4139 /* MWKImageFetcher.m in Sources */,
 				D494A6FF19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */,
 				D48405C019E47526006F4139 /* MWKSection.m in Sources */,
 				D48405C819E47542006F4139 /* MWKImage.m in Sources */,

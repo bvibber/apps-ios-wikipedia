@@ -8,8 +8,31 @@
 
 #pragma once
 
-#import <Foundation/Foundation.h>
+#import "MWKSiteDataObject.h"
 
-@interface MWKImage : NSObject
+@class MWKTitle;
+@class MWKArticle;
+
+@interface MWKImage : MWKSiteDataObject
+
+// Identifiers
+@property (readonly) MWKSite *site;
+@property (readonly) MWKTitle *title;
+
+// Metadata, static
+@property (readonly) NSString *sourceURL;
+@property (readonly) NSString *extension;
+@property (readonly) NSString *fileName;
+@property (readonly) NSString *fileNameNoSizePrefix;
+
+// Metadata, variable
+@property (copy) NSDate *dateLastAccessed;
+@property (copy) NSDate  *dateRetrieved;
+@property (copy) NSString *mimeType;
+@property (copy) NSNumber *width;
+@property (copy) NSNumber *height;
+
+-(instancetype)initWithTitle:(MWKTitle *)title sourceURL:(NSString *)url;
+-(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict;
 
 @end

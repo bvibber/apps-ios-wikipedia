@@ -92,4 +92,23 @@
     return [self.dataStore sectionTextWithId:index article:self.article];
 }
 
+-(NSArray *)imageURLs
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    // @fixme implement
+    
+    return [NSArray arrayWithArray:array];
+}
+
+-(MWKImage *)imageWithURL:(NSString *)url
+{
+    return [self.dataStore imageWithURL:url title:self.title];
+}
+
+-(NSData *)imageDataWithImage:(MWKImage *)image
+{
+    return [self.dataStore imageDataWithImage:image];
+}
+
 @end

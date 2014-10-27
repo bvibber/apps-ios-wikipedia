@@ -15,6 +15,7 @@
 @class MWKDataStore;
 @class MWKArticle;
 @class MWKSection;
+@class MWKImage;
 
 @interface MWKArticleStore : NSObject
 
@@ -22,9 +23,14 @@
 @property (readonly) MWKDataStore *dataStore;
 
 @property (readonly) MWKArticle *article;
-@property (readonly) NSArray *sections;
 
+@property (readonly) NSArray *sections; // ?
 -(MWKSection *)sectionAtIndex:(int)index;
+
+@property (readonly) NSArray *imageURLs;
+-(MWKImage *)imageWithURL:(NSString *)url;
+-(NSData *)imageDataWithImage:(MWKImage *)image;
+
 
 -(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore;
 

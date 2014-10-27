@@ -74,6 +74,24 @@
     return [self pathForSectionId:section.sectionId title:section.title];
 }
 
+-(NSString *)pathForImagesWithTitle:(MWKTitle *)title
+{
+    NSString *articlePath = [self pathForTitle:title];
+    return [articlePath stringByAppendingPathComponent:@"Images"];
+}
+
+-(NSString *)pathForImageURL:(NSString *)url title:(MWKTitle *)title
+{
+    NSString *imagesPath = [self pathForImagesWithTitle:title];
+    NSString *encURL = [self safeFilenameWithString:url];
+    return [imagesPath stringByAppendingString:encURL];
+}
+
+-(NSString *)pathForImage:(MWKImage *)image
+{
+    return [self pathForImageURL:image.sourceURL title:image.title];
+}
+
 -(NSString *)safeFilenameWithString:(NSString *)str
 {
     // This handy function does most of the percent-escaping
@@ -134,6 +152,25 @@
     }
 }
 
+-(void)saveData:(NSData *)data path:(NSString *)path name:(NSString *)name
+{
+    [self ensurePathExists:path];
+    
+    NSError *err;
+    NSString *filePath = [path stringByAppendingPathComponent:name];
+    if (![data writeToFile:filePath options:NSDataWritingAtomic error:&err]) {
+        if (err) {
+            @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                           reason:[err description]
+                                         userInfo:@{@"filePath": filePath, @"err": err}];
+        } else {
+            @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                           reason:@"data file atomic write failure"
+                                         userInfo:@{@"filePath": filePath}];
+        }
+    }
+}
+
 -(void)saveArticle:(MWKArticle *)article
 {
     NSString *path = [self pathForArticle:article];
@@ -152,6 +189,20 @@
 {
     NSString *path = [self pathForSection:section];
     [self saveString:html path:path name:@"Section.html"];
+}
+
+-(void)saveImage:(MWKImage *)image
+{
+    NSString *path = [self pathForImage:image];
+    NSDictionary *export = [image dataExport];
+    [self saveDictionary:export path:path name:@"Image.plist"];
+}
+
+-(void)saveImageData:(NSData *)data image:(MWKImage *)image
+{
+    NSString *path = [self pathForImage:image];
+    NSString *filename = [@"Image" stringByAppendingPathExtension:image.extension];
+    [self saveData:data path:path name:filename];
 }
 
 
@@ -187,6 +238,30 @@
     }
 
     return html;
+}
+
+-(MWKImage *)imageWithURL:(NSString *)url title:(MWKTitle *)title
+{
+    NSString *path = [self pathForImageURL:url title:title];
+    NSString *filePath = [path stringByAppendingPathComponent:@"Image.plist"];
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    return [[MWKImage alloc] initWithTitle:title dict:dict];
+}
+
+-(NSData *)imageDataWithImage:(MWKImage *)image
+{
+    NSString *path = [self pathForImage:image];
+    NSString *fileName = [@"Image" stringByAppendingPathExtension:image.extension];
+    NSString *filePath = [path stringByAppendingPathComponent:fileName];
+
+    NSError *err;
+    NSData *data = [NSData dataWithContentsOfFile:filePath options:0 error:&err];
+    if (err) {
+        @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                       reason:[err description]
+                                     userInfo:@{@"filePath": filePath, @"err": err}];
+    }
+    return data;
 }
 
 #pragma mark - helper methods

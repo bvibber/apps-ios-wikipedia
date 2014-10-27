@@ -13,6 +13,7 @@
 @class MWKArticle;
 @class MWKSection;
 @class MWKArticleStore;
+@class MWKImage;
 
 @interface MWKDataStore : NSObject
 
@@ -30,16 +31,23 @@
 -(NSString *)pathForSectionsWithTitle:(MWKTitle *)title;
 -(NSString *)pathForSectionId:(int)sectionId title:(MWKTitle *)title;
 -(NSString *)pathForSection:(MWKSection *)section;
+-(NSString *)pathForImagesWithTitle:(MWKTitle *)title;
+-(NSString *)pathForImageURL:(NSString *)url title:(MWKTitle *)title;
+-(NSString *)pathForImage:(MWKImage *)image;
 
 // Raw save methods
 -(void)saveArticle:(MWKArticle *)article;
 -(void)saveSection:(MWKSection *)section;
 -(void)saveSectionText:(NSString *)html section:(MWKSection *)section;
+-(void)saveImage:(MWKImage *)image;
+-(void)saveImageData:(NSData *)data image:(MWKImage *)image;
 
 // Raw load methods
 -(MWKArticle *)articleWithTitle:(MWKTitle *)title;
 -(MWKSection *)sectionWithId:(int)sectionId article:(MWKArticle *)article;
 -(NSString *)sectionTextWithId:(int)sectionId article:(MWKArticle *)article;
+-(MWKImage *)imageWithURL:(NSString *)url title:(MWKTitle *)title;
+-(NSData *)imageDataWithImage:(MWKImage *)image;
 
 // Storage helper methods
 -(MWKArticleStore *)articleStoreWithTitle:(MWKTitle *)title;
