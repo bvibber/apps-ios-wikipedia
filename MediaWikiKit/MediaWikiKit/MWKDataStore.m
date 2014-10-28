@@ -83,8 +83,8 @@
 -(NSString *)pathForImageURL:(NSString *)url title:(MWKTitle *)title
 {
     NSString *imagesPath = [self pathForImagesWithTitle:title];
-    NSString *encURL = [self safeFilenameWithString:url];
-    return [imagesPath stringByAppendingString:encURL];
+    NSString *encURL = [self safeFilenameWithImageURL:url];
+    return [imagesPath stringByAppendingPathComponent:encURL];
 }
 
 -(NSString *)pathForImage:(MWKImage *)image
@@ -104,6 +104,24 @@
     return encodedStr;
 }
 
+-(NSString *)safeFilenameWithImageURL:(NSString *)str
+{
+    NSString *prefix = @"https://upload.wikimedia.org/";
+    if ([str hasPrefix:prefix]) {
+        NSString *suffix = [str substringFromIndex:[prefix length]];
+
+        // Image URLs are already percent-encoded, so don't double-encode em.
+
+        // "/" occurs in those nasty paths! but ":" cannot so let's use it
+        // just like Mac OS X does ;)
+        NSString *noslashes = [suffix stringByReplacingOccurrencesOfString:@"/" withString:@":"];
+        return noslashes;
+    } else {
+        @throw [NSException exceptionWithName:@"MWKDataStoreException"
+                                       reason:@"Tried to save non-upload.wikimedia.org URL as image"
+                                     userInfo:@{@"str": str}];
+    }
+}
 
 #pragma mark - save methods
 

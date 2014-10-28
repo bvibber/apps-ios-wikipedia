@@ -16,6 +16,7 @@
     MWKTitle *title;
     MWKTitle *titleUnicode;
     MWKTitle *titleEvil;
+    MWKTitle *titleForbiddenCity;
     NSDictionary *json;
     MWKArticle *article;
     MWKDataStore *dataStore;
@@ -31,6 +32,8 @@
     title = [site titleWithString:@"San Francisco"];
     titleUnicode = [site titleWithString:@"Éclair"];
     titleEvil = [site titleWithString:@"AT&T/SBC \"merger\""];
+
+    titleForbiddenCity = [site titleWithString:@"Forbidden City"];
     
     json = [self loadJSON:@"section0"];
     article = [[MWKArticle alloc] initWithTitle:title dict:json[@"mobileview"]];
@@ -89,6 +92,16 @@
 - (void)testSectionIdPath {
     XCTAssertEqualObjects([dataStore pathForSectionId:0 title:title], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section0");
     XCTAssertEqualObjects([dataStore pathForSectionId:35 title:title], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section35");
+}
+
+- (void)testImagesPath {
+    XCTAssertEqualObjects([dataStore pathForImagesWithTitle:titleForbiddenCity], @"/sites/wikipedia.org/en/articles/Forbidden_City/Images");
+}
+
+- (void)testImagePathUnicode {
+    NSString *urlForbiddenCityImage = @"https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/%E5%8C%97%E4%BA%AC%E6%95%85%E5%AE%AB12.JPG/440px-%E5%8C%97%E4%BA%AC%E6%95%85%E5%AE%AB12.JPG";
+
+    XCTAssertEqualObjects([dataStore pathForImageURL:urlForbiddenCityImage title:titleForbiddenCity], @"/sites/wikipedia.org/en/articles/Forbidden_City/Images/wikipedia:commons:thumb:e:e6:%E5%8C%97%E4%BA%AC%E6%95%85%E5%AE%AB12.JPG:440px-%E5%8C%97%E4%BA%AC%E6%95%85%E5%AE%AB12.JPG");
 }
 
 @end
