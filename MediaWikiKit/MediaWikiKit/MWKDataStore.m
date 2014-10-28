@@ -263,7 +263,11 @@
     NSString *path = [self pathForImageURL:url title:title];
     NSString *filePath = [path stringByAppendingPathComponent:@"Image.plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
-    return [[MWKImage alloc] initWithTitle:title dict:dict];
+    if (dict) {
+        return [[MWKImage alloc] initWithTitle:title dict:dict];
+    } else {
+        return [[MWKImage alloc] initWithTitle:title sourceURL:url];
+    }
 }
 
 -(NSData *)imageDataWithImage:(MWKImage *)image

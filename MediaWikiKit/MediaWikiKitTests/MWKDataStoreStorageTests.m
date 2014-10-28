@@ -9,90 +9,60 @@
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
 
-#import "MWKTestCase.h"
+#import "MWKArticleStoreTestCase.h"
 
-@interface MWKDataStoreStorageTests : MWKTestCase {
-    MWKSite *site;
-    MWKTitle *title;
-    NSDictionary *json0;
-    NSDictionary *json1;
-
-    NSString *basePath;
-    MWKDataStore *dataStore;
-}
+@interface MWKDataStoreStorageTests : MWKArticleStoreTestCase
 
 @end
 
 @implementation MWKDataStoreStorageTests
 
-- (void)setUp {
-    [super setUp];
-    site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:@"en"];
-    title = [site titleWithString:@"San Francisco"];
-    
-    json0 = [self loadJSON:@"section0"];
-    json1 = [self loadJSON:@"section1-end"];
-    
-    NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) firstObject];
-    basePath = [documentsFolder stringByAppendingPathComponent:@"unit-test-data"];
-
-    dataStore = [[MWKDataStore alloc] initWithBasePath:basePath];
-}
-
-- (void)tearDown {
-    [super tearDown];
-    
-    [[NSFileManager defaultManager] removeItemAtPath:basePath error:nil];
-}
-
 - (void)testWriteReadArticle
 {
-    XCTAssertThrows([dataStore articleWithTitle:title], @"article cannot be loaded before we save it");
+    XCTAssertThrows([self.dataStore articleWithTitle:self.title], @"article cannot be loaded before we save it");
     
     MWKArticle *article;
-    article = [[MWKArticle alloc] initWithTitle:title dict:json0[@"mobileview"]];
+    article = [[MWKArticle alloc] initWithTitle:self.title dict:self.json0[@"mobileview"]];
 
-    XCTAssertNoThrow([dataStore saveArticle:article]);
+    XCTAssertNoThrow([self.dataStore saveArticle:article]);
     
     MWKArticle *article2;
-    XCTAssertNoThrow(article2 = [dataStore articleWithTitle:title], @"article can be loaded after saving it");
+    XCTAssertNoThrow(article2 = [self.dataStore articleWithTitle:self.title], @"article can be loaded after saving it");
     
     XCTAssertEqualObjects(article, article2);
 }
 
 - (void)testArticleStoreSection0
 {
-    XCTAssertThrows([dataStore articleWithTitle:title], @"article cannot be loaded before we save it");
+    XCTAssertThrows([self.dataStore articleWithTitle:self.title], @"article cannot be loaded before we save it");
     
-    MWKArticleStore *articleStore = [dataStore articleStoreWithTitle:title];
-    XCTAssertNoThrow([articleStore importMobileViewJSON:json0]);
+    XCTAssertNoThrow([self.articleStore importMobileViewJSON:self.json0]);
     
     MWKArticle *article;
-    XCTAssertNoThrow(article = [dataStore articleWithTitle:title], @"article can be loaded after saving it");
+    XCTAssertNoThrow(article = [self.dataStore articleWithTitle:self.title], @"article can be loaded after saving it");
     
     NSFileManager *fm = [NSFileManager defaultManager];
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForTitle:title] stringByAppendingPathComponent:@"Article.plist"]]);
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForSectionId:0 title:title] stringByAppendingPathComponent:@"Section.plist"]]);
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForSectionId:0 title:title] stringByAppendingPathComponent:@"Section.html"]]);
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForSectionId:35 title:title] stringByAppendingPathComponent:@"Section.plist"]]);
-    XCTAssertFalse([fm fileExistsAtPath:[[dataStore pathForSectionId:35 title:title] stringByAppendingPathComponent:@"Section.html"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForTitle:self.title] stringByAppendingPathComponent:@"Article.plist"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:0 title:self.title] stringByAppendingPathComponent:@"Section.plist"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:0 title:self.title] stringByAppendingPathComponent:@"Section.html"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:35 title:self.title] stringByAppendingPathComponent:@"Section.plist"]]);
+    XCTAssertFalse([fm fileExistsAtPath:[[self.dataStore pathForSectionId:35 title:self.title] stringByAppendingPathComponent:@"Section.html"]]);
 }
 
 - (void)testArticleStoreSection1ToEnd
 {
-    MWKArticleStore *articleStore = [dataStore articleStoreWithTitle:title];
-    XCTAssertNoThrow([articleStore importMobileViewJSON:json0]);
-    XCTAssertNoThrow([articleStore importMobileViewJSON:json1]);
+    XCTAssertNoThrow([self.articleStore importMobileViewJSON:self.json0]);
+    XCTAssertNoThrow([self.articleStore importMobileViewJSON:self.json1]);
     
     MWKArticle *article;
-    XCTAssertNoThrow(article = [dataStore articleWithTitle:title], @"article can be loaded after saving it");
+    XCTAssertNoThrow(article = [self.dataStore articleWithTitle:self.title], @"article can be loaded after saving it");
     
     NSFileManager *fm = [NSFileManager defaultManager];
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForTitle:title] stringByAppendingPathComponent:@"Article.plist"]]);
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForSectionId:0 title:title] stringByAppendingPathComponent:@"Section.plist"]]);
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForSectionId:0 title:title] stringByAppendingPathComponent:@"Section.html"]]);
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForSectionId:35 title:title] stringByAppendingPathComponent:@"Section.plist"]]);
-    XCTAssertTrue([fm fileExistsAtPath:[[dataStore pathForSectionId:35 title:title] stringByAppendingPathComponent:@"Section.html"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForTitle:self.title] stringByAppendingPathComponent:@"Article.plist"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:0 title:self.title] stringByAppendingPathComponent:@"Section.plist"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:0 title:self.title] stringByAppendingPathComponent:@"Section.html"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:35 title:self.title] stringByAppendingPathComponent:@"Section.plist"]]);
+    XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:35 title:self.title] stringByAppendingPathComponent:@"Section.html"]]);
 }
 
 @end

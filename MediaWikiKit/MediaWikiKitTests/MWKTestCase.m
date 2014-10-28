@@ -10,10 +10,16 @@
 
 @implementation MWKTestCase
 
+- (NSData *)loadDataFile:(NSString *)name ofType:(NSString *)extension
+{
+    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:extension];
+    return [NSData dataWithContentsOfFile:path];
+    
+}
+
 - (id)loadJSON:(NSString *)name
 {
-    NSString *path = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:@"json"];
-    NSData *data = [NSData dataWithContentsOfFile:path];
+    NSData *data = [self loadDataFile:name ofType:@"json"];
     NSError *err = nil;
     id dictOrArray = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
     assert(err == nil);

@@ -11,6 +11,7 @@
 
 @interface MWKTestCase : XCTestCase
 
+- (id)loadDataFile:(NSString *)name ofType:(NSString *)extension;
 - (id)loadJSON:(NSString *)name;
 
 @end

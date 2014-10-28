@@ -41,5 +41,11 @@
  */
 -(void)importMobileViewJSON:(NSDictionary *)jsonDict;
 
+/**
+ * Import downloaded image data into our data store,
+ * and update the image object/record
+ */
+-(void)importImageData:(NSData *)data image:(MWKImage *)image;
+
 
 @end
