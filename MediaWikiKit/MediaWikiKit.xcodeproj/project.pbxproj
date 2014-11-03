@@ -31,6 +31,10 @@
 		D494A71119F6ECC10098AA18 /* MWKDataStorePathTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A71019F6ECC10098AA18 /* MWKDataStorePathTests.m */; };
 		D494A71319F70F910098AA18 /* MWKDataStoreStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A71219F70F910098AA18 /* MWKDataStoreStorageTests.m */; };
 		D494A71819F7103D0098AA18 /* MWKTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A71719F7103D0098AA18 /* MWKTestCase.m */; };
+		D497FCE71A08013F004A36A5 /* MWKSavedPagesList.m in Sources */ = {isa = PBXBuildFile; fileRef = D497FCE61A08013F004A36A5 /* MWKSavedPagesList.m */; };
+		D497FCE81A08013F004A36A5 /* MWKSavedPagesList.m in Sources */ = {isa = PBXBuildFile; fileRef = D497FCE61A08013F004A36A5 /* MWKSavedPagesList.m */; };
+		D497FCEB1A080151004A36A5 /* MWKHistoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = D497FCEA1A080151004A36A5 /* MWKHistoryList.m */; };
+		D497FCEC1A080151004A36A5 /* MWKHistoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = D497FCEA1A080151004A36A5 /* MWKHistoryList.m */; };
 		D49ADCCA1A0028A70010F839 /* MWKImageStorageTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D49ADCC91A0028A70010F839 /* MWKImageStorageTests.m */; };
 		D49ADCCC1A0031580010F839 /* golden-gate.jpg in Resources */ = {isa = PBXBuildFile; fileRef = D49ADCCB1A0031580010F839 /* golden-gate.jpg */; };
 		D49ADCCE1A00346B0010F839 /* MWKArticleStoreTestCase.m in Sources */ = {isa = PBXBuildFile; fileRef = D49ADCCD1A00346B0010F839 /* MWKArticleStoreTestCase.m */; };
@@ -94,6 +98,10 @@
 		D494A71219F70F910098AA18 /* MWKDataStoreStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKDataStoreStorageTests.m; sourceTree = "<group>"; };
 		D494A71619F7103D0098AA18 /* MWKTestCase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKTestCase.h; sourceTree = "<group>"; };
 		D494A71719F7103D0098AA18 /* MWKTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKTestCase.m; sourceTree = "<group>"; };
+		D497FCE51A08013F004A36A5 /* MWKSavedPagesList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKSavedPagesList.h; sourceTree = "<group>"; };
+		D497FCE61A08013F004A36A5 /* MWKSavedPagesList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKSavedPagesList.m; sourceTree = "<group>"; };
+		D497FCE91A080151004A36A5 /* MWKHistoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKHistoryList.h; sourceTree = "<group>"; };
+		D497FCEA1A080151004A36A5 /* MWKHistoryList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKHistoryList.m; sourceTree = "<group>"; };
 		D49ADCC91A0028A70010F839 /* MWKImageStorageTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKImageStorageTests.m; sourceTree = "<group>"; };
 		D49ADCCB1A0031580010F839 /* golden-gate.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "golden-gate.jpg"; sourceTree = "<group>"; };
 		D49ADCCD1A00346B0010F839 /* MWKArticleStoreTestCase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKArticleStoreTestCase.m; sourceTree = "<group>"; };
@@ -226,6 +234,10 @@
 				D48405C619E47542006F4139 /* MWKImage.m */,
 				D494A6FC19F6C7C30098AA18 /* MWKProtectionStatus.h */,
 				D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */,
+				D497FCE51A08013F004A36A5 /* MWKSavedPagesList.h */,
+				D497FCE61A08013F004A36A5 /* MWKSavedPagesList.m */,
+				D497FCE91A080151004A36A5 /* MWKHistoryList.h */,
+				D497FCEA1A080151004A36A5 /* MWKHistoryList.m */,
 			);
 			name = "Data classes";
 			sourceTree = "<group>";
@@ -352,12 +364,14 @@
 				D48405BF19E47526006F4139 /* MWKSection.m in Sources */,
 				D494A70819F6CC5B0098AA18 /* MWKSiteDataObject.m in Sources */,
 				D48405CB19E47559006F4139 /* MWKTitle.m in Sources */,
+				D497FCEB1A080151004A36A5 /* MWKHistoryList.m in Sources */,
 				D4DDF45E19EE1FD900C6BC10 /* MWKDataObject.m in Sources */,
 				D48405C319E47535006F4139 /* MWKArticle.m in Sources */,
 				D48405A819E473E6006F4139 /* MediaWikiKit.m in Sources */,
 				D494A6FE19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */,
 				D494A70E19F6E8F20098AA18 /* MWKDataStore.m in Sources */,
 				D48405CF19E47572006F4139 /* MWKArticleStore.m in Sources */,
+				D497FCE71A08013F004A36A5 /* MWKSavedPagesList.m in Sources */,
 				D4DDF45A19EDD22200C6BC10 /* MWKUser.m in Sources */,
 				D48405C719E47542006F4139 /* MWKImage.m in Sources */,
 			);
@@ -377,6 +391,7 @@
 				D49ADCCA1A0028A70010F839 /* MWKImageStorageTests.m in Sources */,
 				D4DDF46119F055C800C6BC10 /* MWKUserTests.m in Sources */,
 				D4C3FA5D19E47D4700EB08CC /* MWKTitleTests.m in Sources */,
+				D497FCE81A08013F004A36A5 /* MWKSavedPagesList.m in Sources */,
 				D494A71119F6ECC10098AA18 /* MWKDataStorePathTests.m in Sources */,
 				D494A71819F7103D0098AA18 /* MWKTestCase.m in Sources */,
 				D494A71319F70F910098AA18 /* MWKDataStoreStorageTests.m in Sources */,
@@ -385,6 +400,7 @@
 				D494A70119F6CAB30098AA18 /* MWKProtectionStatusTests.m in Sources */,
 				D48405CC19E47559006F4139 /* MWKTitle.m in Sources */,
 				D4C3FA5A19E47AA500EB08CC /* MWKSiteTests.m in Sources */,
+				D497FCEC1A080151004A36A5 /* MWKHistoryList.m in Sources */,
 				D4DDF45F19EE1FD900C6BC10 /* MWKDataObject.m in Sources */,
 				D4DDF45B19EDD22200C6BC10 /* MWKUser.m in Sources */,
 				D494A70F19F6E8F20098AA18 /* MWKDataStore.m in Sources */,
