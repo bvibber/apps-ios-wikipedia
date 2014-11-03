@@ -13,11 +13,11 @@ typedef NS_ENUM(NSInteger, ArticleSectionType) {
 
 @interface ArticleFetcher : FetcherBase
 
-@property (strong, nonatomic, readonly) Article *article;
+@property (strong, nonatomic, readonly) MWKArticleStore *articleStore;
 
 // Kick-off method. Results are reported to "delegate" via the FetchFinishedDelegate protocol method.
--(instancetype)initAndFetchSectionsForArticle: (Article *)article
-                                  withManager: (AFHTTPRequestOperationManager *)manager
-                           thenNotifyDelegate: (id <FetchFinishedDelegate>) delegate;
+-(instancetype)initAndFetchSectionsForArticleStore: (MWKArticleStore *)articleStore
+                                       withManager: (AFHTTPRequestOperationManager *)manager
+                                thenNotifyDelegate: (id <FetchFinishedDelegate>) delegate;
 
 @end
