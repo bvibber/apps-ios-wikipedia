@@ -21,7 +21,7 @@
 {
     NSData *data = [self loadDataFile:name ofType:@"json"];
     NSError *err = nil;
-    id dictOrArray = [NSJSONSerialization JSONObjectWithData:data options:nil error:&err];
+    id dictOrArray = [NSJSONSerialization JSONObjectWithData:data options:0 error:&err];
     assert(err == nil);
     assert(dictOrArray);
     return dictOrArray;

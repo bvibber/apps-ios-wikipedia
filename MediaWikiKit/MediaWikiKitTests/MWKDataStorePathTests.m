@@ -82,8 +82,8 @@
 }
 
 - (void)testSectionPath {
-    NSString *section0 = [[MWKSection alloc] initWithArticle:article dict:json[@"mobileview"][@"sections"][0]];
-    NSString *section35 = [[MWKSection alloc] initWithArticle:article dict:json[@"mobileview"][@"sections"][35]];
+    MWKSection *section0 = [[MWKSection alloc] initWithArticle:article dict:json[@"mobileview"][@"sections"][0]];
+    MWKSection *section35 = [[MWKSection alloc] initWithArticle:article dict:json[@"mobileview"][@"sections"][35]];
 
     XCTAssertEqualObjects([dataStore pathForSection:section0], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section0");
     XCTAssertEqualObjects([dataStore pathForSection:section35], @"/sites/wikipedia.org/en/articles/San_Francisco/sections/section35");

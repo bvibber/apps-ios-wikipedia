@@ -83,6 +83,9 @@
 
     MWKProtectionStatus *protectionEmpty2 = [[MWKProtectionStatus alloc] initWithData:[protectionEmpty1 dataExport]];
     MWKProtectionStatus *protectionObama2 = [[MWKProtectionStatus alloc] initWithData:[protectionObama1 dataExport]];
+    
+    XCTAssertEqualObjects(protectionEmpty1, protectionEmpty2);
+    XCTAssertEqualObjects(protectionObama1, protectionObama2);
 }
 
 
