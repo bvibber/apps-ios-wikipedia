@@ -220,7 +220,7 @@
     
     [self.navBarContainer addSubview:self.textFieldContainer];
  
-    UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30, 25)];
+    UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f * MENUS_SCALE_MULTIPLIER, 25.0f * MENUS_SCALE_MULTIPLIER)];
     clearButton.backgroundColor = [UIColor clearColor];
     [clearButton setImage:[UIImage imageNamed:@"text_field_x_circle_gray.png"] forState:UIControlStateNormal];
     [clearButton addTarget:self action:@selector(clearTextFieldText) forControlEvents:UIControlEventTouchUpInside];
@@ -828,8 +828,8 @@
         self.navBarMode = NAVBAR_MODE_DEFAULT;
     }else{
         TopMenuTextFieldContainer *searchTextFieldContainer = [self getNavBarItem:NAVBAR_TEXT_FIELD];
-        NSString *currentArticleTitle = [SessionSingleton sharedInstance].currentArticleTitle;
-        self.navBarMode = (!searchTextFieldContainer.textField.isFirstResponder && currentArticleTitle && (currentArticleTitle.length > 0))
+        MWKTitle *currentArticleTitle = [SessionSingleton sharedInstance].title;
+        self.navBarMode = (!searchTextFieldContainer.textField.isFirstResponder && currentArticleTitle)
                 ?
                 NAVBAR_MODE_DEFAULT_WITH_TOC
                 :

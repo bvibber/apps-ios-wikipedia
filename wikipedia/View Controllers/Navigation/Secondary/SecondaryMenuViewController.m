@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, SecondaryMenuRowIndex) {
 
 #pragma mark - Private
 
-@interface SecondaryMenuViewController(){
+@interface SecondaryMenuViewController() <LanguageSelectionDelegate>{
 
 }
 
@@ -127,30 +127,15 @@ typedef NS_ENUM(NSUInteger, SecondaryMenuRowIndex) {
     self.scrollView.minSubviewHeight = 45;
     
     self.rowViews = @[].mutableCopy;
-    
-    // This needs to be in viewDidLoad.
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                         selector: @selector(languageItemSelectedNotification:)
-                                             name: @"LanguageItemSelected"
-                                           object: nil];
-}
-
--(void)dealloc
-{
-    // This needs to be in dealloc.
-    [[NSNotificationCenter defaultCenter] removeObserver: self
-                                                    name: @"LanguageItemSelected"
-                                                  object: nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-    NSString *currentArticleTitle = [SessionSingleton sharedInstance].currentArticleTitle;
+    MWKTitle *currentArticleTitle = [SessionSingleton sharedInstance].title;
 
-    self.hidePagesSection =
-        (!currentArticleTitle || (currentArticleTitle.length == 0)) ? YES : NO;
+    self.hidePagesSection = (currentArticleTitle == nil);
     
     [self.rowViews removeAllObjects];
 
@@ -334,7 +319,7 @@ typedef NS_ENUM(NSUInteger, SecondaryMenuRowIndex) {
     
     NSAttributedString *searchWikiTitle =
     [MWLocalizedString(@"main-menu-language-title", nil) attributedStringWithAttributes: nil
-                                                                    substitutionStrings: @[[SessionSingleton sharedInstance].domainName]
+                                                                    substitutionStrings: @[[SessionSingleton sharedInstance].site.language]
                                                                  substitutionAttributes: @[self.highlightedTextAttributes]
      ];
     
@@ -391,7 +376,7 @@ typedef NS_ENUM(NSUInteger, SecondaryMenuRowIndex) {
       ,
       */
       @{
-          @"domain": [SessionSingleton sharedInstance].domain,
+          @"domain": [SessionSingleton sharedInstance].site.language,
           @"title": searchWikiTitle,
           @"tag": @(SECONDARY_MENU_ROW_INDEX_SEARCH_LANGUAGE),
           @"icon": IOS_WIKIGLYPH_DOWN,
@@ -447,7 +432,7 @@ typedef NS_ENUM(NSUInteger, SecondaryMenuRowIndex) {
         ,
         */
       @{
-          @"domain": [SessionSingleton sharedInstance].domain,
+          @"domain": [SessionSingleton sharedInstance].site.language,
           @"title": MWLocalizedString(@"main-menu-about", nil),
           @"tag": @(SECONDARY_MENU_ROW_INDEX_ABOUT),
           @"icon": IOS_WIKIGLYPH_DOWN,
@@ -696,47 +681,25 @@ typedef NS_ENUM(NSUInteger, SecondaryMenuRowIndex) {
     [self performModalSequeWithID: @"modal_segue_show_languages"
                   transitionStyle: UIModalTransitionStyleCoverVertical
                             block: ^(LanguagesViewController *languagesVC){
+                                languagesVC.languageSelectionDelegate = self;
                                 languagesVC.invokingVC = self;
                             }];
 }
 
-- (void)languageItemSelectedNotification:(NSNotification *)notification
+- (void)languageSelected:(NSDictionary *)langData sender:(LanguagesViewController *)sender
 {
-    // Ensure action is only taken if the secondary menu view controller presented the lang picker.
-    LanguagesViewController *languagesVC = notification.object;
-    if (languagesVC.invokingVC != self) return;
-
-    NSDictionary *selectedLangInfo = [notification userInfo];
-    
     [self showAlert:MWLocalizedString(@"main-menu-language-selection-saved", nil) type:ALERT_TYPE_TOP duration:1];
     
-    [self switchPreferredLanguageToId:selectedLangInfo[@"code"] name:selectedLangInfo[@"name"]];
+    [NAV switchPreferredLanguageToId:langData[@"code"] name:langData[@"name"]];
     
     [self popModalToRoot];
-}
-
--(void)switchPreferredLanguageToId:(NSString *)languageId name:(NSString *)name
-{
-    [SessionSingleton sharedInstance].domain = languageId;
-    [SessionSingleton sharedInstance].domainName = name;
-    
-    NSString *mainArticleTitle = [SessionSingleton sharedInstance].domainMainArticleTitle;
-    if (mainArticleTitle) {
-        MWPageTitle *pageTitle = [MWPageTitle titleWithString:mainArticleTitle];
-        // Invalidate cache so present day main page article is always retrieved.
-        [NAV loadArticleWithTitle: pageTitle
-                           domain: languageId
-                         animated: YES
-                  discoveryMethod: DISCOVERY_METHOD_SEARCH
-                invalidatingCache: YES
-                       popToWebVC: NO];
-    }
 }
 
 #pragma mark - Animation
 
 -(void)animateArticleTitleMovingToSavedPages
 {
+    /*
     UILabel *savedPagesLabel = [self getViewWithTag:SECONDARY_MENU_ROW_INDEX_SAVED_PAGES].textLabel;
     UILabel *articleTitleLabel = [self getViewWithTag:SECONDARY_MENU_ROW_INDEX_SAVE_PAGE].textLabel;
     
@@ -770,6 +733,7 @@ typedef NS_ENUM(NSUInteger, SecondaryMenuRowIndex) {
                              afterDelay: 0.32
                                duration: 0.16
                                    then: nil];
+     */
 }
 
 -(UILabel *)getLabelCopyToAnimate:(UILabel *)labelToCopy

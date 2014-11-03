@@ -207,8 +207,7 @@
 
     [[QueuesSingleton sharedInstance].languageLinksFetcher.operationQueue cancelAllOperations];
     
-    (void)[[LanguageLinksFetcher alloc] initAndFetchLanguageLinksForPageTitle:[SessionSingleton sharedInstance].currentArticleTitle
-                                                                       domain:[SessionSingleton sharedInstance].currentArticleDomain
+    (void)[[LanguageLinksFetcher alloc] initAndFetchLanguageLinksForPageTitle:[SessionSingleton sharedInstance].title
                                                                  allLanguages:assetsFile.array
                                                                   withManager:[QueuesSingleton sharedInstance].languageLinksFetcher
                                                            thenNotifyDelegate:self];
@@ -259,10 +258,7 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSDictionary *selectedLangInfo = self.filteredLanguagesData[indexPath.row];
-
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"LanguageItemSelected"
-                                                        object: self
-                                                      userInfo: selectedLangInfo];
+    [self.languageSelectionDelegate languageSelected:selectedLangInfo sender:self];
 }
 
 #pragma mark - Memory
