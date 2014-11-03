@@ -126,8 +126,7 @@
 
 -(void)getPageHistoryData
 {
-    (void)[[PageHistoryFetcher alloc] initAndFetchHistoryForTitle: [SessionSingleton sharedInstance].currentArticleTitle
-                                                           domain: [SessionSingleton sharedInstance].currentArticleDomain
+    (void)[[PageHistoryFetcher alloc] initAndFetchHistoryForTitle: [SessionSingleton sharedInstance].title
                                                       withManager: [QueuesSingleton sharedInstance].pageHistoryFetchManager
                                                thenNotifyDelegate: self];
 }

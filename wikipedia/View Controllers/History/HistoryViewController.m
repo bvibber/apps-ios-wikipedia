@@ -22,6 +22,7 @@
 #import "TopMenuViewController.h"
 #import "CoreDataHousekeeping.h"
 #import "NSObject+ConstraintsScale.h"
+#import "SessionSingleton.h"
 
 #define HISTORY_RESULT_HEIGHT (80.0 * MENUS_SCALE_MULTIPLIER)
 #define HISTORY_TEXT_COLOR [UIColor colorWithWhite:0.0f alpha:0.7f]
@@ -340,14 +341,10 @@
     NSDictionary *dict = self.historyDataArray[indexPath.section];
     NSArray *array = [dict objectForKey:@"data"];
     
-    __block History *historyEntry = nil;
-    [articleDataContext_.mainContext performBlockAndWait:^(){
-        NSManagedObjectID *historyEntryId = (NSManagedObjectID *)array[indexPath.row];
-        historyEntry = (History *)[articleDataContext_.mainContext objectWithID:historyEntryId];
-    }];
+    MWKHistoryEntry *historyEntry = [[SessionSingleton sharedInstance].userDataStore.historyList entryAtIndex:indexPath.row];
     
-    NSString *title = [historyEntry.article.title wikiTitleWithoutUnderscores];
-    NSString *language = [NSString stringWithFormat:@"\n%@", historyEntry.article.domainName];
+    NSString *title = [historyEntry.title prefixedText];
+    NSString *language = [NSString stringWithFormat:@"\n%@", historyEntry.title.site.language]; // languageName
 
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.alignment = [WikipediaAppUtils rtlSafeAlignment];
@@ -366,10 +363,10 @@
     [attributedTitle appendAttributedString:attributedLanguage];
     cell.textLabel.attributedText = attributedTitle;
 
-    ArticleDiscoveryMethod discoveryMethod = [NAV getDiscoveryMethodForString:historyEntry.discoveryMethod];
-    cell.methodLabel.attributedText = [self getIconLabelAttributedStringForDiscoveryMethod:discoveryMethod];
+    cell.methodLabel.attributedText = [self getIconLabelAttributedStringForDiscoveryMethod:historyEntry.discoveryMethod];
 
-    UIImage *thumbImage = [historyEntry.article getThumbnailUsingContext:articleDataContext_.mainContext];
+    MWKArticleStore *articleStore = [[SessionSingleton sharedInstance].dataStore articleStoreWithTitle:historyEntry.title];
+    UIImage *thumbImage = [articleStore UIImageWithImage:articleStore.thumbnailImage];
     if(thumbImage){
         cell.imageView.image = thumbImage;
         cell.useField = YES;
@@ -401,16 +398,11 @@
     NSArray *array = dict[@"data"];
     selectedCell = array[indexPath.row];
     
-    __block History *historyEntry = nil;
-    [articleDataContext_.mainContext performBlockAndWait:^(){
-        NSManagedObjectID *historyEntryId = (NSManagedObjectID *)array[indexPath.row];
-        historyEntry = (History *)[articleDataContext_.mainContext objectWithID:historyEntryId];
-    }];
+    MWKHistoryEntry *historyEntry = [[SessionSingleton sharedInstance].userDataStore.historyList entryAtIndex:indexPath.row];
 
-    [NAV loadArticleWithTitle: historyEntry.article.titleObj
-                       domain: historyEntry.article.domain
+    [NAV loadArticleWithTitle: historyEntry.title
                      animated: YES
-              discoveryMethod: DISCOVERY_METHOD_SEARCH
+              discoveryMethod: MWK_DISCOVERY_METHOD_SEARCH
             invalidatingCache: NO
                    popToWebVC: NO];
 
@@ -525,14 +517,14 @@
 
 #pragma mark - Discovery method icons
 
--(NSAttributedString *)getIconLabelAttributedStringForDiscoveryMethod:(ArticleDiscoveryMethod)discoveryMethod
+-(NSAttributedString *)getIconLabelAttributedStringForDiscoveryMethod:(MWKHistoryDiscoveryMethod)discoveryMethod
 {
     NSString *wikiFontCharacter = nil;;
     switch (discoveryMethod) {
-        case DISCOVERY_METHOD_RANDOM:
+        case MWK_DISCOVERY_METHOD_RANDOM:
             wikiFontCharacter = WIKIGLYPH_DICE;
             break;
-        case DISCOVERY_METHOD_LINK:
+        case MWK_DISCOVERY_METHOD_LINK:
             wikiFontCharacter = WIKIGLYPH_LINK;
             break;
         default:

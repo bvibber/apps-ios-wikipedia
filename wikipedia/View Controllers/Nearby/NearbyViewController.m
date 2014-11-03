@@ -84,10 +84,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSDictionary *rowData = self.nearbyDataArray[indexPath.section][indexPath.row];
     NSString *title = rowData[@"title"];
-    [NAV loadArticleWithTitle: [MWPageTitle titleWithString:title]
-                       domain: [SessionSingleton sharedInstance].domain
+    [NAV loadArticleWithTitle: [[SessionSingleton sharedInstance].site titleWithString:title]
                      animated: YES
-              discoveryMethod: DISCOVERY_METHOD_SEARCH
+              discoveryMethod: MWK_DISCOVERY_METHOD_SEARCH
             invalidatingCache: NO
                    popToWebVC: NO];
 

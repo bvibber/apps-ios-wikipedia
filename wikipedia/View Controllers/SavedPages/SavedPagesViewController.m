@@ -273,19 +273,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSString *selectedCell = nil;
     NSDictionary *dict = self.savedPagesDataArray[indexPath.section];
-    NSArray *array = dict[@"data"];
-    selectedCell = array[indexPath.row];
-
-    __block Saved *savedEntry = nil;
-    [articleDataContext_.mainContext performBlockAndWait:^(){
-        NSManagedObjectID *savedEntryId = (NSManagedObjectID *)array[indexPath.row];
-        savedEntry = (Saved *)[articleDataContext_.mainContext objectWithID:savedEntryId];
-    }];
+    MWKSavedPageEntry *savedEntry = [[SessionSingleton sharedInstance].userDataStore.savedPageList entryAtIndex:indexPath.row];
     
-    [NAV loadArticleWithTitle: savedEntry.article.titleObj
-                       domain: savedEntry.article.domain
+    [NAV loadArticleWithTitle: savedEntry.title
                      animated: YES
-              discoveryMethod: DISCOVERY_METHOD_SEARCH
+              discoveryMethod: MWK_DISCOVERY_METHOD_SEARCH
             invalidatingCache: NO
                    popToWebVC: NO];
 
