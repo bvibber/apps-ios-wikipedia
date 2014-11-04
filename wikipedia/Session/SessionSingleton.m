@@ -4,7 +4,11 @@
 #import "SessionSingleton.h"
 #import "WikipediaAppUtils.h"
 
-@implementation SessionSingleton
+@implementation SessionSingleton {
+    MWKSite *_currentSite;
+    MWKTitle *_currentTitle;
+    MWKArticleStore *_currentArticleStore;
+}
 
 + (SessionSingleton *)sharedInstance
 {
@@ -29,6 +33,13 @@
         // Wiki language character sets that iOS doesn't seem to render properly...
         self.unsupportedCharactersLanguageIds = [@"my am km dv lez arc got ti" componentsSeparatedByString:@" "];
 
+        NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) firstObject];
+        NSString *basePath = [documentsFolder stringByAppendingPathComponent:@"Data"];
+        _dataStore = [[MWKDataStore alloc] initWithBasePath:basePath];
+        
+        _currentSite = nil;
+        _currentTitle = nil;
+        _currentArticleStore = nil;
     }
     return self;
 }
@@ -51,6 +62,10 @@
 
     [[NSUserDefaults standardUserDefaults] setObject:domain forKey:@"Domain"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    _currentSite = nil;
+    _currentTitle = nil;
+    _currentArticleStore = nil;
 }
 
 -(NSString *)domain
@@ -84,6 +99,10 @@
 {
     [[NSUserDefaults standardUserDefaults] setObject:site forKey:@"Site"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+
+    _currentSite = nil;
+    _currentTitle = nil;
+    _currentArticleStore = nil;
 }
 
 -(NSString *)site
@@ -133,6 +152,30 @@
     // page would erroneously display edit pencil icons.
     if (!mainArticleTitle) return NO;
     return ([self.currentArticleTitle isEqualToString: mainArticleTitle]);
+}
+
+-(MWKTitle *)currentTitle
+{
+    if (_currentTitle == nil) {
+        _currentTitle = [self.currentSite titleWithString:self.currentArticleTitle];
+    }
+    return _currentTitle;
+}
+
+-(MWKSite *)currentSite
+{
+    if (_currentSite == nil) {
+        _currentSite = [[MWKSite alloc] initWithDomain:self.site language:self.domain];
+    }
+    return _currentSite;
+}
+
+- (MWKArticleStore *)currentArticleStore
+{
+    if (_currentArticleStore) {
+        _currentArticleStore = [self.dataStore articleStoreWithTitle:self.currentTitle];
+    }
+    return _currentArticleStore;
 }
 
 -(BOOL)sendUsageReports

@@ -35,4 +35,7 @@
 -(instancetype)initWithTitle:(MWKTitle *)title sourceURL:(NSString *)url;
 -(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict;
 
+-(void)updateWithData:(NSData *)data mimeType:(NSString *)mimeType;
+-(void)updateLastAccessed;
+
 @end

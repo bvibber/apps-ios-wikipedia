@@ -182,6 +182,7 @@
 		D474CC15182AE196002BDE45 /* MWSite.m in Sources */ = {isa = PBXBuildFile; fileRef = D474CC14182AE196002BDE45 /* MWSite.m */; };
 		D47BF5D4197870390067C3BC /* SavedPagesFunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D47BF5D3197870390067C3BC /* SavedPagesFunnel.m */; };
 		D47FEE2019C8CB0000B998C8 /* (null) in Resources */ = {isa = PBXBuildFile; };
+		D497FCFB1A080810004A36A5 /* libMediaWikiKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D497FCF51A0807EE004A36A5 /* libMediaWikiKit.a */; };
 		D4991439181D51DE00E6073C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D4991438181D51DE00E6073C /* Foundation.framework */; };
 		D499143B181D51DE00E6073C /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D499143A181D51DE00E6073C /* CoreGraphics.framework */; };
 		D499143D181D51DE00E6073C /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D499143C181D51DE00E6073C /* UIKit.framework */; };
@@ -208,6 +209,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		D497FCF41A0807EE004A36A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D497FCEF1A0807ED004A36A5 /* MediaWikiKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D48405A219E473E6006F4139;
+			remoteInfo = MediaWikiKit;
+		};
+		D497FCF61A0807EE004A36A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D497FCEF1A0807ED004A36A5 /* MediaWikiKit.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D48405AD19E473E7006F4139;
+			remoteInfo = MediaWikiKitTests;
+		};
+		D497FCF91A080800004A36A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D497FCEF1A0807ED004A36A5 /* MediaWikiKit.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = D48405A119E473E6006F4139;
+			remoteInfo = MediaWikiKit;
+		};
 		D4AD974419F99CD700957451 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D4AD973E19F99CD700957451 /* Pods.xcodeproj */;
@@ -688,6 +710,7 @@
 		D47FEE2619C8CB6B00B998C8 /* cs */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = cs; path = cs.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		D47FEE2719C8CBB400B998C8 /* ta */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ta; path = ta.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		D47FEE2819C8CC2600B998C8 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
+		D497FCEF1A0807ED004A36A5 /* MediaWikiKit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = MediaWikiKit.xcodeproj; path = MediaWikiKit/MediaWikiKit.xcodeproj; sourceTree = "<group>"; };
 		D4991435181D51DE00E6073C /* Wikipedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Wikipedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4991438181D51DE00E6073C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D499143A181D51DE00E6073C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -797,6 +820,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D497FCFB1A080810004A36A5 /* libMediaWikiKit.a in Frameworks */,
 				D4AD975019F99E9000957451 /* libPods-hpple.a in Frameworks */,
 				D4AD974E19F99E7C00957451 /* libPods-AFNetworking.a in Frameworks */,
 				D4E8A8A919085CEA00DA4765 /* libsqlite3.dylib in Frameworks */,
@@ -1538,6 +1562,15 @@
 			path = "mw-utils";
 			sourceTree = "<group>";
 		};
+		D497FCF01A0807ED004A36A5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D497FCF51A0807EE004A36A5 /* libMediaWikiKit.a */,
+				D497FCF71A0807EE004A36A5 /* MediaWikiKitTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		D499142C181D51DE00E6073C = {
 			isa = PBXGroup;
 			children = (
@@ -1547,6 +1580,7 @@
 				D4991437181D51DE00E6073C /* Frameworks */,
 				D4991436181D51DE00E6073C /* Products */,
 				0487041319F7683300B7D307 /* Cocoapods Notes.txt */,
+				D497FCEF1A0807ED004A36A5 /* MediaWikiKit.xcodeproj */,
 				D4AD973E19F99CD700957451 /* Pods.xcodeproj */,
 			);
 			sourceTree = "<group>";
@@ -1715,6 +1749,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				D497FCFA1A080800004A36A5 /* PBXTargetDependency */,
 				D4AD974D19F99E4600957451 /* PBXTargetDependency */,
 				D4AD974B19F99E4200957451 /* PBXTargetDependency */,
 			);
@@ -1824,6 +1859,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = D497FCF01A0807ED004A36A5 /* Products */;
+					ProjectRef = D497FCEF1A0807ED004A36A5 /* MediaWikiKit.xcodeproj */;
+				},
+				{
 					ProductGroup = D4AD973F19F99CD700957451 /* Products */;
 					ProjectRef = D4AD973E19F99CD700957451 /* Pods.xcodeproj */;
 				},
@@ -1836,6 +1875,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		D497FCF51A0807EE004A36A5 /* libMediaWikiKit.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libMediaWikiKit.a;
+			remoteRef = D497FCF41A0807EE004A36A5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		D497FCF71A0807EE004A36A5 /* MediaWikiKitTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = MediaWikiKitTests.xctest;
+			remoteRef = D497FCF61A0807EE004A36A5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D4AD974519F99CD700957451 /* libPods.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2161,6 +2214,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		D497FCFA1A080800004A36A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = MediaWikiKit;
+			targetProxy = D497FCF91A080800004A36A5 /* PBXContainerItemProxy */;
+		};
 		D4AD974B19F99E4200957451 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "Pods-AFNetworking";
@@ -2436,6 +2494,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/AFNetworking",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/hpple",
+					"$(PROJECT_DIR)/MediaWikiKit/MediaWikiKit",
 				);
 				INFOPLIST_FILE = "Wikipedia/Wikipedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -2532,6 +2591,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/AFNetworking",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/hpple",
+					"$(PROJECT_DIR)/MediaWikiKit/MediaWikiKit",
 				);
 				INFOPLIST_FILE = "Wikipedia/Wikipedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -2556,6 +2616,7 @@
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/AFNetworking",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/hpple",
+					"$(PROJECT_DIR)/MediaWikiKit/MediaWikiKit",
 				);
 				INFOPLIST_FILE = "Wikipedia/Wikipedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;

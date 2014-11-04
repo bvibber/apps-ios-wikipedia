@@ -111,9 +111,9 @@
     return [self.dataStore imageDataWithImage:image];
 }
 
--(void)importImageData:(NSData *)data image:(MWKImage *)image
+-(void)importImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType
 {
-    [self.dataStore saveImageData:data image:image];
+    [self.dataStore saveImageData:data image:image mimeType:mimeType];
 }
 
 @end

@@ -42,10 +42,14 @@
 -(void)importMobileViewJSON:(NSDictionary *)jsonDict;
 
 /**
+ * Create a stub record for an image with given URL.
+ */
+-(void)importImageURL:(NSString *)url;
+
+/**
  * Import downloaded image data into our data store,
  * and update the image object/record
  */
--(void)importImageData:(NSData *)data image:(MWKImage *)image;
-
+-(void)importImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType;
 
 @end

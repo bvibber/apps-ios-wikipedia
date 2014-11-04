@@ -216,11 +216,14 @@
     [self saveDictionary:export path:path name:@"Image.plist"];
 }
 
--(void)saveImageData:(NSData *)data image:(MWKImage *)image
+-(void)saveImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType
 {
     NSString *path = [self pathForImage:image];
     NSString *filename = [@"Image" stringByAppendingPathExtension:image.extension];
     [self saveData:data path:path name:filename];
+    
+    newImage = [image updateWithData:data mimeType:mimeType];
+    [self saveImage:newImage];
 }
 
 
@@ -265,8 +268,6 @@
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (dict) {
         return [[MWKImage alloc] initWithTitle:title dict:dict];
-    } else {
-        return [[MWKImage alloc] initWithTitle:title sourceURL:url];
     }
 }
 

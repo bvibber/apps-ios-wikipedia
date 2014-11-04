@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Wikimedia Foundation. All rights reserved.
 //
 
+#import "UIKit/UIKit.h"
+
 #import "MediaWikiKit.h"
 
 @implementation MWKImage
@@ -75,6 +77,22 @@
         dict[@"height"] = self.height;
     }
     return [NSDictionary dictionaryWithDictionary:dict];
+}
+
+-(void)updateWithData:(NSData *)data mimeType:(NSString *)mimeType
+{
+    _dateRetrieved = [[NSDate alloc] init];
+    _dateLastAccessed = [[NSDate alloc] init];
+    _mimeType = [mimeType copy];
+    
+    UIImage *img = [UIImage imageWithData:data scale:1.0];
+    _width = [NSNumber numberWithInt:img.size.width];
+    _height = [NSNumber numberWithInt:img.size.height];
+}
+
+-(void)updateLastAccessed
+{
+    _dateLastAccessed = [[NSDate alloc] init];
 }
 
 @end

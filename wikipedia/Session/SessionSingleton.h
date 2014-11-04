@@ -25,6 +25,13 @@
 
 @property (strong, nonatomic, readonly) NSString *currentArticleDomainName;
 
+// Data access objects
+@property (readonly) MWKDataStore *dataStore;
+@property (readonly) MWKSite *currentSite;
+@property (readonly) MWKTitle *currentTitle;
+@property (readonly) MWKArticleStore *currentArticleStore;
+
+
 @property (strong, nonatomic, readonly) NSString *searchApiUrl;
 
 @property (strong, atomic) NSArray *unsupportedCharactersLanguageIds;

@@ -40,7 +40,7 @@
 -(void)saveSection:(MWKSection *)section;
 -(void)saveSectionText:(NSString *)html section:(MWKSection *)section;
 -(void)saveImage:(MWKImage *)image;
--(void)saveImageData:(NSData *)data image:(MWKImage *)image;
+-(void)saveImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType;
 
 // Raw load methods
 -(MWKArticle *)articleWithTitle:(MWKTitle *)title;
