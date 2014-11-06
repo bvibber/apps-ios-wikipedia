@@ -25,7 +25,7 @@
     return self;
 }
 
--(void)importMobileViewJSON:(NSDictionary *)dict
+-(MWKArticle *)importMobileViewJSON:(NSDictionary *)dict
 {
     NSDictionary *mobileview = dict[@"mobileview"];
     if (!mobileview || ![mobileview isKindOfClass:[NSDictionary class]]) {
@@ -56,6 +56,8 @@
     _sections = [NSArray arrayWithArray:sections];
 
     [self.dataStore saveArticle:self.article];
+    
+    return self.article;
 }
 
 #pragma mark - getters
@@ -106,14 +108,20 @@
     return [self.dataStore imageWithURL:url title:self.title];
 }
 
+-(MWKImage *)importImageURL:(NSString *)url
+{
+    return [[MWKImage alloc] initWithTitle:self.title sourceURL:url];
+}
+
 -(NSData *)imageDataWithImage:(MWKImage *)image
 {
     return [self.dataStore imageDataWithImage:image];
 }
 
--(void)importImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType
+-(MWKImage *)importImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType
 {
     [self.dataStore saveImageData:data image:image mimeType:mimeType];
+    return image;
 }
 
 @end

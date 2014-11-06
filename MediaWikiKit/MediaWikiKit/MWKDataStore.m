@@ -222,8 +222,8 @@
     NSString *filename = [@"Image" stringByAppendingPathExtension:image.extension];
     [self saveData:data path:path name:filename];
     
-    newImage = [image updateWithData:data mimeType:mimeType];
-    [self saveImage:newImage];
+    [image updateWithData:data mimeType:mimeType];
+    [self saveImage:image];
 }
 
 
@@ -268,6 +268,8 @@
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (dict) {
         return [[MWKImage alloc] initWithTitle:title dict:dict];
+    } else {
+        return nil;
     }
 }
 

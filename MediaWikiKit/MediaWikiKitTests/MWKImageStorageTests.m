@@ -41,8 +41,10 @@
 - (void)testLoadExistentImageData {
     NSData *dataSample = [self loadDataFile:@"golden-gate" ofType:@"jpg"];
 
-    MWKImage *image = [self.articleStore imageWithURL:self.goldenGateImageURL];
-    XCTAssertNoThrow([self.articleStore importImageData:dataSample image:image]);
+    MWKImage *image = [self.articleStore importImageURL:self.goldenGateImageURL];
+    //MWKImage *image = [self.articleStore imageWithURL:self.goldenGateImageURL];
+    XCTAssertNotNil(image);
+    XCTAssertNoThrow([self.articleStore importImageData:dataSample image:image mimeType:@"image/jpeg"]);
     
     NSData *dataFromStorage = [self.articleStore imageDataWithImage:image];
     
