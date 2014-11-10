@@ -25,8 +25,7 @@
 -(void)reloadCurrentArticleInvalidatingCache:(BOOL)invalidateCache;
 
 // If "invalidateCache" is set to YES the article will be re-downloaded first.
--(void)navigateToPage: (MWPageTitle *)title
-               domain: (NSString *)domain
+-(void)navigateToPage: (MWKTitle *)title
       discoveryMethod: (ArticleDiscoveryMethod)discoveryMethod
     invalidatingCache: (BOOL)invalidateCache
  showLoadingIndicator: (BOOL)showLoadingIndicator;

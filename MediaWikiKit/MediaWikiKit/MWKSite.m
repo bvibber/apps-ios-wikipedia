@@ -49,4 +49,22 @@ static NSString *localLinkPrefix = @"/wiki/";
                [self.language isEqualToString:other.language];
     }
 }
+
+#pragma mark - class methods
+
++ (MWKSite *)siteWithDomain:(NSString *)domain language:(NSString *)language
+{
+    static NSMutableDictionary *cachedSites = nil;
+    if (cachedSites == nil) {
+        cachedSites = [[NSMutableDictionary alloc] init];
+    }
+    NSString *key = [NSString stringWithFormat:@"%@:%@", domain, language];
+    MWKSite *site = cachedSites[key];
+    if (site == nil) {
+        site = [[MWKSite alloc] initWithDomain:domain language:language];
+        cachedSites[key] = site;
+    }
+    return site;
+}
+
 @end

@@ -959,10 +959,9 @@ typedef enum {
         
             NSString *encodedTitle = [href substringWithRange:NSMakeRange(6, href.length - 6)];
             NSString *title = [encodedTitle stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            MWPageTitle *pageTitle = [MWPageTitle titleWithString:title];
+            MWKTitle *pageTitle = [[SessionSingleton sharedInstance].currentSite titleWithString:title];
 
             [weakSelf navigateToPage: pageTitle
-                              domain: [SessionSingleton sharedInstance].currentArticleDomain
                      discoveryMethod: DISCOVERY_METHOD_LINK
                    invalidatingCache: NO
                 showLoadingIndicator: YES];
@@ -1539,7 +1538,7 @@ typedef enum {
     if ([sender isKindOfClass:[ArticleFetcher class]]) {
         
         ArticleFetcher *articleFetcher = (ArticleFetcher *)sender;
-        Article *article = articleFetcher.article;
+        MWKArticle *article = articleFetcher.articleStore.article;
         
         NSNumber *articleSectionType = (NSNumber *)userData;
         
@@ -1550,20 +1549,22 @@ typedef enum {
                     case FETCH_FINAL_STATUS_SUCCEEDED:
                     {
                         // Redirect if necessary.
-                        NSString *redirectedTitle = article.redirected;
-                        if (redirectedTitle.length > 0) {
+                        MWKTitle *redirectedTitle = article.redirected;
+                        if (redirectedTitle) {
                             // Get discovery method for call to "retrieveArticleForPageTitle:".
                             // There should only be a single history item (at most).
-                            History *history = [article.history anyObject];
+                            MWKHistoryStore *historyStore = [[sessionSingleton sharedInstance].dataStore historyStore];
+                            MWKHistoryEntry *history = [historyStore entryForTitle:article.title];
                             // Get the article's discovery method string.
                             NSString *discoveryMethod =
                             (history) ? history.discoveryMethod : [NAV getStringForDiscoveryMethod:DISCOVERY_METHOD_SEARCH];
                             
                             // Remove the article so it doesn't get saved.
-                            [article.managedObjectContext deleteObject:article];
+                            //[article.managedObjectContext deleteObject:article];
+                            
                             
                             // Redirect!
-                            [self retrieveArticleForPageTitle: [MWPageTitle titleWithString:redirectedTitle]
+                            [self retrieveArticleForPageTitle: redirectedTitle
                                                        domain: article.domain
                                               discoveryMethod: discoveryMethod];
                             return;
@@ -1574,6 +1575,7 @@ typedef enum {
                         // a core data image object exists with a matching sourceURL. If so make the article
                         // thumbnailImage property point to that core data image object. This associates the
                         // search result thumbnail with the article.
+                        /*
                         NSPredicate *articlePredicate =
                         [NSPredicate predicateWithFormat:@"(title == %@) AND (thumbnail.source.length > 0)", article.titleObj.text];
                         NSDictionary *articleDictFromSearchResults =
@@ -1584,11 +1586,14 @@ typedef enum {
                             Image *thumb = (Image *)[article.managedObjectContext getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", thumbURL];
                             if (thumb) article.thumbnailImage = thumb;
                         }
+                        */
                         
+                        /*
                         // Actually save the article record.
                         NSError *err = nil;
                         [article.managedObjectContext save:&err];
                         if (err) NSLog(@"Lead section save error = %@", err);
+                        */
                         
                         // Update the toc and web view.
                         [self.tocVC setTocSectionDataForSections:article.section];
@@ -1689,7 +1694,7 @@ typedef enum {
 
 }
 
-- (void)retrieveArticleForPageTitle: (MWPageTitle *)pageTitle
+- (void)retrieveArticleForPageTitle: (MWKTitle *)pageTitle
                              domain: (NSString *)domain
                     discoveryMethod: (NSString *)discoveryMethod
 {
@@ -1772,17 +1777,22 @@ typedef enum {
 
 #pragma mark Display article from core data
 
-- (void)displayArticle:(NSManagedObjectID *)articleID mode:(DisplayMode)mode
+- (void)displayArticle:(MWKTitle *)title mode:(DisplayMode)mode
 {
     // Get sorted sections for this article (sorts the article.section NSSet into sortedSections)
+    /*
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sectionId" ascending:YES];
 
     Article *article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
 
     if (!article || !article.title || !article.domain) return;
-    [SessionSingleton sharedInstance].currentArticleTitle = article.title;
-    [SessionSingleton sharedInstance].currentArticleDomain = article.domain;
-    MWLanguageInfo *languageInfo = [MWLanguageInfo languageInfoForCode:article.domain];
+     */
+    MWKArticle *article = [[SessionSingleton sharedInstance].articleStore articleWithTitle:title];
+    if (!article) return;
+
+    [SessionSingleton sharedInstance].currentArticleTitle = title.prefixedText;
+    [SessionSingleton sharedInstance].currentArticleDomain = title.site.language;
+    MWLanguageInfo *languageInfo = [MWLanguageInfo languageInfoForCode:title.site.language];
     NSString *uidir = ([WikipediaAppUtils isDeviceLanguageRTL] ? @"rtl" : @"ltr");
 
     NSNumber *langCount = article.languagecount;
