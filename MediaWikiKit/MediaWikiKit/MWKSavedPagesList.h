@@ -8,6 +8,12 @@
 
 #import "MWKDataObject.h"
 
+@class MWKTitle;
+@class MWKSavedPageEntry;
+
 @interface MWKSavedPagesList : MWKDataObject
+
+-(MWKSavedPageEntry *)entryForTitle:(MWKTitle *)title;
+-(BOOL)isSaved:(MWKTitle *)title;
 
 @end

@@ -244,12 +244,12 @@
 				D48405C619E47542006F4139 /* MWKImage.m */,
 				D494A6FC19F6C7C30098AA18 /* MWKProtectionStatus.h */,
 				D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */,
+				D4612CEB1A116E97008945A5 /* MWKSavedPageEntry.h */,
+				D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */,
 				D497FCE51A08013F004A36A5 /* MWKSavedPagesList.h */,
 				D497FCE61A08013F004A36A5 /* MWKSavedPagesList.m */,
 				D497FCE91A080151004A36A5 /* MWKHistoryEntry.h */,
 				D497FCEA1A080151004A36A5 /* MWKHistoryEntry.m */,
-				D4612CEB1A116E97008945A5 /* MWKSavedPageEntry.h */,
-				D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */,
 			);
 			name = "Data classes";
 			sourceTree = "<group>";

@@ -14,5 +14,6 @@
 @property (readwrite) NSDate *date;
 
 -(instancetype)initWithTitle:(MWKTitle *)title;
+-(instancetype)initWithDict:(NSDictionary *)dict;
 
 @end
