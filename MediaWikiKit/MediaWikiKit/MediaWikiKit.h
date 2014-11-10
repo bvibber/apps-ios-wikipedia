@@ -29,7 +29,7 @@
 #import "MWKHistoryStore.h"
 
 #import "MWKSavedPageEntry.h"
-#import "MWKSavedPagesList.h"
+#import "MWKSavedPageList.h"
 #import "MWKSavedPageStore.h"
 
 @interface MediaWikiKit : NSObject

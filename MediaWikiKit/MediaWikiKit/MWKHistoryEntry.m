@@ -22,4 +22,16 @@
     return self;
 }
 
+-(id)dataExport
+{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    
+    dict[@"title"] = self.title.prefixedDBKey;
+    dict[@"date"] = [self iso8601DateString:self.date];
+    dict[@"discoveryMethod"] = @"FIXME"; // get name for thingy
+    dict[@"scrollPosition"] = @(self.scrollPosition);
+    
+    return [NSDictionary dictionaryWithDictionary:dict];
+}
+
 @end

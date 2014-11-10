@@ -1,5 +1,5 @@
 //
-//  MWKSavedPagesList.h
+//  MWKSavedPageList.h
 //  MediaWikiKit
 //
 //  Created by Brion on 11/3/14.
@@ -11,7 +11,7 @@
 @class MWKTitle;
 @class MWKSavedPageEntry;
 
-@interface MWKSavedPagesList : MWKDataObject
+@interface MWKSavedPageList : MWKDataObject
 
 -(MWKSavedPageEntry *)entryForTitle:(MWKTitle *)title;
 -(BOOL)isSaved:(MWKTitle *)title;

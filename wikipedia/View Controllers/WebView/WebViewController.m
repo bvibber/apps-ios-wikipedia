@@ -1184,6 +1184,7 @@ typedef enum {
 {
     // Don't record scroll position of "main" pages.
     if ([[SessionSingleton sharedInstance] isCurrentArticleMain]) return;
+    
 
     [articleDataContext_.mainContext performBlockAndWait:^(){
         // Save scroll location

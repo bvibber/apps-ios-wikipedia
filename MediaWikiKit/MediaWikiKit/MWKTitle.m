@@ -99,4 +99,13 @@
     }
 }
 
+
+#pragma mark - NSCopying protocol methods
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    // Titles are immutable
+    return self;
+}
+
 @end

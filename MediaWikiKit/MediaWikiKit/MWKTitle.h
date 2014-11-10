@@ -7,7 +7,7 @@
 
 #import "MWKSite.h"
 
-@interface MWKTitle : NSObject
+@interface MWKTitle : NSObject <NSCopying>
 
 /**
  * Initialize a new MWPageTitle object from string input

@@ -1,5 +1,5 @@
 //
-//  MWKSavedPagesList.m
+//  MWKSavedPageList.m
 //  MediaWikiKit
 //
 //  Created by Brion on 11/3/14.
@@ -8,7 +8,7 @@
 
 #import "MediaWikiKit.h"
 
-@implementation MWKSavedPagesList {
+@implementation MWKSavedPageList {
     NSMutableArray *entries;
     NSMutableDictionary *entriesByTitle;
 }
@@ -20,7 +20,7 @@
         entries = [[NSMutableArray alloc] init];
         entriesByTitle = [[NSMutableDictionary alloc] init];
         for (NSDictionary *dict in array) {
-            MWKSavedPageEntry *entry = [MWKSavedPageEntry initWithDict:dict];
+            MWKSavedPageEntry *entry = [[MWKSavedPageEntry alloc] initWithDict:dict];
             [entries addObject:entry];
             entriesByTitle[entry.title] = entry;
         }
