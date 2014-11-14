@@ -1539,7 +1539,8 @@ typedef enum {
     if ([sender isKindOfClass:[ArticleFetcher class]]) {
         
         ArticleFetcher *articleFetcher = (ArticleFetcher *)sender;
-        MWKArticle *article = articleFetcher.articleStore.article;
+        MWKArticleStore *articleStore = articleFetcher.articleStore;
+        MWKArticle *article = articleStore.article;
         
         NSNumber *articleSectionType = (NSNumber *)userData;
         
@@ -1566,7 +1567,6 @@ typedef enum {
                             
                             // Redirect!
                             [self retrieveArticleForPageTitle: redirectedTitle
-                                                       domain: article.domain
                                               discoveryMethod: discoveryMethod];
                             return;
                         }
@@ -1597,8 +1597,8 @@ typedef enum {
                         */
                         
                         // Update the toc and web view.
-                        [self.tocVC setTocSectionDataForSections:article.section];
-                        [self displayArticle:article.objectID mode:DISPLAY_LEAD_SECTION];
+                        [self.tocVC setTocSectionDataForSections:articleStore.sections];
+                        [self displayArticle:article.title mode:DISPLAY_LEAD_SECTION];
                         
                     }
                         break;
@@ -1608,13 +1608,15 @@ typedef enum {
                         [self showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
                         
                         // Remove the article so it doesn't get saved.
-                        [article.managedObjectContext deleteObject:article];
+                        //[article.managedObjectContext deleteObject:article];
+                        [articleStore remove];
                     }
                         break;
                     case FETCH_FINAL_STATUS_CANCELLED:
                     {
                         // Remove the article so it doesn't get saved.
-                        [article.managedObjectContext deleteObject:article];
+                        //[article.managedObjectContext deleteObject:article];
+                        [articleStore remove];
                     }
                         break;
                         
@@ -1629,14 +1631,16 @@ typedef enum {
                 switch (status) {
                     case FETCH_FINAL_STATUS_SUCCEEDED:
                     {
+                        /*
                         // Save the article record.
                         NSError *err = nil;
                         [article.managedObjectContext save:&err];
                         if (err) NSLog(@"Non-lead section save error = %@", err);
+                        */
                         
                         // Update the toc and web view.
-                        [self.tocVC setTocSectionDataForSections:article.section];
-                        [self displayArticle:article.objectID mode:DISPLAY_APPEND_NON_LEAD_SECTIONS];
+                        [self.tocVC setTocSectionDataForSections:articleStore.sections];
+                        [self displayArticle:article.title mode:DISPLAY_APPEND_NON_LEAD_SECTIONS];
                         
                     }
                         break;
@@ -1696,7 +1700,6 @@ typedef enum {
 }
 
 - (void)retrieveArticleForPageTitle: (MWKTitle *)pageTitle
-                             domain: (NSString *)domain
                     discoveryMethod: (NSString *)discoveryMethod
 {
     // Cancel certain in-progress fetches.
