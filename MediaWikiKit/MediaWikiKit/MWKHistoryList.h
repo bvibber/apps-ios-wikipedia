@@ -18,8 +18,10 @@
 -(MWKHistoryEntry *)entryAtIndex:(NSUInteger)index;
 -(MWKHistoryEntry *)entryForTitle:(MWKTitle *)title;
 
--(int)indexForEntry:(MWKHistoryEntry *)entry;
+-(NSUInteger)indexForEntry:(MWKHistoryEntry *)entry;
 -(MWKHistoryEntry *)entryAfterEntry:(MWKHistoryEntry *)entry;
 -(MWKHistoryEntry *)entryBeforeEntry:(MWKHistoryEntry *)entry;
+
+-(instancetype)initWithDict:(NSDictionary *)dict;
 
 @end

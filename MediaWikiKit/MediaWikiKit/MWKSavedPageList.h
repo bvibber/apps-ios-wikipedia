@@ -13,7 +13,14 @@
 
 @interface MWKSavedPageList : MWKDataObject
 
+@property (readonly) NSUInteger length;
+
+-(MWKSavedPageEntry *)entryAtIndex:(NSUInteger)index;
+-(int)indexForEntry:(MWKSavedPageEntry *)entry;
+
 -(MWKSavedPageEntry *)entryForTitle:(MWKTitle *)title;
 -(BOOL)isSaved:(MWKTitle *)title;
+
+-(instancetype)initWithDict:(NSDictionary *)dict;
 
 @end

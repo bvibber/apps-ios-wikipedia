@@ -10,22 +10,7 @@
 
 @implementation MWKHistoryList {
     NSMutableArray *entries;
-}
-
--(instancetype)initWithDict:(NSDictionary *)dict
-{
-    self = [self init];
-    if (self) {
-        NSArray *arr = dict[@"entries"];
-        if (arr) {
-            entries = [[NSMutableArray alloc] init];
-            for (NSDictionary *entryDict in arr) {
-                MWKHistoryEntry *entry = [[MWKHistoryEntry alloc] initWithDict:entryDict];
-                [entries addObject:entry];
-            }
-        }
-    }
-    return self;
+    NSMutableDictionary *entriesByTitle;
 }
 
 -(NSUInteger)length
@@ -40,17 +25,12 @@
 
 -(MWKHistoryEntry *)entryForTitle:(MWKTitle *)title
 {
-    for (MWKHistoryEntry *entry in entries) {
-        if ([entry.title isEqual:title]) {
-            return entry;
-        }
-    }
-    return nil;
+    return entriesByTitle[title];
 }
 
--(int)indexForEntry:(MWKHistoryEntry *)entry
+-(NSUInteger)indexForEntry:(MWKHistoryEntry *)entry
 {
-    return (int)[entries indexOfObject:entry];
+    return [entries indexOfObject:entry];
 }
 
 -(MWKHistoryEntry *)entryAfterEntry:(MWKHistoryEntry *)entry
@@ -76,5 +56,36 @@
         return nil;
     }
 }
+
+#pragma mark - data i/o methods
+
+-(instancetype)initWithDict:(NSDictionary *)dict
+{
+    self = [self init];
+    if (self) {
+        NSArray *arr = dict[@"entries"];
+        if (arr) {
+            entries = [[NSMutableArray alloc] init];
+            for (NSDictionary *entryDict in arr) {
+                MWKHistoryEntry *entry = [[MWKHistoryEntry alloc] initWithDict:entryDict];
+                [entries addObject:entry];
+                entriesByTitle[entry.title] = entry;
+            }
+        }
+    }
+    return self;
+}
+
+-(id)dataExport
+{
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    
+    for (MWKHistoryEntry *entry in entries) {
+        [array addObject:[entry dataExport]];
+    }
+    
+    return @{@"entries": [NSArray arrayWithArray:array]};
+}
+
 
 @end

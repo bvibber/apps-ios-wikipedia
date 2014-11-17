@@ -267,8 +267,7 @@ typedef NS_ENUM(NSInteger, BottomMenuItemTag) {
         [webVC showAlert:history.article.titleObj.text type:ALERT_TYPE_BOTTOM duration:0.8];
 
         [webVC navigateToPage: history.article.titleObj
-                      domain: history.article.domain
-             discoveryMethod: DISCOVERY_METHOD_BACKFORWARD
+             discoveryMethod: MWK_DISCOVERY_METHOD_BACKFORWARD
             invalidatingCache: NO
          showLoadingIndicator: NO];
     }

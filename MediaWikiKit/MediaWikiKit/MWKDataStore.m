@@ -226,6 +226,19 @@
     [self saveImage:image];
 }
 
+-(void)saveHistoryList:(MWKHistoryList *)list
+{
+    NSString *path = self.basePath;
+    NSDictionary *export = [list dataExport];
+    [self saveDictionary:export path:path name:@"History.plist"];
+}
+
+-(void)saveSavedPageList:(MWKSavedPageList *)list
+{
+    NSString *path = self.basePath;
+    NSDictionary *export = [list dataExport];
+    [self saveDictionary:export path:path name:@"SavedPages.plist"];
+}
 
 #pragma mark - load methods
 
@@ -288,6 +301,33 @@
     }
     return data;
 }
+
+-(MWKHistoryList *)historyList
+{
+    NSString *path = self.basePath;
+    NSString *filePath = [path stringByAppendingPathComponent:@"History.plist"];
+    
+    NSDictionary *dict =[NSDictionary dictionaryWithContentsOfFile:filePath];
+    if (dict) {
+        return [[MWKHistoryList alloc] initWithDict:dict];
+    } else {
+        return nil;
+    }
+}
+
+-(MWKSavedPageList *)savedPageList
+{
+    NSString *path = self.basePath;
+    NSString *filePath = [path stringByAppendingPathComponent:@"SavedPages.plist"];
+    
+    NSDictionary *dict =[NSDictionary dictionaryWithContentsOfFile:filePath];
+    if (dict) {
+        return [[MWKSavedPageList alloc] initWithDict:dict];
+    } else {
+        return nil;
+    }
+}
+
 
 #pragma mark - helper methods
 

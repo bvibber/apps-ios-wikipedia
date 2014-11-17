@@ -13,19 +13,14 @@
     NSMutableDictionary *entriesByTitle;
 }
 
--(instancetype)initWithArray:(NSArray *)array
+-(NSUInteger)length
 {
-    self = [self init];
-    if (self) {
-        entries = [[NSMutableArray alloc] init];
-        entriesByTitle = [[NSMutableDictionary alloc] init];
-        for (NSDictionary *dict in array) {
-            MWKSavedPageEntry *entry = [[MWKSavedPageEntry alloc] initWithDict:dict];
-            [entries addObject:entry];
-            entriesByTitle[entry.title] = entry;
-        }
-    }
-    return self;
+    return [entries count];
+}
+
+-(MWKSavedPageEntry *)entryAtIndex:(NSUInteger)index
+{
+    return entries[index];
 }
 
 -(MWKSavedPageEntry *)entryForTitle:(MWKTitle *)title
@@ -40,6 +35,30 @@
     return (entry != nil);
 }
 
+-(int)indexForEntry:(MWKHistoryEntry *)entry
+{
+    return (int)[entries indexOfObject:entry];
+}
+
+
+#pragma mark - data i/o methods
+
+-(instancetype)initWithDict:(NSDictionary *)dict
+{
+    self = [self init];
+    if (self) {
+        NSArray *array = dict[@"entries"];
+        entries = [[NSMutableArray alloc] init];
+        entriesByTitle = [[NSMutableDictionary alloc] init];
+        for (NSDictionary *entryDict in array) {
+            MWKSavedPageEntry *entry = [[MWKSavedPageEntry alloc] initWithDict:entryDict];
+            [entries addObject:entry];
+            entriesByTitle[entry.title] = entry;
+        }
+    }
+    return self;
+}
+
 -(id)dataExport
 {
     NSMutableArray *array = [[NSMutableArray alloc] init];
@@ -48,7 +67,7 @@
         [array addObject:[entry dataExport]];
     }
     
-    return [NSArray arrayWithArray:array];
+    return @{@"entries": [NSArray arrayWithArray:array]};
 }
 
 

@@ -75,8 +75,7 @@
 
 #pragma mark Article
 
--(void)loadArticleWithTitle: (MWPageTitle *)title
-                     domain: (NSString *)domain
+-(void)loadArticleWithTitle: (MWKTitle *)title
                    animated: (BOOL)animated
             discoveryMethod: (ArticleDiscoveryMethod)discoveryMethod
           invalidatingCache: (BOOL)invalidateCache

@@ -14,6 +14,8 @@
 @class MWKSection;
 @class MWKArticleStore;
 @class MWKImage;
+@class MWKHistoryList;
+@class MWKSavedPageList;
 
 @interface MWKDataStore : NSObject
 
@@ -41,6 +43,8 @@
 -(void)saveSectionText:(NSString *)html section:(MWKSection *)section;
 -(void)saveImage:(MWKImage *)image;
 -(void)saveImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType;
+-(void)saveHistoryList:(MWKHistoryList *)list;
+-(void)saveSavedPageList:(MWKSavedPageList *)list;
 
 // Raw load methods
 -(MWKArticle *)articleWithTitle:(MWKTitle *)title;
@@ -48,6 +52,8 @@
 -(NSString *)sectionTextWithId:(int)sectionId article:(MWKArticle *)article;
 -(MWKImage *)imageWithURL:(NSString *)url title:(MWKTitle *)title;
 -(NSData *)imageDataWithImage:(MWKImage *)image;
+-(MWKHistoryList *)historyList;
+-(MWKSavedPageList *)savedPageList;
 
 // Storage helper methods
 -(MWKArticleStore *)articleStoreWithTitle:(MWKTitle *)title;

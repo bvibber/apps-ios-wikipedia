@@ -22,16 +22,14 @@
 #import "MWKImage.h"
 #import "MWKProtectionStatus.h"
 
-#import "MWKDataStore.h"
-#import "MWKArticleStore.h"
-
 #import "MWKHistoryEntry.h"
 #import "MWKHistoryList.h"
-#import "MWKHistoryStore.h"
 
 #import "MWKSavedPageEntry.h"
 #import "MWKSavedPageList.h"
-#import "MWKSavedPageStore.h"
+
+#import "MWKDataStore.h"
+#import "MWKArticleStore.h"
 
 @interface MediaWikiKit : NSObject
 
