@@ -26,6 +26,7 @@
 #import "MWKArticleStore.h"
 
 #import "MWKHistoryEntry.h"
+#import "MWKHistoryList.h"
 #import "MWKHistoryStore.h"
 
 #import "MWKSavedPageEntry.h"

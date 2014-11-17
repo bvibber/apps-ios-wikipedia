@@ -10,13 +10,25 @@
 
 @class MWKTitle;
 
+typedef enum {
+    MWK_DISCOVERY_METHOD_SEARCH,
+    MWK_DISCOVERY_METHOD_RANDOM,
+    MWK_DISCOVERY_METHOD_LINK,
+    MWK_DISCOVERY_METHOD_BACKFORWARD,
+    MWK_DISCOVERY_METHOD_UNKNOWN // reserved
+} MWKHistoryDiscoveryMethod;
+
 @interface MWKHistoryEntry : MWKSiteDataObject
 
 @property (readonly) MWKTitle *title;
 @property (readwrite) NSDate *date;
-@property (readwrite) int discoveryMethod;
+@property (readwrite) MWKHistoryDiscoveryMethod discoveryMethod;
 @property (readwrite) int scrollPosition;
 
--(instancetype)initWithTitle:(MWKTitle *)title discoveryMethod:(int)discoveryMethod;
+-(instancetype)initWithTitle:(MWKTitle *)title discoveryMethod:(MWKHistoryDiscoveryMethod)discoveryMethod;
+-(instancetype)initWithDict:(NSDictionary *)dict;
+
++(NSString *)stringForDiscoveryMethod:(MWKHistoryDiscoveryMethod)discoveryMethod;
++(MWKHistoryDiscoveryMethod)discoveryMethodForString:(NSString *)string;
 
 @end

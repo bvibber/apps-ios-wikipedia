@@ -11,6 +11,8 @@
 		D4612CEA1A1168EF008945A5 /* MWKSavedPageStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D4612CE91A1168EF008945A5 /* MWKSavedPageStore.m */; };
 		D4612CED1A116E97008945A5 /* MWKSavedPageEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */; };
 		D4612CEE1A116E97008945A5 /* MWKSavedPageEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */; };
+		D47F56281A1A89B4004D9856 /* MWKHistoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = D47F56271A1A89B4004D9856 /* MWKHistoryList.m */; };
+		D47F56291A1A89B4004D9856 /* MWKHistoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = D47F56271A1A89B4004D9856 /* MWKHistoryList.m */; };
 		D48405A619E473E6006F4139 /* MediaWikiKit.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = D48405A519E473E6006F4139 /* MediaWikiKit.h */; };
 		D48405A819E473E6006F4139 /* MediaWikiKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405A719E473E6006F4139 /* MediaWikiKit.m */; };
 		D48405BF19E47526006F4139 /* MWKSection.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405BE19E47526006F4139 /* MWKSection.m */; };
@@ -80,6 +82,8 @@
 		D4612CE91A1168EF008945A5 /* MWKSavedPageStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKSavedPageStore.m; sourceTree = "<group>"; };
 		D4612CEB1A116E97008945A5 /* MWKSavedPageEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKSavedPageEntry.h; sourceTree = "<group>"; };
 		D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKSavedPageEntry.m; sourceTree = "<group>"; };
+		D47F56261A1A89B4004D9856 /* MWKHistoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKHistoryList.h; sourceTree = "<group>"; };
+		D47F56271A1A89B4004D9856 /* MWKHistoryList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKHistoryList.m; sourceTree = "<group>"; };
 		D48405A219E473E6006F4139 /* libMediaWikiKit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMediaWikiKit.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		D48405A519E473E6006F4139 /* MediaWikiKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MediaWikiKit.h; sourceTree = "<group>"; };
 		D48405A719E473E6006F4139 /* MediaWikiKit.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaWikiKit.m; sourceTree = "<group>"; };
@@ -250,6 +254,8 @@
 				D497FCE61A08013F004A36A5 /* MWKSavedPageList.m */,
 				D497FCE91A080151004A36A5 /* MWKHistoryEntry.h */,
 				D497FCEA1A080151004A36A5 /* MWKHistoryEntry.m */,
+				D47F56261A1A89B4004D9856 /* MWKHistoryList.h */,
+				D47F56271A1A89B4004D9856 /* MWKHistoryList.m */,
 			);
 			name = "Data classes";
 			sourceTree = "<group>";
@@ -386,6 +392,7 @@
 				D48405A819E473E6006F4139 /* MediaWikiKit.m in Sources */,
 				D494A6FE19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */,
 				D494A70E19F6E8F20098AA18 /* MWKDataStore.m in Sources */,
+				D47F56281A1A89B4004D9856 /* MWKHistoryList.m in Sources */,
 				D4612CEA1A1168EF008945A5 /* MWKSavedPageStore.m in Sources */,
 				D48405CF19E47572006F4139 /* MWKArticleStore.m in Sources */,
 				D4612CED1A116E97008945A5 /* MWKSavedPageEntry.m in Sources */,
@@ -405,6 +412,7 @@
 				D48405C419E47535006F4139 /* MWKArticle.m in Sources */,
 				D494A70919F6CC5B0098AA18 /* MWKSiteDataObject.m in Sources */,
 				D494A6FF19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */,
+				D47F56291A1A89B4004D9856 /* MWKHistoryList.m in Sources */,
 				D48405C019E47526006F4139 /* MWKSection.m in Sources */,
 				D48405C819E47542006F4139 /* MWKImage.m in Sources */,
 				D49ADCCA1A0028A70010F839 /* MWKImageStorageTests.m in Sources */,
