@@ -83,6 +83,9 @@
 "search-loading-section-remaining" = "Alert text shown when loading remaining article sections";
 "search-loading-article-loaded" = "Alert text shown when the article has been completely loaded";
 "search-cancel" = "{{Identical|Cancel}}";
+"search-titles" = "Button text for performing search of article titles";
+"search-within-articles" = "Button text for performing search of article content";
+"search-did-you-mean" = "Button text for searching for an alternate spelling of the search term. Parameters:\n* $1 - alternate spelling of the search term the user entered - ie if user types 'thunk' the API can suggest the alternate term 'think'";
 "main-menu-title" = "Title for menu of secondary items.\n{{Identical|More}}";
 "main-menu-language-title" = "Header text for default search language selection. Parameters:\n* $1 - language domain name";
 "main-menu-language-toggle-show" = "Button text for showing language list";
@@ -91,7 +94,7 @@
 "main-menu-account-title-logged-out" = "Header text used when account is not logged in.\n{{Identical|Account}}";
 "main-menu-account-title-logged-in" = "Header text used when account is logged in";
 "main-menu-account-login" = "Button text for logging in.\n{{Identical|Log in}}";
-"main-menu-account-logout" = "Button text for logging out.\n{{Identical|Log out}}";
+"main-menu-account-logout" = "Button text for logging out. The username of the user who is currently logged in is displayed after the message, e.g. Log out ExampleUserName.\n{{Identical|Log out}}";
 "main-menu-show-title" = "Header informing the user that they can be shown various things";
 "main-menu-show-history" = "Button text for article history interface.\n{{Identical|Recent}}";
 "main-menu-show-saved" = "Button text for saved articles interface.\n{{Identical|Saved page}}";
@@ -152,10 +155,10 @@
 "about-title" = "Title for credits page\n{{Identical|About}}";
 "about-wikipedia" = "Wikipedia\n{{Identical|Wikipedia}}";
 "about-contributors" = "Label text for contributors section of the about page\n{{Identical|Contributor}}";
-"about-translators" = "Label text for translators section of the about page\n{{Identical|Translator}}";
-"about-translators-details" = "Description of volunteer translation. $1 is translatewiki url.";
 "about-testers" = "Label text for testers section of the about page";
 "about-testers-details" = "Description of the QA testers. $1 is specialistsguild.org, the website of the testing group.";
+"about-translators" = "Label text for translators section of the about page\n{{Identical|Translator}}";
+"about-translators-details" = "Description of volunteer translation. $1 is translatewiki url.";
 "about-libraries" = "Label text for libraries section of the about page";
 "about-repositories" = "Label text for repositories section of the about page\n{{Identical|Repository}}";
 "about-send-feedback" = "Link text for sending app feedback";
