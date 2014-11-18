@@ -14,12 +14,18 @@
 @interface MWKSavedPageList : MWKDataObject
 
 @property (readonly) NSUInteger length;
+@property (readonly) BOOL dirty;
 
 -(MWKSavedPageEntry *)entryAtIndex:(NSUInteger)index;
--(int)indexForEntry:(MWKSavedPageEntry *)entry;
+-(NSUInteger)indexForEntry:(MWKSavedPageEntry *)entry;
 
 -(MWKSavedPageEntry *)entryForTitle:(MWKTitle *)title;
 -(BOOL)isSaved:(MWKTitle *)title;
+
+/// Add a new entry to the saved page list!
+-(void)addEntry:(MWKSavedPageEntry *)entry;
+/// Remove one.
+-(void)removeEntry:(MWKSavedPageEntry *)entry;
 
 -(instancetype)initWithDict:(NSDictionary *)dict;
 

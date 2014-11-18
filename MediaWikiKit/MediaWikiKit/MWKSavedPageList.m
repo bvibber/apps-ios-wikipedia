@@ -35,11 +35,29 @@
     return (entry != nil);
 }
 
--(int)indexForEntry:(MWKHistoryEntry *)entry
+-(NSUInteger)indexForEntry:(MWKHistoryEntry *)entry
 {
-    return (int)[entries indexOfObject:entry];
+    return [entries indexOfObject:entry];
 }
 
+#pragma mark - update methods
+
+-(void)addEntry:(MWKSavedPageEntry *)entry
+{
+    if ([self entryForTitle:entry.title] != nil) {
+        // there can be only one
+        [entries insertObject:entry atIndex:0];
+        entriesByTitle[entry.title] = entry;
+        _dirty = YES;
+    }
+}
+
+-(void)removeEntry:(MWKSavedPageEntry *)entry
+{
+    [entries removeObject:entry];
+    [entriesByTitle removeObjectForKey:entry.title];
+    _dirty = YES;
+}
 
 #pragma mark - data i/o methods
 
@@ -55,6 +73,7 @@
             [entries addObject:entry];
             entriesByTitle[entry.title] = entry;
         }
+        _dirty = NO;
     }
     return self;
 }
@@ -67,6 +86,7 @@
         [array addObject:[entry dataExport]];
     }
     
+    _dirty = NO;
     return @{@"entries": [NSArray arrayWithArray:array]};
 }
 

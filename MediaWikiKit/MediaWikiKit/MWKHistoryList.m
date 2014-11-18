@@ -57,7 +57,32 @@
     }
 }
 
+#pragma mark - update methods
+
+-(void)addEntry:(MWKHistoryEntry *)entry
+{
+    MWKHistoryEntry *oldEntry = [self entryForTitle:entry.title];
+    if (oldEntry) {
+        // Replace the old entry and move to top
+        [entries removeObject:oldEntry];
+    }
+    [entries insertObject:entry atIndex:0];
+    entriesByTitle[entry.title] = entry;
+    _dirty = YES;
+}
+
+
 #pragma mark - data i/o methods
+
+-(instancetype)init
+{
+    self = [super init];
+    if (self) {
+        entries = [[NSMutableArray alloc] init];
+        entriesByTitle = [[NSMutableDictionary alloc] init];
+    }
+    return self;
+}
 
 -(instancetype)initWithDict:(NSDictionary *)dict
 {
@@ -72,6 +97,7 @@
                 entriesByTitle[entry.title] = entry;
             }
         }
+        _dirty = NO;
     }
     return self;
 }
@@ -83,7 +109,8 @@
     for (MWKHistoryEntry *entry in entries) {
         [array addObject:[entry dataExport]];
     }
-    
+
+    _dirty = NO;
     return @{@"entries": [NSArray arrayWithArray:array]};
 }
 

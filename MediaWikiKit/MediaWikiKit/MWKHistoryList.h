@@ -14,6 +14,7 @@
 @interface MWKHistoryList : MWKDataObject
 
 @property (readonly) NSUInteger length;
+@property (readonly) BOOL dirty;
 
 -(MWKHistoryEntry *)entryAtIndex:(NSUInteger)index;
 -(MWKHistoryEntry *)entryForTitle:(MWKTitle *)title;
@@ -21,6 +22,10 @@
 -(NSUInteger)indexForEntry:(MWKHistoryEntry *)entry;
 -(MWKHistoryEntry *)entryAfterEntry:(MWKHistoryEntry *)entry;
 -(MWKHistoryEntry *)entryBeforeEntry:(MWKHistoryEntry *)entry;
+
+/// Update the history list with a new entry.
+/// May prune out old entries.
+-(void)addEntry:(MWKHistoryEntry *)entry;
 
 -(instancetype)initWithDict:(NSDictionary *)dict;
 

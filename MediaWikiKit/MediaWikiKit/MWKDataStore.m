@@ -240,6 +240,13 @@
     [self saveDictionary:export path:path name:@"SavedPages.plist"];
 }
 
+-(void)saveRecentSearchList:(MWKRecentSearchList *)list
+{
+    NSString *path = self.basePath;
+    NSDictionary *export = [list dataExport];
+    [self saveDictionary:export path:path name:@"RecentSearches.plist"];
+}
+
 #pragma mark - load methods
 
 -(MWKArticle *)articleWithTitle:(MWKTitle *)title
@@ -328,12 +335,31 @@
     }
 }
 
+-(MWKRecentSearchList *)recentSearchList
+{
+    NSString *path = self.basePath;
+    NSString *filePath = [path stringByAppendingPathComponent:@"RecentSearches.plist"];
+    
+    NSDictionary *dict =[NSDictionary dictionaryWithContentsOfFile:filePath];
+    if (dict) {
+        return [[MWKRecentSearchList alloc] initWithDict:dict];
+    } else {
+        return nil;
+    }
+}
+
+
 
 #pragma mark - helper methods
 
 -(MWKArticleStore *)articleStoreWithTitle:(MWKTitle *)title
 {
     return [[MWKArticleStore alloc] initWithTitle:title dataStore:self];
+}
+
+-(MWKUserDataStore *)userDataStore
+{
+    return [[MWKUserDataStore alloc] initWithDataStore:self];
 }
 
 @end
