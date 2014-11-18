@@ -14,7 +14,8 @@
 {
     self = [self initWithSite:title.site];
     if (self) {
-        self.date = [[NSDate alloc] init];
+        _title = title;
+        _date = [[NSDate alloc] init];
     }
     return self;
 }
@@ -28,6 +29,7 @@
     self = [self initWithSite:[MWKSite siteWithDomain:domain language:language]];
     if (self) {
         _title = [self requiredTitle:@"title" dict:dict];
+        _date = [self requiredDate:@"date" dict:dict];
     }
     return self;
 }
@@ -39,6 +41,7 @@
     dict[@"domain"] = self.site.domain;
     dict[@"language"] = self.site.language;
     dict[@"title"] = self.title.prefixedText;
+    dict[@"date"] = [self iso8601DateString:self.date];
     
     return [NSDictionary dictionaryWithDictionary:dict];
 }
