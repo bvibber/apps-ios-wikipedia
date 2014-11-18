@@ -37,4 +37,18 @@
              @"searchTerm": self.searchTerm
              };
 }
+
+-(BOOL)isEqual:(id)object
+{
+    if (object == nil) {
+        return false;
+    } else if (![object isKindOfClass:[MWKRecentSearchEntry class]]) {
+        return false;
+    } else {
+        MWKRecentSearchEntry *other = object;
+        return [self.site isEqual:other.site] &&
+               [self.searchTerm isEqualToString:other.searchTerm];
+    }
+}
+
 @end

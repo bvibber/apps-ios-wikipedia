@@ -16,7 +16,9 @@
 @property (readonly) BOOL dirty;
 
 -(MWKRecentSearchEntry *)entryAtIndex:(NSUInteger)index;
+
 -(void)addEntry:(MWKRecentSearchEntry *)entry;
+-(void)removeEntry:(MWKRecentSearchEntry *)entry;
 
 -(instancetype)initWithDict:(NSDictionary *)dict;
 

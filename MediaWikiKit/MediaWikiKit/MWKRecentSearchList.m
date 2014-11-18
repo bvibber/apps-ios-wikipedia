@@ -12,6 +12,11 @@
     NSMutableArray *entries;
 }
 
+- (NSUInteger)length
+{
+    return [entries count];
+}
+
 - (instancetype) init
 {
     self = [super init];
@@ -55,6 +60,12 @@
     [entries insertObject:entry atIndex:0];
     _dirty = YES;
     // @todo trim to max?
+}
+
+-(void)removeEntry:(MWKRecentSearchEntry *)entry
+{
+    [entries removeObject:entry];
+    _dirty = YES;
 }
 
 -(MWKRecentSearchEntry *)entryAtIndex:(NSUInteger)index

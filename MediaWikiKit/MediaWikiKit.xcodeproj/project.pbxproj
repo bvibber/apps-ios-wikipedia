@@ -14,6 +14,7 @@
 		D44EA78D1A1BCD2600631A1D /* MWKRecentSearchList.m in Sources */ = {isa = PBXBuildFile; fileRef = D44EA78C1A1BCD2600631A1D /* MWKRecentSearchList.m */; };
 		D44EA78E1A1BCD2600631A1D /* MWKRecentSearchList.m in Sources */ = {isa = PBXBuildFile; fileRef = D44EA78C1A1BCD2600631A1D /* MWKRecentSearchList.m */; };
 		D44EA7901A1BDDAD00631A1D /* MWKHistoryListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D44EA78F1A1BDDAD00631A1D /* MWKHistoryListTests.m */; };
+		D44EA7991A1BECD700631A1D /* MWKRecentSearchListTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D44EA7981A1BECD700631A1D /* MWKRecentSearchListTests.m */; };
 		D4612CED1A116E97008945A5 /* MWKSavedPageEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */; };
 		D4612CEE1A116E97008945A5 /* MWKSavedPageEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */; };
 		D47F56281A1A89B4004D9856 /* MWKHistoryList.m in Sources */ = {isa = PBXBuildFile; fileRef = D47F56271A1A89B4004D9856 /* MWKHistoryList.m */; };
@@ -88,6 +89,7 @@
 		D44EA78B1A1BCD2600631A1D /* MWKRecentSearchList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKRecentSearchList.h; sourceTree = "<group>"; };
 		D44EA78C1A1BCD2600631A1D /* MWKRecentSearchList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKRecentSearchList.m; sourceTree = "<group>"; };
 		D44EA78F1A1BDDAD00631A1D /* MWKHistoryListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKHistoryListTests.m; sourceTree = "<group>"; };
+		D44EA7981A1BECD700631A1D /* MWKRecentSearchListTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKRecentSearchListTests.m; sourceTree = "<group>"; };
 		D4612CEB1A116E97008945A5 /* MWKSavedPageEntry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKSavedPageEntry.h; sourceTree = "<group>"; };
 		D4612CEC1A116E97008945A5 /* MWKSavedPageEntry.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKSavedPageEntry.m; sourceTree = "<group>"; };
 		D47F56261A1A89B4004D9856 /* MWKHistoryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKHistoryList.h; sourceTree = "<group>"; };
@@ -213,6 +215,7 @@
 				D494A71219F70F910098AA18 /* MWKDataStoreStorageTests.m */,
 				D49ADCC91A0028A70010F839 /* MWKImageStorageTests.m */,
 				D44EA78F1A1BDDAD00631A1D /* MWKHistoryListTests.m */,
+				D44EA7981A1BECD700631A1D /* MWKRecentSearchListTests.m */,
 			);
 			path = MediaWikiKitTests;
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				D44EA7901A1BDDAD00631A1D /* MWKHistoryListTests.m in Sources */,
 				D494A70919F6CC5B0098AA18 /* MWKSiteDataObject.m in Sources */,
 				D494A6FF19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */,
+				D44EA7991A1BECD700631A1D /* MWKRecentSearchListTests.m in Sources */,
 				D47F56291A1A89B4004D9856 /* MWKHistoryList.m in Sources */,
 				D44EA78E1A1BCD2600631A1D /* MWKRecentSearchList.m in Sources */,
 				D48405C019E47526006F4139 /* MWKSection.m in Sources */,
