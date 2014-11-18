@@ -26,6 +26,7 @@
 /// Update the history list with a new entry.
 /// May prune out old entries.
 -(void)addEntry:(MWKHistoryEntry *)entry;
+-(void)removeEntry:(MWKHistoryEntry *)entry;
 
 -(instancetype)initWithDict:(NSDictionary *)dict;
 

@@ -90,6 +90,17 @@
     XCTAssertFalse(historyList.dirty, @"Should not be dirty after adding then exporting");
 }
 
+- (void)testAdd2ThenRemove {
+    MWKHistoryEntry *entry1 = [[MWKHistoryEntry alloc] initWithTitle:titleSFEn
+                                                     discoveryMethod:MWK_DISCOVERY_METHOD_SEARCH];
+    MWKHistoryEntry *entry2 = [[MWKHistoryEntry alloc] initWithTitle:titleLAEn
+                                                     discoveryMethod:MWK_DISCOVERY_METHOD_SEARCH];
+    [historyList addEntry:entry1];
+    [historyList addEntry:entry2];
+    [historyList removeEntry:entry1];
+    XCTAssertEqual(historyList.length, 1, @"Should have length 1 after adding two then removing one");
+}
+
 
 
 @end

@@ -71,6 +71,12 @@
     _dirty = YES;
 }
 
+-(void)removeEntry:(MWKHistoryEntry *)entry
+{
+    [entries removeObject:entry];
+    [entriesByTitle removeObjectForKey:entry.title];
+    _dirty = YES;
+}
 
 #pragma mark - data i/o methods
 
