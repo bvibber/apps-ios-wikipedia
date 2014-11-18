@@ -11,5 +11,7 @@
 
 -(void)search;
 -(void)clearSearchResults;
+-(void)saveSearchTermToRecentList;
+-(void)doneTapped;
 
 @end
