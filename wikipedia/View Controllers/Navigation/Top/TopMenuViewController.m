@@ -205,7 +205,7 @@
     self.textFieldContainer = [[TopMenuTextFieldContainer alloc] initWithMargin:textFieldContainerMargin];
     self.textFieldContainer.translatesAutoresizingMaskIntoConstraints = NO;
     self.textFieldContainer.textField.delegate = self;
-    self.textFieldContainer.textField.returnKeyType = UIReturnKeyDone;
+    self.textFieldContainer.textField.returnKeyType = UIReturnKeyGo;
     self.textFieldContainer.textField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.textFieldContainer.textField.font = SEARCH_TEXT_FIELD_FONT;
     self.textFieldContainer.textField.textColor = SEARCH_TEXT_FIELD_HIGHLIGHTED_COLOR;
@@ -220,7 +220,7 @@
     
     [self.navBarContainer addSubview:self.textFieldContainer];
  
-    UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30, 25)];
+    UIButton *clearButton = [[UIButton alloc] initWithFrame:CGRectMake(0.0f, 0.0f, 30.0f * MENUS_SCALE_MULTIPLIER, 25.0f * MENUS_SCALE_MULTIPLIER)];
     clearButton.backgroundColor = [UIColor clearColor];
     [clearButton setImage:[UIImage imageNamed:@"text_field_x_circle_gray.png"] forState:UIControlStateNormal];
     [clearButton addTarget:self action:@selector(clearTextFieldText) forControlEvents:UIControlEventTouchUpInside];
@@ -567,6 +567,9 @@
         }
             break;
         case NAVBAR_BUTTON_CANCEL:
+
+            [self.searchResultsController saveSearchTermToRecentList];
+        
             self.navBarMode = NAVBAR_MODE_DEFAULT;
             [self updateTOCButtonVisibility];
             [self hideSearchResultsController];
@@ -627,6 +630,7 @@
 
 -(void)clearTextFieldText
 {
+    [self.searchResultsController saveSearchTermToRecentList];
     self.textFieldContainer.textField.text = @"";
     [self updateClearButtonVisibility];
     self.searchResultsController.searchString = @"";
@@ -657,6 +661,10 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
+    if (self.navBarMode == NAVBAR_MODE_SEARCH) {
+        [self.searchResultsController doneTapped];
+    }
+
     [self hideKeyboard];
     return YES;
 }
