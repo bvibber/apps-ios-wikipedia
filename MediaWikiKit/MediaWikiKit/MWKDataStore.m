@@ -62,10 +62,10 @@
     return [articlePath stringByAppendingPathComponent:@"sections"];
 }
 
--(NSString *)pathForSectionId:(int)sectionId title:(MWKTitle *)title
+-(NSString *)pathForSectionId:(NSUInteger)sectionId title:(MWKTitle *)title
 {
     NSString *sectionsPath = [self pathForSectionsWithTitle:title];
-    NSString *sectionName = [NSString stringWithFormat:@"section%d", sectionId];
+    NSString *sectionName = [NSString stringWithFormat:@"section%d", (int)sectionId];
     return [sectionsPath stringByAppendingPathComponent:sectionName];
 }
 
@@ -257,7 +257,7 @@
     return [[MWKArticle alloc] initWithTitle:title dict:dict];
 }
 
--(MWKSection *)sectionWithId:(int)sectionId article:(MWKArticle *)article
+-(MWKSection *)sectionWithId:(NSUInteger)sectionId article:(MWKArticle *)article
 {
     NSString *path = [self pathForSectionId:sectionId title:article.title];
     NSString *filePath = [path stringByAppendingPathComponent:@"Section.plist"];
@@ -265,7 +265,7 @@
     return [[MWKSection alloc] initWithArticle:article dict:dict];
 }
 
--(NSString *)sectionTextWithId:(int)sectionId article:(MWKArticle *)article
+-(NSString *)sectionTextWithId:(NSUInteger)sectionId article:(MWKArticle *)article
 {
     NSString *path = [self pathForSectionId:sectionId title:article.title];
     NSString *filePath = [path stringByAppendingPathComponent:@"Section.plist"];

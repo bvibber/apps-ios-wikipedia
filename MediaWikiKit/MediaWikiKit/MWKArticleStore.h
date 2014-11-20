@@ -1,5 +1,5 @@
 //
-//  MWKArticleFetcher.h
+//  MWKArticleStore.h
 //  MediaWikiKit
 //
 //  Created by Brion on 10/7/14.
@@ -25,7 +25,7 @@
 @property (readonly) MWKArticle *article;
 
 @property (readonly) NSArray *sections; // ?
--(MWKSection *)sectionAtIndex:(int)index;
+-(MWKSection *)sectionAtIndex:(NSUInteger)index;
 
 @property (readonly) NSArray *imageURLs;
 -(MWKImage *)imageWithURL:(NSString *)url;

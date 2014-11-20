@@ -32,7 +32,7 @@
 -(NSString *)pathForTitle:(MWKTitle *)title;
 -(NSString *)pathForArticle:(MWKArticle *)article;
 -(NSString *)pathForSectionsWithTitle:(MWKTitle *)title;
--(NSString *)pathForSectionId:(int)sectionId title:(MWKTitle *)title;
+-(NSString *)pathForSectionId:(NSUInteger)sectionId title:(MWKTitle *)title;
 -(NSString *)pathForSection:(MWKSection *)section;
 -(NSString *)pathForImagesWithTitle:(MWKTitle *)title;
 -(NSString *)pathForImageURL:(NSString *)url title:(MWKTitle *)title;
@@ -50,8 +50,8 @@
 
 // Raw load methods
 -(MWKArticle *)articleWithTitle:(MWKTitle *)title;
--(MWKSection *)sectionWithId:(int)sectionId article:(MWKArticle *)article;
--(NSString *)sectionTextWithId:(int)sectionId article:(MWKArticle *)article;
+-(MWKSection *)sectionWithId:(NSUInteger)sectionId article:(MWKArticle *)article;
+-(NSString *)sectionTextWithId:(NSUInteger)sectionId article:(MWKArticle *)article;
 -(MWKImage *)imageWithURL:(NSString *)url title:(MWKTitle *)title;
 -(NSData *)imageDataWithImage:(MWKImage *)image;
 -(MWKHistoryList *)historyList;
