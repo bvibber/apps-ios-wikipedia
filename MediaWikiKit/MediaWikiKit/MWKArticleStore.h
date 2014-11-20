@@ -32,8 +32,9 @@
 -(MWKImage *)imageWithURL:(NSString *)url;
 -(NSData *)imageDataWithImage:(MWKImage *)image;
 
-@property (readwrite) BOOL needsRefresh;
+@property (readonly) MWKImage *thumbnailImage;
 
+@property (readwrite) BOOL needsRefresh;
 
 -(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore;
 

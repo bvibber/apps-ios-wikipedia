@@ -72,6 +72,14 @@
  */
 @property (readonly) NSString *fragmentForURL;
 
+/**
+ * Absolute URL to mobile view of this article
+ */
+@property (readonly) NSURL *mobileURL;
 
+/**
+ * Absolute URL to desktop view of this article
+ */
+@property (readonly) NSURL *desktopURL;
 
 @end

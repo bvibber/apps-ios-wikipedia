@@ -529,12 +529,12 @@ typedef enum {
                 [self.funnel logSavedRevision:[userData[@"newrevid"] intValue]];
                 
                 // Mark article for refreshing and reload it.
-                if (uploader.articleID) {
+                //if (uploader.articleID) {
                     
                     WebViewController *webVC = [self.navigationController searchNavStackForViewControllerOfClass:[WebViewController class]];
                     [webVC reloadCurrentArticleInvalidatingCache:YES];
                     [ROOT popToViewController:webVC animated:YES];
-                }
+                //}
             }
                 break;
                 
@@ -562,46 +562,40 @@ typedef enum {
                         // If the server said a captcha was required, present the captcha image.
                         NSString *captchaUrl = error.userInfo[@"captchaUrl"];
                         NSString *captchaId = error.userInfo[@"captchaId"];
-                        if (uploader.articleID) {
-                            [[ArticleDataContextSingleton sharedInstance].mainContext performBlockAndWait:^(){
-                                Article *article = (Article *)[[ArticleDataContextSingleton sharedInstance].mainContext objectWithID:uploader.articleID];
-                                if (article) {
-                                    [UIView animateWithDuration:0.2f animations:^{
-                                        
-                                        [self revealCaptcha];
-                                        
-                                        [self.captchaViewController.captchaTextBox performSelector: @selector(becomeFirstResponder)
-                                                                                        withObject: nil
-                                                                                        afterDelay: 0.4f];
-                                        
-                                        [self.captchaViewController showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
-                                        
-                                        self.captchaViewController.captchaImageView.image = nil;
-                                        
-                                        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
-                                            // Background thread.
-                                            
-                                            NSURL *captchaImageUrl = [NSURL URLWithString:
-                                                                      [NSString stringWithFormat:@"https://%@.m.%@%@", article.domain, article.site, captchaUrl]
-                                                                      ];
-                                            
-                                            UIImage *captchaImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:captchaImageUrl]];
-                                            
-                                            dispatch_async(dispatch_get_main_queue(), ^(void){
-                                                // Main thread.
-                                                self.captchaViewController.captchaTextBox.text = @"";
-                                                self.captchaViewController.captchaImageView.image = captchaImage;
-                                                self.captchaId = captchaId;
-                                                
-                                                [self.view layoutIfNeeded];
-                                            });
-                                        });
-                                        
-                                    } completion:^(BOOL done){
-                                    }];
-                                }
-                            }];
-                        }
+                        MWKArticle *article = self.section.article;
+                        [UIView animateWithDuration:0.2f animations:^{
+                            
+                            [self revealCaptcha];
+                            
+                            [self.captchaViewController.captchaTextBox performSelector: @selector(becomeFirstResponder)
+                                                                            withObject: nil
+                                                                            afterDelay: 0.4f];
+                            
+                            [self.captchaViewController showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
+                            
+                            self.captchaViewController.captchaImageView.image = nil;
+                            
+                            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void){
+                                // Background thread.
+                                
+                                NSURL *captchaImageUrl = [NSURL URLWithString:
+                                                          [NSString stringWithFormat:@"https://%@.m.%@%@", article.site.language, article.site.domain, captchaUrl]
+                                                          ];
+                                
+                                UIImage *captchaImage = [UIImage imageWithData:[NSData dataWithContentsOfURL:captchaImageUrl]];
+                                
+                                dispatch_async(dispatch_get_main_queue(), ^(void){
+                                    // Main thread.
+                                    self.captchaViewController.captchaTextBox.text = @"";
+                                    self.captchaViewController.captchaImageView.image = captchaImage;
+                                    self.captchaId = captchaId;
+                                    
+                                    [self.view layoutIfNeeded];
+                                });
+                            });
+                            
+                        } completion:^(BOOL done){
+                        }];
                     }
                         break;
                         

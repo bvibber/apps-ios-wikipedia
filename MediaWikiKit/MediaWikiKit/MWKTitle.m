@@ -76,6 +76,23 @@
     }
 }
 
+-(NSURL *)mobileURL;
+{
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://%@.m.%@/wiki/%@",
+                                                           self.site.language,
+                                                           self.site.domain,
+                                                           self.prefixedURL]];
+}
+
+-(NSURL *)desktopURL;
+{
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://%@.%@/wiki/%@",
+                                 self.site.language,
+                                 self.site.domain,
+                                 self.prefixedURL]];
+}
+
+
 -(BOOL)isEqual:(id)object
 {
     if (object == nil) {
