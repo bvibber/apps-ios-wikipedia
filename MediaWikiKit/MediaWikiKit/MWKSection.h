@@ -28,8 +28,10 @@
 @property (readonly) BOOL      references;    // optional; marked by presence of key with empty string in JSON
 
 // Should this be here?
-@property (readonly) NSString *text;          // may be nil
+//@property (readonly) NSString *text;          // may be nil
 
 -(instancetype)initWithArticle:(MWKArticle *)article dict:(NSDictionary *)dict;
+
+-(BOOL)isLeadSection;
 
 @end

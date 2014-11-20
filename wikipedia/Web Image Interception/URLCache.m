@@ -24,7 +24,7 @@
     self = [super initWithMemoryCapacity:memoryCapacity diskCapacity:diskCapacity diskPath:path];
     if (self) {
         //articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
-        articleStore = [SessionSingleton sharedInstance].currentArticleStore;
+        articleStore = [SessionSingleton sharedInstance].articleStore;
         //self.debuggingPlaceHolderImageData = UIImagePNGRepresentation([UIImage imageNamed:@"w@2x.png"]);
     }
     return self;
@@ -64,7 +64,6 @@
     
     NSData *imageDataToUse = cachedResponse.data;
     
-    MWKArticleStore *articleStore = [SessionSingleton sharedInstance].currentArticleStore;
     MWKImage *image = [articleStore imageWithURL:urlStr];
     
     if (!image) {
@@ -93,23 +92,16 @@
     // (This one has no thread safety issues.)
     //imageDataToUse = self.debuggingPlaceHolderImageData;
 
-    [articleStore importImageData:imageDataToUse image:image];
-    image.mimeType = cachedResponse.response.MIMEType;
+    [articleStore importImageData:imageDataToUse image:image mimeType:cachedResponse.response.MIMEType];
     
-    NSError *error = nil;
-    [articleDataContext_.mainContext save:&error];
-    if (error) {
-        NSLog(@"Error re-routing image to articleData store: %@", error);
-    }else{
-        // Broadcast the image data so things like the table of contents can update
-        // itself as images arrive.
-        [[NSNotificationCenter defaultCenter] postNotificationName: @"SectionImageRetrieved"
-                                                            object: nil
-                                                          userInfo: @{
-                                                                      @"fileName": imageFileName,
-                                                                      @"data": imageDataToUse,
-                                                                      }];
-    }
+    // Broadcast the image data so things like the table of contents can update
+    // itself as images arrive.
+    [[NSNotificationCenter defaultCenter] postNotificationName: @"SectionImageRetrieved"
+                                                        object: nil
+                                                      userInfo: @{
+                                                                  @"fileName": image.fileName,
+                                                                  @"data": imageDataToUse,
+                                                                  }];
 
 }
 
@@ -137,7 +129,6 @@
     //imageURL = [imageURL getUrlWithoutScheme];
 
     //Image *imageFromDB = (Image *)[articleDataContext_.mainContext getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", imageURL];
-    MWKArticleStore *articleStore = [SessionSingleton sharedInstance].currentArticleStore;
     MWKImage *imageFromDB = [articleStore imageWithURL:imageURL];
     
     // If a core data Image was found, but its data length is zero, the Image record was probably

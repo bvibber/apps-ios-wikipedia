@@ -56,4 +56,10 @@
     }
     return [NSDictionary dictionaryWithDictionary:dict];
 }
+
+-(BOOL)isLeadSection
+{
+    return (self.sectionId == 0);
+}
+
 @end

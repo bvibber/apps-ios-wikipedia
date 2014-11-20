@@ -26,10 +26,13 @@
 
 @property (readonly) NSArray *sections; // ?
 -(MWKSection *)sectionAtIndex:(NSUInteger)index;
+-(NSString *)sectionTextAtIndex:(NSUInteger)index;
 
 @property (readonly) NSArray *imageURLs;
 -(MWKImage *)imageWithURL:(NSString *)url;
 -(NSData *)imageDataWithImage:(MWKImage *)image;
+
+@property (readwrite) BOOL needsRefresh;
 
 
 -(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore;
@@ -51,5 +54,7 @@
  * and update the image object/record
  */
 -(MWKImage *)importImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType;
+
+-(void)remove;
 
 @end

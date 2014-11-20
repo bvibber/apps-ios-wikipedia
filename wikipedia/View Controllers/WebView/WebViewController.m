@@ -38,7 +38,7 @@
 #import "LanguagesViewController.h"
 #import "ModalMenuAndContentViewController.h"
 #import "UIViewController+ModalPresent.h"
-#import "Section+DisplayHtml.h"
+#import "MWKSection+DisplayHtml.h"
 #import "EditFunnel.h"
 #import "ProtectedEditAttemptFunnel.h"
 #import "CoreDataHousekeeping.h"
@@ -130,7 +130,7 @@ typedef enum {
 @property (copy) NSString *jumpToFragment;
 
 @property (nonatomic) BOOL editable;
-@property (copy) NSString *protectionStatus;
+@property (copy) MWKProtectionStatus *protectionStatus;
 
 // These are presently only used by updateHistoryDateVisitedForArticleBeingNavigatedFrom method.
 @property (strong, nonatomic) MWKTitle *currentTitle;
@@ -176,7 +176,7 @@ typedef enum {
 {
     [super viewDidLoad];
 
-    session = session;
+    session = [SessionSingleton sharedInstance];
     
     self.bottomNavHeightConstraint.constant = CHROME_MENUS_HEIGHT;
     
@@ -941,7 +941,7 @@ typedef enum {
             // Ensure the menu is visible when navigating to new page.
             [weakSelf animateTopAndBottomMenuReveal];
         
-            MWKTitle *pageTitle = [session.site titleWithInternalLink:href];
+            MWKTitle *pageTitle = [[SessionSingleton sharedInstance].site titleWithInternalLink:href];
 
             [weakSelf navigateToPage: pageTitle
                      discoveryMethod: MWK_DISCOVERY_METHOD_LINK
@@ -957,7 +957,7 @@ typedef enum {
             // TODO: make all of the stuff above parse the URL into parts
             // unless it's /wiki/ or #anchor style.
             // Then validate if it's still in Wikipedia land and branch appropriately.
-            if (session.zeroConfigState.disposition &&
+            if ([SessionSingleton sharedInstance].zeroConfigState.disposition &&
                 [[NSUserDefaults standardUserDefaults] boolForKey:@"ZeroWarnWhenLeaving"]) {
                 weakSelf.externalUrl = href;
                 UIAlertView *dialog = [[UIAlertView alloc]
@@ -987,7 +987,7 @@ typedef enum {
             [weakSelf showSectionEditor];
         } else {
             ProtectedEditAttemptFunnel *funnel = [[ProtectedEditAttemptFunnel alloc] init];
-            [funnel logProtectionStatus:weakSelf.protectionStatus];
+            [funnel logProtectionStatus:[[weakSelf.protectionStatus allowedGroupsForAction:@"edit"] componentsJoinedByString:@","]];
             [weakSelf showProtectedDialog];
         }
     }];
@@ -1339,6 +1339,7 @@ typedef enum {
     showImageSheet = !showImageSheet;
     
     if(showImageSheet){
+        /*
         NSManagedObjectContext *ctx = articleDataContext_.mainContext;
         [ctx performBlockAndWait:^(){
             NSManagedObjectID *articleID =
@@ -1371,6 +1372,7 @@ typedef enum {
             }
             [NAV topActionSheetShowWithViews:views orientation:TABULAR_SCROLLVIEW_LAYOUT_HORIZONTAL];
         }];
+         */
     }else{
         [NAV topActionSheetHide];
     }
@@ -1379,6 +1381,7 @@ typedef enum {
 -(void)updateHistoryDateVisitedForArticleBeingNavigatedFrom
 {
     // @fixme what is this doing? updating history, or updating article?
+    /*
     [articleDataContext_.mainContext performBlockAndWait:^(){
         NSManagedObjectID *articleID =
         [articleDataContext_.mainContext getArticleIDForTitle: self.currentTitle];
@@ -1397,6 +1400,7 @@ typedef enum {
             }
         }
     }];
+     */
 }
 
 #pragma mark Article loading ops
@@ -1426,7 +1430,7 @@ typedef enum {
     // Update the history dateVisited timestamp of the article *presently shown* by the webView
     // only if the article to be loaded was NOT loaded via back or forward buttons. The article
     // being *navigated to* has its history dateVisited updated later in this method.
-    if (discoveryMethod != DISCOVERY_METHOD_BACKFORWARD) {
+    if (discoveryMethod != MWK_DISCOVERY_METHOD_BACKFORWARD) {
         [self updateHistoryDateVisitedForArticleBeingNavigatedFrom];
     }
     self.currentTitle = title;
@@ -1446,20 +1450,7 @@ typedef enum {
 - (void)invalidateCacheForPageTitle: (MWKTitle *)pageTitle
 {
     // Mark article for refreshing so its core data records will be reloaded.
-    NSManagedObjectID *articleID =
-    [articleDataContext_.mainContext getArticleIDForTitle: pageTitle.prefixedText
-                                                   domain: domain];
-    if (articleID) {
-        [articleDataContext_.mainContext performBlockAndWait:^(){
-            Article *article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
-            if (article) {
-                article.needsRefresh = @YES;
-                NSError *error = nil;
-                [articleDataContext_.mainContext save:&error];
-                NSLog(@"error = %@", error);
-            }
-        }];
-    }
+    session.articleStore.needsRefresh = YES;
 }
 
 -(void)reloadCurrentArticleInvalidatingCache:(BOOL)invalidateCache
@@ -1643,113 +1634,107 @@ typedef enum {
     // Cancel certain in-progress fetches.
     [[QueuesSingleton sharedInstance].articleFetchManager.operationQueue cancelAllOperations];
     [[QueuesSingleton sharedInstance].searchResultsFetchManager.operationQueue cancelAllOperations];
-
-    [articleDataContext_.mainContext performBlockAndWait:^(){
-        
-        MWKArticle *article = session.articleStore.article;
-        BOOL needsRefresh = NO;
-        
-        if (article) {
-            // Update the history dateVisited timestamp of the article to be visited only
-            // if the article was NOT loaded via back or forward buttons.
-            if (discoveryMethod != MWK_DISCOVERY_METHOD_BACKFORWARD) {
-                MWKHistoryEntry *entry = [session.userDataStore.historyList entryForTitle:session.title];
-                [session.userDataStore updateHistory:article.title discoveryMethod:discoveryMethod];
-            }
-            
-            // If article with sections just show them (unless needsRefresh is YES)
-            if ([session.articleStore.article.sections count] > 0 && !article.needsRefresh.boolValue) {
-                [self.tocVC setTocSectionDataForSections:session.articleStore.sections];
-                [self displayArticle:session.articleStore mode:DISPLAY_ALL_SECTIONS];
-                //[self showAlert:MWLocalizedString(@"search-loading-article-loaded", nil) type:ALERT_TYPE_TOP duration:-1];
-                [self fadeAlert];
-                return;
-            }
-            needsRefresh = article.needsRefresh.boolValue;
-            
-        }else{
-            
-            article = [NSEntityDescription
-                       insertNewObjectForEntityForName:@"Article"
-                       inManagedObjectContext:articleDataContext_.mainContext
-                       ];
-            article.lastmodifiedby = @"";
-            article.redirected = @"";
-            article.title = pageTitle.prefixedText;
-            article.dateCreated = [NSDate date];
-            article.site = session.site;
-            article.domain = session.currentArticleDomain;
-            article.domainName = session.currentArticleDomainName;
-            articleID = article.objectID;
-            
-            // Add history record.
-            // Note: don't add multiple history items for the same article or back-forward
-            // button behavior becomes a confusing mess.
-            History *newHistory =
-            [NSEntityDescription insertNewObjectForEntityForName: @"History"
-                                          inManagedObjectContext: article.managedObjectContext];
-            newHistory.dateVisited = [NSDate date];
-            //newHistory.dateVisited = [NSDate dateWithDaysBeforeNow:31];
-            newHistory.discoveryMethod = discoveryMethod;
-            [article addHistoryObject:newHistory];
+    
+    MWKArticle *article = session.articleStore.article;
+    BOOL needsRefresh = NO;
+    
+    if (article) {
+        // Update the history dateVisited timestamp of the article to be visited only
+        // if the article was NOT loaded via back or forward buttons.
+        if (discoveryMethod != MWK_DISCOVERY_METHOD_BACKFORWARD) {
+            [session.userDataStore updateHistory:article.title discoveryMethod:discoveryMethod];
         }
         
-        if (needsRefresh) {
-            // If and article needs refreshing remove its sections so they get reloaded too.
-            for (Section *thisSection in [article.section copy]) {
-                [articleDataContext_.mainContext deleteObject:thisSection];
-            }
+        // If article with sections just show them (unless needsRefresh is YES)
+        if ([session.articleStore.sections count] > 0 && !session.articleStore.needsRefresh) {
+            [self.tocVC setTocSectionDataForSections:session.articleStore.sections];
+            [self displayArticle:session.title mode:DISPLAY_ALL_SECTIONS];
+            //[self showAlert:MWLocalizedString(@"search-loading-article-loaded", nil) type:ALERT_TYPE_TOP duration:-1];
+            [self fadeAlert];
+            return;
         }
+        needsRefresh = session.articleStore.needsRefresh;
         
-        // "fetchFinished:" above will be notified when articleFetcher has actually retrieved some data.
-        // Note: cast to void to avoid compiler warning: http://stackoverflow.com/a/7915839
-        (void)[[ArticleFetcher alloc] initAndFetchSectionsForArticle: article
-                                                         withManager: [QueuesSingleton sharedInstance].articleFetchManager
-                                                  thenNotifyDelegate: self];
-
-    }];
+    }else{
+        
+        /*
+        article = [NSEntityDescription
+                   insertNewObjectForEntityForName:@"Article"
+                   inManagedObjectContext:articleDataContext_.mainContext
+                   ];
+        article.lastmodifiedby = @"";
+        article.redirected = @"";
+        article.title = pageTitle.prefixedText;
+        article.dateCreated = [NSDate date];
+        article.site = session.site;
+        article.domain = session.currentArticleDomain;
+        article.domainName = session.currentArticleDomainName;
+        articleID = article.objectID;
+        
+        // Add history record.
+        // Note: don't add multiple history items for the same article or back-forward
+        // button behavior becomes a confusing mess.
+        History *newHistory =
+        [NSEntityDescription insertNewObjectForEntityForName: @"History"
+                                      inManagedObjectContext: article.managedObjectContext];
+        newHistory.dateVisited = [NSDate date];
+        //newHistory.dateVisited = [NSDate dateWithDaysBeforeNow:31];
+        newHistory.discoveryMethod = discoveryMethod;
+        [article addHistoryObject:newHistory];
+         */
+        
+        [session.userDataStore updateHistory:article.title discoveryMethod:discoveryMethod];
+    }
+    
+    /*
+    if (needsRefresh) {
+        // If and article needs refreshing remove its sections so they get reloaded too.
+        for (Section *thisSection in [article.section copy]) {
+            [articleDataContext_.mainContext deleteObject:thisSection];
+        }
+    }
+     */
+    
+    // "fetchFinished:" above will be notified when articleFetcher has actually retrieved some data.
+    // Note: cast to void to avoid compiler warning: http://stackoverflow.com/a/7915839
+    (void)[[ArticleFetcher alloc] initAndFetchSectionsForArticleStore: session.articleStore
+                                                          withManager: [QueuesSingleton sharedInstance].articleFetchManager
+                                                   thenNotifyDelegate: self];
 }
 
 #pragma mark Display article from core data
 
 - (void)displayArticle:(MWKTitle *)title mode:(DisplayMode)mode
 {
-    // Get sorted sections for this article (sorts the article.section NSSet into sortedSections)
-    /*
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"sectionId" ascending:YES];
+    // this will reset session.articleStore
+    session.title = title;
 
-    Article *article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
-
-    if (!article || !article.title || !article.domain) return;
-     */
-    MWKArticle *article = [session.articleStore articleWithTitle:title];
+    MWKArticle *article = session.articleStore.article;
     if (!article) return;
 
-    session.currentArticleTitle = title.prefixedText;
-    session.currentArticleDomain = title.site.language;
     MWLanguageInfo *languageInfo = [MWLanguageInfo languageInfoForCode:title.site.language];
     NSString *uidir = ([WikipediaAppUtils isDeviceLanguageRTL] ? @"rtl" : @"ltr");
 
-    NSNumber *langCount = article.languagecount;
+    int langCount = article.languagecount;
     NSDate *lastModified = article.lastmodified;
-    NSString *lastModifiedBy = article.lastmodifiedby;
-    self.editable = article.editableBool;
-    self.protectionStatus = article.protectionStatus;
+    MWKUser *lastModifiedBy = article.lastmodifiedby;
+    self.editable = article.editable;
+    self.protectionStatus = article.protection;
     
     [self.bottomMenuViewController updateBottomBarButtonsEnabledState];
 
     [ROOT.topMenuViewController updateTOCButtonVisibility];
 
-    NSArray *sortedSections = [article.section sortedArrayUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
-    NSMutableArray *sectionTextArray = [@[] mutableCopy];
-    
-    for (Section *section in sortedSections) {
+    NSMutableArray *sectionTextArray = [[NSMutableArray alloc] init];
+
+    for (MWKSection *section in session.articleStore.sections) {
         if (mode == DISPLAY_APPEND_NON_LEAD_SECTIONS) {
             if ([section isLeadSection]) continue;
         }
-        if (section.html){
+        NSString *html = [session.articleStore sectionTextAtIndex:section.sectionId];
+        if (html) {
             // Structural html added around section html just before display.
-            NSString *sectionHTMLWithID = [section displayHTML];
+            NSString *sectionHTMLWithID = [section displayHTML:html];
 
             [sectionTextArray addObject:sectionHTMLWithID];
         }
@@ -1761,10 +1746,11 @@ typedef enum {
     // image. That way, if the housekeeping code removes all section images, it won't remove this
     // particular one because it checks to see if an article is referencing an image before it
     // removes them.
-    [article ifNoThumbnailUseFirstSectionImageAsThumbnailUsingContext:articleDataContext_.mainContext];
+//    [article ifNoThumbnailUseFirstSectionImageAsThumbnailUsingContext:articleDataContext_.mainContext];
 
     // Pull the scroll offset out so the article object doesn't have to be passed into the block below.
-    CGPoint scrollOffset = CGPointMake(article.lastScrollX.floatValue, article.lastScrollY.floatValue);
+    MWKHistoryEntry *historyEntry = [session.userDataStore.historyList entryForTitle:article.title];
+    CGPoint scrollOffset = historyEntry ? CGPointMake(0, historyEntry.scrollPosition) : CGPointMake(0, 0);
     NSString *jumpToFragment = self.jumpToFragment;
     
     [[NSOperationQueue mainQueue] addOperationWithBlock: ^ {
@@ -1785,7 +1771,7 @@ typedef enum {
 
                 [sectionTextArray addObject: [self renderFooterDivider]];
                 [sectionTextArray addObject: [self renderLastModified:lastModified by:lastModifiedBy]];
-                [sectionTextArray addObject: [self renderLanguageButtonForCount: langCount.integerValue]];
+                [sectionTextArray addObject: [self renderLanguageButtonForCount: langCount]];
                 [sectionTextArray addObject: [self renderLicenseFooter]];
             }
 
@@ -1878,7 +1864,7 @@ typedef enum {
     }
 }
 
--(NSString *)renderLastModified:(NSDate *)date by:(NSString *)username
+-(NSString *)renderLastModified:(NSDate *)date by:(MWKUser *)user
 {
     NSString *langCode = [[NSLocale preferredLanguages] objectAtIndex:0];
     MWLanguageInfo *lang = [MWLanguageInfo languageInfoForCode:langCode];
@@ -1888,10 +1874,10 @@ typedef enum {
     NSString *ts = [WikipediaAppUtils relativeTimestamp:date];
     NSString *recent = (fabs([date timeIntervalSinceNow]) < 60*60*24) ? @"recent" : @"";
     NSString *lm;
-    if (username && ![username isEqualToString:@""]) {
+    if (user && !user.anonymous) {
         lm = [[MWLocalizedString(@"lastmodified-by-user", nil)
                stringByReplacingOccurrencesOfString:@"$1" withString:ts]
-                stringByReplacingOccurrencesOfString:@"$2" withString:username];
+                stringByReplacingOccurrencesOfString:@"$2" withString:user.name];
     } else {
         lm = [MWLocalizedString(@"lastmodified-by-anon", nil)
               stringByReplacingOccurrencesOfString:@"$1" withString:ts];
@@ -1975,7 +1961,7 @@ typedef enum {
     [[QueuesSingleton sharedInstance].zeroRatedMessageFetchManager.operationQueue cancelAllOperations];
 
     if ([[[notification userInfo] objectForKey:@"state"] boolValue]) {
-        (void)[[WikipediaZeroMessageFetcher alloc] initAndFetchMessageForDomain: session.currentArticleDomain
+        (void)[[WikipediaZeroMessageFetcher alloc] initAndFetchMessageForDomain: session.site.language
                                                                     withManager: [QueuesSingleton sharedInstance].zeroRatedMessageFetchManager
                                                              thenNotifyDelegate: self];
     } else {
@@ -2029,11 +2015,9 @@ typedef enum {
 
 -(BOOL)refreshShouldShow
 {
-    NSString *title = session.currentArticleTitle;
-    
     return (![self tocDrawerIsOpen])
         &&
-        (title && (title.length > 0))
+        (session.articleStore != nil)
         &&
         (!ROOT.isAnimatingTopAndBottomMenuHidden);
 }
@@ -2130,10 +2114,11 @@ typedef enum {
 
 - (void)languageSelected:(NSDictionary *)langData sender:(LanguagesViewController *)sender
 {
-    [NAV loadArticleWithTitle: [MWPageTitle titleWithString:langData[@"*"]]
-                       domain: langData[@"code"]
+    MWKSite *site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:langData[@"code"]];
+    MWKTitle *title = [site titleWithString:langData[@"*"]];
+    [NAV loadArticleWithTitle: title
                      animated: NO
-              discoveryMethod: DISCOVERY_METHOD_SEARCH
+              discoveryMethod: MWK_DISCOVERY_METHOD_SEARCH
             invalidatingCache: NO
                    popToWebVC: YES];
 

@@ -6,7 +6,7 @@
 #import "EditFunnel.h"
 #import "SavedPagesFunnel.h"
 
-@class NSManagedObjectID;
+@class MWKSection;
 
 @interface SectionEditorViewController : UIViewController <UITextViewDelegate, UIScrollViewDelegate, FetchFinishedDelegate, UITextFieldDelegate>
 

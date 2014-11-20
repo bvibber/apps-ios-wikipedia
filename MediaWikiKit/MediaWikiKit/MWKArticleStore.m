@@ -124,4 +124,26 @@
     return image;
 }
 
+
+-(void)setNeedsRefresh:(BOOL)val
+{
+    NSString *payload = @"needsRefresh";
+    NSString *filePath = [self.dataStore pathForArticle:self.article];
+    NSString *fileName = [filePath stringByAppendingPathComponent:@"needsRefresh.lock"];
+    [payload writeToFile:fileName atomically:YES encoding:NSUTF8StringEncoding error:nil];
+}
+
+-(BOOL)needsRefresh
+{
+    NSString *filePath = [self.dataStore pathForArticle:self.article];
+    NSString *fileName = [filePath stringByAppendingPathComponent:@"needsRefresh.lock"];
+    return [[NSFileManager defaultManager] fileExistsAtPath:fileName isDirectory:nil];
+}
+
+-(void)remove
+{
+    NSString *path = [self.dataStore pathForArticle:self.article];
+    [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+}
+
 @end

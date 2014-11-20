@@ -46,9 +46,9 @@
 -(void)fetchWithManager:(AFHTTPRequestOperationManager *)manager
 {
     NSString *title = self.articleStore.title.prefixedText;
-    NSString *subdomain = self.articleStore.site.language;
+    NSString *subdomain = self.articleStore.title.site.language;
     
-    if (!self.article) {
+    if (!self.articleStore) {
         NSLog(@"NO ARTICLE DELEGATE");
         return;
     }
@@ -56,7 +56,7 @@
         NSLog(@"NO DOWNLOAD DELEGATE");
         return;
     }
-    if(!domain){
+    if(!subdomain){
         NSLog(@"NO DOMAIN");
         return;
     }
@@ -65,7 +65,7 @@
         return;
     }
 
-    NSURL *url = [[SessionSingleton sharedInstance] urlForDomain:subdomain];
+    NSURL *url = [[SessionSingleton sharedInstance] urlForLanguage:subdomain];
     
     void (^getNonLeadSections)() = ^void() {
         // Get the remaining sections data.
@@ -78,9 +78,9 @@
             //NSLog(@"JSON: %@", responseObject);
             
             //NSDictionary *nonLeadSectionsResults = [self prepareResultsFromResponse:responseObject forTitle:title];
-            [self.articleStore importMobileViewJSON:response];
+            [self.articleStore importMobileViewJSON:responseObject];
             
-            [self applyResultsForNonLeadSections:nonLeadSectionsResults];
+            //[self applyResultsForNonLeadSections:nonLeadSectionsResults];
 
             [self finishWithError: nil
                          userData: @(ARTICLE_SECTION_TYPE_NON_LEAD)];
@@ -113,7 +113,7 @@
         [self removeMCCMNCHeaderFromRequestSerializer:manager.requestSerializer];
         
         //NSDictionary *leadSectionResults = [self prepareResultsFromResponse:responseObject forTitle:title];
-        [self.articleStore importMobileViewJSON:response];
+        [self.articleStore importMobileViewJSON:responseObject];
         
         //[self applyResultsForLeadSection:leadSectionResults];
         [self createImageRecordsForSection:0];
@@ -443,7 +443,7 @@
 
 -(void)createImageRecordsForSection:(int)sectionId
 {
-    NSString html = [self.articleStore sectionTextAtIndex:sectionId];
+    NSString *html = [self.articleStore sectionTextAtIndex:sectionId];
     
     // Parse the section html extracting the image urls (in order)
     // See: http://www.raywenderlich.com/14172/how-to-parse-html-on-ios
