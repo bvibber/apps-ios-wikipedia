@@ -28,7 +28,7 @@
 
 // If "invalidateCache" is set to YES the article will be re-downloaded first.
 -(void)navigateToPage: (MWKTitle *)title
-      discoveryMethod: (ArticleDiscoveryMethod)discoveryMethod
+      discoveryMethod: (MWKHistoryDiscoveryMethod)discoveryMethod
     invalidatingCache: (BOOL)invalidateCache
  showLoadingIndicator: (BOOL)showLoadingIndicator;
 

@@ -233,17 +233,14 @@
 {
     [self showAlert:MWLocalizedString(@"wikitext-downloading", nil) type:ALERT_TYPE_TOP duration:-1];
 
-    Section *section = (Section *)[articleDataContext_.mainContext objectWithID:self.sectionID];
-
     // If fromTitle was set, the section was transcluded, so use the title of the page
     // it was transcluded from.
-    NSString *title = section.fromTitle ? section.fromTitle : section.article.title;
+    MWKTitle *title = self.section.fromTitle;
 
     [[QueuesSingleton sharedInstance].sectionWikiTextDownloadManager.operationQueue cancelAllOperations];
 
-    (void)[[WikiTextSectionFetcher alloc] initAndFetchWikiTextForSection: section
+    (void)[[WikiTextSectionFetcher alloc] initAndFetchWikiTextForSection: self.section
                                                                    title: title
-                                                                  domain: section.article.domain
                                                              withManager: [QueuesSingleton sharedInstance].sectionWikiTextDownloadManager
                                                       thenNotifyDelegate: self];
 }
@@ -269,7 +266,7 @@
 - (void)preview
 {
     PreviewAndSaveViewController *previewVC = [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"PreviewViewController"];
-    previewVC.sectionID = self.sectionID;
+    previewVC.section = self.section;
     previewVC.wikiText = self.editTextView.text;
     previewVC.funnel = self.funnel;
     previewVC.savedPagesFunnel = self.savedPagesFunnel;

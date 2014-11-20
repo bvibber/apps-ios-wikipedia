@@ -133,8 +133,7 @@ typedef enum {
 @property (copy) NSString *protectionStatus;
 
 // These are presently only used by updateHistoryDateVisitedForArticleBeingNavigatedFrom method.
-@property (strong, nonatomic) NSString *currentTitle;
-@property (strong, nonatomic) NSString *currentDomain;
+@property (strong, nonatomic) MWKTitle *currentTitle;
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *bottomNavHeightConstraint;
 
@@ -148,6 +147,7 @@ typedef enum {
 @implementation WebViewController {
     CGFloat scrollViewDragBeganVerticalOffset_;
     ArticleDataContextSingleton *articleDataContext_;
+    SessionSingleton *session;
 }
 
 - (BOOL)prefersStatusBarHidden
@@ -176,6 +176,8 @@ typedef enum {
 {
     [super viewDidLoad];
 
+    session = session;
+    
     self.bottomNavHeightConstraint.constant = CHROME_MENUS_HEIGHT;
     
     self.scrollingToTop = NO;
@@ -475,17 +477,10 @@ typedef enum {
     SectionEditorViewController *sectionEditVC =
     [self.navigationController.storyboard instantiateViewControllerWithIdentifier:@"SectionEditorViewController"];
 
-    NSManagedObjectID *articleID =
-    [articleDataContext_.mainContext getArticleIDForTitle: [SessionSingleton sharedInstance].currentArticleTitle
-                                                   domain: [SessionSingleton sharedInstance].currentArticleDomain];
-    if (articleID) {
-        Article *article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
-        
-        Section *section =
-        (Section *)[articleDataContext_.mainContext getEntityForName: @"Section"
-                                                 withPredicateFormat: @"article == %@ AND sectionId == %@", article, @(self.sectionToEditId)];
-        
-        sectionEditVC.sectionID = section.objectID;
+    MWKArticleStore *articleStore = session.articleStore;
+    
+    if (articleStore.article) {
+        sectionEditVC.section = [articleStore sectionAtIndex:self.sectionToEditId];
     }
 
     [ROOT pushViewController:sectionEditVC animated:YES];
@@ -676,11 +671,10 @@ typedef enum {
     // Prevent toc reveal if loading article.
     if (self.activityIndicator.isAnimating) return;
 
-    NSString *currentArticleTitle = [SessionSingleton sharedInstance].currentArticleTitle;
-    if (!currentArticleTitle || (currentArticleTitle.length == 0)) return;
+    if (!session.title) return;
     if (!self.referencesHidden) return;
 
-    if([[SessionSingleton sharedInstance] isCurrentArticleMain]) return;
+    if([session isCurrentArticleMain]) return;
 
     if(self.unsafeToToggleTOC) return;
 
@@ -947,12 +941,10 @@ typedef enum {
             // Ensure the menu is visible when navigating to new page.
             [weakSelf animateTopAndBottomMenuReveal];
         
-            NSString *encodedTitle = [href substringWithRange:NSMakeRange(6, href.length - 6)];
-            NSString *title = [encodedTitle stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            MWKTitle *pageTitle = [[SessionSingleton sharedInstance].currentSite titleWithString:title];
+            MWKTitle *pageTitle = [session.site titleWithInternalLink:href];
 
             [weakSelf navigateToPage: pageTitle
-                     discoveryMethod: DISCOVERY_METHOD_LINK
+                     discoveryMethod: MWK_DISCOVERY_METHOD_LINK
                    invalidatingCache: NO
                 showLoadingIndicator: YES];
         } else if ([href hasPrefix:@"http:"] || [href hasPrefix:@"https:"] || [href hasPrefix:@"//"]) {
@@ -965,7 +957,7 @@ typedef enum {
             // TODO: make all of the stuff above parse the URL into parts
             // unless it's /wiki/ or #anchor style.
             // Then validate if it's still in Wikipedia land and branch appropriately.
-            if ([SessionSingleton sharedInstance].zeroConfigState.disposition &&
+            if (session.zeroConfigState.disposition &&
                 [[NSUserDefaults standardUserDefaults] boolForKey:@"ZeroWarnWhenLeaving"]) {
                 weakSelf.externalUrl = href;
                 UIAlertView *dialog = [[UIAlertView alloc]
@@ -1062,36 +1054,7 @@ typedef enum {
 
 -(void)saveCurrentPage
 {
-    [articleDataContext_.mainContext performBlockAndWait:^(){
-        NSManagedObjectID *articleID = [articleDataContext_.mainContext getArticleIDForTitle: [SessionSingleton sharedInstance].currentArticleTitle
-                                                                                      domain: [SessionSingleton sharedInstance].currentArticleDomain];
-        if (!articleID) return;
-        Article *article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
-        if (!article || !article.title || !article.domain) return;
-
-        SavedPagesFunnel *funnel = [[SavedPagesFunnel alloc] init];
-        if (article.saved.count == 0) {
-            // Show alert.
-            [self showPageSavedAlertMessageForTitle:article.title];
-
-            // Actually perform the save.
-            Saved *saved = [NSEntityDescription insertNewObjectForEntityForName:@"Saved" inManagedObjectContext:articleDataContext_.mainContext];
-            saved.dateSaved = [NSDate date];
-            [article addSavedObject:saved];
-            [funnel logSaveNew];
-        }else{
-            // Unsave!
-            //[articleDataContext_.mainContext deleteObject:article.saved.anyObject];
-            for (id obj in article.saved.copy) {
-                [articleDataContext_.mainContext deleteObject:obj];
-            }
-            [self fadeAlert];
-            [funnel logDelete];
-        }
-        NSError *error = nil;
-        [articleDataContext_.mainContext save:&error];
-        NSLog(@"SAVE PAGE ERROR = %@", error);
-    }];
+    [session.userDataStore savePage:session.title];
 }
 
 -(void)showPageSavedAlertMessageForTitle:(NSString *)title
@@ -1173,23 +1136,13 @@ typedef enum {
 -(void)saveWebViewScrollOffset
 {
     // Don't record scroll position of "main" pages.
-    if ([[SessionSingleton sharedInstance] isCurrentArticleMain]) return;
-    
+    if ([session isCurrentArticleMain]) return;
 
-    [articleDataContext_.mainContext performBlockAndWait:^(){
-        // Save scroll location
-        NSManagedObjectID *articleID = [articleDataContext_.mainContext getArticleIDForTitle: [SessionSingleton sharedInstance].currentArticleTitle
-                                                                                      domain: [SessionSingleton sharedInstance].currentArticleDomain];
-        if (articleID) {
-            Article *article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
-            if (article) {
-                article.lastScrollX = @(self.webView.scrollView.contentOffset.x);
-                article.lastScrollY = @(self.webView.scrollView.contentOffset.y);
-                NSError *error = nil;
-                [articleDataContext_.mainContext save:&error];
-            }
-        }
-    }];
+    MWKHistoryEntry *entry = [session.userDataStore.historyList entryForTitle:session.title];
+    if (entry) {
+        entry.scrollPosition = self.webView.scrollView.contentOffset.y;
+        [session.userDataStore save];
+    }
 }
 
 #pragma mark Web view html content live location retrieval
@@ -1363,7 +1316,7 @@ typedef enum {
     //[imageHousekeeping performHouseKeeping];
     
     // Do not remove the following commented toggle. It's for testing W0 stuff.
-    //[[SessionSingleton sharedInstance].zeroConfigState toggleFakeZeroOn];
+    //[session.zeroConfigState toggleFakeZeroOn];
 
     //[self toggleImageSheet];
 
@@ -1389,14 +1342,14 @@ typedef enum {
         NSManagedObjectContext *ctx = articleDataContext_.mainContext;
         [ctx performBlockAndWait:^(){
             NSManagedObjectID *articleID =
-            [ctx getArticleIDForTitle: [SessionSingleton sharedInstance].currentArticleTitle
-                               domain: [SessionSingleton sharedInstance].currentArticleDomain];
+            [ctx getArticleIDForTitle: session.currentArticleTitle
+                               domain: session.currentArticleDomain];
             Article *article = (Article *)[ctx objectWithID:articleID];
             NSArray *sectionImages = [article getSectionImagesUsingContext:ctx];
             NSMutableArray *views = @[].mutableCopy;
             for (SectionImage *sectionImage in sectionImages) {
                 Section *section = sectionImage.section;
-                NSString *title = (section.title.length > 0) ? section.title : [SessionSingleton sharedInstance].currentArticleTitle;
+                NSString *title = (section.title.length > 0) ? section.title : session.currentArticleTitle;
                 //NSLog(@"\n\n\nsection image = %@ \n\tsection = %@ \n\tindex in section = %@ \n\timage size = %@", sectionImage.image.fileName, sectionTitle, sectionImage.index, sectionImage.image.dataSize);
                 if(sectionImage.index.integerValue == 0){
                     PaddedLabel *label = [[PaddedLabel alloc] init];
@@ -1425,10 +1378,10 @@ typedef enum {
 
 -(void)updateHistoryDateVisitedForArticleBeingNavigatedFrom
 {
+    // @fixme what is this doing? updating history, or updating article?
     [articleDataContext_.mainContext performBlockAndWait:^(){
         NSManagedObjectID *articleID =
-        [articleDataContext_.mainContext getArticleIDForTitle: self.currentTitle
-                                                       domain: self.currentDomain];
+        [articleDataContext_.mainContext getArticleIDForTitle: self.currentTitle];
         if (articleID) {
             Article *article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
             if (article) {
@@ -1448,13 +1401,12 @@ typedef enum {
 
 #pragma mark Article loading ops
 
--(void)navigateToPage: (MWPageTitle *)title
-               domain: (NSString *)domain
-      discoveryMethod: (ArticleDiscoveryMethod)discoveryMethod
+-(void)navigateToPage: (MWKTitle *)title
+      discoveryMethod: (MWKHistoryDiscoveryMethod)discoveryMethod
     invalidatingCache: (BOOL)invalidateCache
  showLoadingIndicator: (BOOL)showLoadingIndicator
 {
-    NSString *cleanTitle = title.text;
+    NSString *cleanTitle = title.prefixedText;
     
     // Don't try to load nothing. Core data takes exception with such nonsense.
     if (cleanTitle == nil) return;
@@ -1467,7 +1419,7 @@ typedef enum {
     // Show loading message
     //[self showAlert:MWLocalizedString(@"search-loading-section-zero", nil) type:ALERT_TYPE_TOP duration:-1];
 
-    if (invalidateCache) [self invalidateCacheForPageTitle:title domain:domain];
+    if (invalidateCache) [self invalidateCacheForPageTitle:title];
     
     self.jumpToFragment = title.fragment;
 
@@ -1477,12 +1429,10 @@ typedef enum {
     if (discoveryMethod != DISCOVERY_METHOD_BACKFORWARD) {
         [self updateHistoryDateVisitedForArticleBeingNavigatedFrom];
     }
-    self.currentTitle = title.text;
-    self.currentDomain = domain;
+    self.currentTitle = title;
     
     [self retrieveArticleForPageTitle: title
-                               domain: domain
-                      discoveryMethod: [NAV getStringForDiscoveryMethod:discoveryMethod]];
+                      discoveryMethod: discoveryMethod];
 
     /*
     // Reset the search field to its placeholder text after 5 seconds.
@@ -1493,8 +1443,7 @@ typedef enum {
     */
 }
 
-- (void)invalidateCacheForPageTitle: (MWPageTitle *)pageTitle
-                             domain: (NSString *)domain
+- (void)invalidateCacheForPageTitle: (MWKTitle *)pageTitle
 {
     // Mark article for refreshing so its core data records will be reloaded.
     NSManagedObjectID *articleID =
@@ -1515,10 +1464,8 @@ typedef enum {
 
 -(void)reloadCurrentArticleInvalidatingCache:(BOOL)invalidateCache
 {
-    MWPageTitle *title = [MWPageTitle titleWithString:[SessionSingleton sharedInstance].currentArticleTitle];
-    [self navigateToPage: title
-                  domain: [SessionSingleton sharedInstance].currentArticleDomain
-         discoveryMethod: DISCOVERY_METHOD_SEARCH
+    [self navigateToPage: session.title
+         discoveryMethod: MWK_DISCOVERY_METHOD_SEARCH
        invalidatingCache: invalidateCache
     showLoadingIndicator: YES];
 }
@@ -1547,11 +1494,10 @@ typedef enum {
                         if (redirectedTitle) {
                             // Get discovery method for call to "retrieveArticleForPageTitle:".
                             // There should only be a single history item (at most).
-                            MWKHistoryStore *historyStore = [[sessionSingleton sharedInstance].dataStore historyStore];
-                            MWKHistoryEntry *history = [historyStore entryForTitle:article.title];
-                            // Get the article's discovery method string.
-                            NSString *discoveryMethod =
-                            (history) ? history.discoveryMethod : [NAV getStringForDiscoveryMethod:DISCOVERY_METHOD_SEARCH];
+                            MWKHistoryEntry *history = [session.userDataStore.historyList entryForTitle:article.title];
+                            // Get the article's discovery method.
+                            MWKHistoryDiscoveryMethod discoveryMethod =
+                            (history) ? history.discoveryMethod : MWK_DISCOVERY_METHOD_SEARCH;
                             
                             // Remove the article so it doesn't get saved.
                             //[article.managedObjectContext deleteObject:article];
@@ -1692,7 +1638,7 @@ typedef enum {
 }
 
 - (void)retrieveArticleForPageTitle: (MWKTitle *)pageTitle
-                    discoveryMethod: (NSString *)discoveryMethod
+                    discoveryMethod: (MWKHistoryDiscoveryMethod)discoveryMethod
 {
     // Cancel certain in-progress fetches.
     [[QueuesSingleton sharedInstance].articleFetchManager.operationQueue cancelAllOperations];
@@ -1700,28 +1646,21 @@ typedef enum {
 
     [articleDataContext_.mainContext performBlockAndWait:^(){
         
-        __block NSManagedObjectID *articleID =
-        [articleDataContext_.mainContext getArticleIDForTitle: pageTitle.prefixedText
-                                                       domain: domain];
+        MWKArticle *article = session.articleStore.article;
         BOOL needsRefresh = NO;
         
-        Article *article = nil;
-        if (articleID) {
-            article = (Article *)[articleDataContext_.mainContext objectWithID:articleID];
-            
+        if (article) {
             // Update the history dateVisited timestamp of the article to be visited only
             // if the article was NOT loaded via back or forward buttons.
-            if (![discoveryMethod isEqualToString:@"backforward"]) {
-                if (article.history.count > 0) { // There should only be a single history item.
-                    History *history = [article.history anyObject];
-                    history.dateVisited = [NSDate date];
-                }
+            if (discoveryMethod != MWK_DISCOVERY_METHOD_BACKFORWARD) {
+                MWKHistoryEntry *entry = [session.userDataStore.historyList entryForTitle:session.title];
+                [session.userDataStore updateHistory:article.title discoveryMethod:discoveryMethod];
             }
             
             // If article with sections just show them (unless needsRefresh is YES)
-            if (article.section.count > 0 && !article.needsRefresh.boolValue) {
-                [self.tocVC setTocSectionDataForSections:article.section];
-                [self displayArticle:articleID mode:DISPLAY_ALL_SECTIONS];
+            if ([session.articleStore.article.sections count] > 0 && !article.needsRefresh.boolValue) {
+                [self.tocVC setTocSectionDataForSections:session.articleStore.sections];
+                [self displayArticle:session.articleStore mode:DISPLAY_ALL_SECTIONS];
                 //[self showAlert:MWLocalizedString(@"search-loading-article-loaded", nil) type:ALERT_TYPE_TOP duration:-1];
                 [self fadeAlert];
                 return;
@@ -1738,9 +1677,9 @@ typedef enum {
             article.redirected = @"";
             article.title = pageTitle.prefixedText;
             article.dateCreated = [NSDate date];
-            article.site = [SessionSingleton sharedInstance].site;
-            article.domain = [SessionSingleton sharedInstance].currentArticleDomain;
-            article.domainName = [SessionSingleton sharedInstance].currentArticleDomainName;
+            article.site = session.site;
+            article.domain = session.currentArticleDomain;
+            article.domainName = session.currentArticleDomainName;
             articleID = article.objectID;
             
             // Add history record.
@@ -1783,11 +1722,11 @@ typedef enum {
 
     if (!article || !article.title || !article.domain) return;
      */
-    MWKArticle *article = [[SessionSingleton sharedInstance].articleStore articleWithTitle:title];
+    MWKArticle *article = [session.articleStore articleWithTitle:title];
     if (!article) return;
 
-    [SessionSingleton sharedInstance].currentArticleTitle = title.prefixedText;
-    [SessionSingleton sharedInstance].currentArticleDomain = title.site.language;
+    session.currentArticleTitle = title.prefixedText;
+    session.currentArticleDomain = title.site.language;
     MWLanguageInfo *languageInfo = [MWLanguageInfo languageInfoForCode:title.site.language];
     NSString *uidir = ([WikipediaAppUtils isDeviceLanguageRTL] ? @"rtl" : @"ltr");
 
@@ -1839,7 +1778,7 @@ typedef enum {
         }
 
         if (mode != DISPLAY_APPEND_NON_LEAD_SECTIONS) {
-            if (![[SessionSingleton sharedInstance] isCurrentArticleMain]) {
+            if (![session isCurrentArticleMain]) {
                 if (mode == DISPLAY_LEAD_SECTION) {
                     [sectionTextArray addObject: [NSString stringWithFormat:@"<div id='nonLeadSectionsInjectionPoint' style='margin-top:2em;margin-bottom:2em;'>%@</div>", MWLocalizedString(@"search-loading-section-remaining", nil)]];
                 }
@@ -2036,7 +1975,7 @@ typedef enum {
     [[QueuesSingleton sharedInstance].zeroRatedMessageFetchManager.operationQueue cancelAllOperations];
 
     if ([[[notification userInfo] objectForKey:@"state"] boolValue]) {
-        (void)[[WikipediaZeroMessageFetcher alloc] initAndFetchMessageForDomain: [SessionSingleton sharedInstance].currentArticleDomain
+        (void)[[WikipediaZeroMessageFetcher alloc] initAndFetchMessageForDomain: session.currentArticleDomain
                                                                     withManager: [QueuesSingleton sharedInstance].zeroRatedMessageFetchManager
                                                              thenNotifyDelegate: self];
     } else {
@@ -2090,7 +2029,7 @@ typedef enum {
 
 -(BOOL)refreshShouldShow
 {
-    NSString *title = [SessionSingleton sharedInstance].currentArticleTitle;
+    NSString *title = session.currentArticleTitle;
     
     return (![self tocDrawerIsOpen])
         &&

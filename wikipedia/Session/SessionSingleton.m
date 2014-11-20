@@ -5,9 +5,9 @@
 #import "WikipediaAppUtils.h"
 
 @implementation SessionSingleton {
-    MWKSite *_currentSite;
-    MWKTitle *_currentTitle;
-    MWKArticleStore *_currentArticleStore;
+    MWKTitle *_title;
+    MWKArticleStore *_articleStore;
+    MWKUserDataStore *_userDataStore;
 }
 
 + (SessionSingleton *)sharedInstance
@@ -36,27 +36,28 @@
         NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) firstObject];
         NSString *basePath = [documentsFolder stringByAppendingPathComponent:@"Data"];
         _dataStore = [[MWKDataStore alloc] initWithBasePath:basePath];
+        _userDataStore = [self.dataStore userDataStore];
         
-        _currentSite = nil;
-        _currentTitle = nil;
-        _currentArticleStore = nil;
+        _title = nil;
+        _articleStore = nil;
     }
     return self;
 }
 
--(NSURL *)urlForDomain:(NSString *)domain
+-(NSURL *)urlForLanguage:(NSString *)language
 {
     NSString *endpoint = self.fallback ? @"" : @".m";
-    return [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@.%@/w/api.php", domain, endpoint, [self site]]];
+    return [NSURL URLWithString:[NSString stringWithFormat:@"https://%@%@.%@/w/api.php", language, endpoint, self.site.domain]];
 }
 
 -(NSString *)searchApiUrl
 {
     NSString *endpoint = self.fallback ? @"" : @".m";
-    return [NSString stringWithFormat:@"https://%@%@.%@/w/api.php", [self domain], endpoint, [self site]];
+    return [NSString stringWithFormat:@"https://%@%@.%@/w/api.php", self.site.language, endpoint, self.site.domain];
 }
 
--(void)setDomain:(NSString *)domain
+/*
+-(void)setSite:(NSString *)domain
 {
     self.domainMainArticleTitle = [WikipediaAppUtils mainArticleTitleForCode:domain];
 
@@ -136,10 +137,11 @@
 {
     return [WikipediaAppUtils domainNameForCode:self.currentArticleDomain];
 }
+*/
 
 -(BOOL)isCurrentArticleMain
 {
-    NSString *mainArticleTitle = [WikipediaAppUtils mainArticleTitleForCode: self.currentArticleDomain];
+    NSString *mainArticleTitle = [WikipediaAppUtils mainArticleTitleForCode: self.site.language];
     // Reminder: Do not do the following instead of the line above:
     //      NSString *mainArticleTitle = self.domainMainArticleTitle;
     // This is because each language domain has its own main page, and self.domainMainArticleTitle
@@ -151,31 +153,32 @@
     // switched their search language from "en" to "fr", then hit back button - the "en" main
     // page would erroneously display edit pencil icons.
     if (!mainArticleTitle) return NO;
-    return ([self.currentArticleTitle isEqualToString: mainArticleTitle]);
+    return ([self.title.prefixedText isEqualToString: mainArticleTitle]);
 }
 
--(MWKTitle *)currentTitle
+-(MWKTitle *)title
 {
-    if (_currentTitle == nil) {
-        _currentTitle = [self.currentSite titleWithString:self.currentArticleTitle];
-    }
-    return _currentTitle;
+    assert(_title != nil);
+    return _title;
 }
 
--(MWKSite *)currentSite
+-(MWKSite *)site
 {
-    if (_currentSite == nil) {
-        _currentSite = [[MWKSite alloc] initWithDomain:self.site language:self.domain];
-    }
-    return _currentSite;
+    return self.title.site;
 }
 
-- (MWKArticleStore *)currentArticleStore
+- (MWKArticleStore *)articleStore
 {
-    if (_currentArticleStore) {
-        _currentArticleStore = [self.dataStore articleStoreWithTitle:self.currentTitle];
+    if (_articleStore) {
+        _articleStore = [self.dataStore articleStoreWithTitle:self.title];
     }
-    return _currentArticleStore;
+    return _articleStore;
+}
+
+-(void)setTitle:(MWKTitle *)title
+{
+    _title = title;
+    _articleStore = nil;
 }
 
 -(BOOL)sendUsageReports

@@ -65,4 +65,28 @@
     return _recentSearchList;
 }
 
+-(void)updateHistory:(MWKTitle *)title discoveryMethod:(MWKHistoryDiscoveryMethod)discoveryMethod
+{
+    MWKHistoryEntry *entry = [[MWKHistoryEntry alloc] initWithTitle:title discoveryMethod:discoveryMethod];
+    [self.historyList addEntry:entry];
+    [self save];
+}
+
+-(void)savePage:(MWKTitle *)title
+{
+    MWKSavedPageEntry *entry = [[MWKSavedPageEntry alloc] initWithTitle:title];
+    [self.savedPageList addEntry:entry];
+    [self save];
+}
+
+-(void)unsavePage:(MWKTitle *)title
+{
+    MWKSavedPageEntry *entry = [self.savedPageList entryForTitle:title];
+    if (entry) {
+        [self.savedPageList removeEntry:entry];
+        [self save];
+    }
+}
+
+
 @end

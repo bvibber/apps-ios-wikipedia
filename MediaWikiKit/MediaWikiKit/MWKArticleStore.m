@@ -80,7 +80,7 @@
     }
 }
 
--(MWKSection *)sectionAtIndex:(int)index
+-(MWKSection *)sectionAtIndex:(NSUInteger)index
 {
     if (_sections) {
         return _sections[index];
@@ -89,7 +89,7 @@
     }
 }
 
--(NSString *)sectionTextAtIndex:(int)index
+-(NSString *)sectionTextAtIndex:(NSUInteger)index
 {
     return [self.dataStore sectionTextWithId:index article:self.article];
 }

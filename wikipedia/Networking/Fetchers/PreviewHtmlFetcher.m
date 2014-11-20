@@ -28,7 +28,7 @@
                          domain: (NSString *)domain
                     withManager: (AFHTTPRequestOperationManager *)manager
 {
-    NSURL *url = [[SessionSingleton sharedInstance] urlForDomain:domain];
+    NSURL *url = [[SessionSingleton sharedInstance] urlForLanguage:domain];
 
     NSDictionary *params = [self getParamsForTitle:title wikiText:wikiText];
     
