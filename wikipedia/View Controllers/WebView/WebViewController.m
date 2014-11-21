@@ -1053,7 +1053,31 @@ typedef enum {
 
 -(void)saveCurrentPage
 {
-    [session.userDataStore savePage:session.title];
+    MWKTitle *title = session.title;
+    MWKUserDataStore *store = session.userDataStore;
+    MWKSavedPageList *list = store.savedPageList;
+    MWKSavedPageEntry *entry = [list entryForTitle:title];
+
+    SavedPagesFunnel *funnel = [[SavedPagesFunnel alloc] init];
+
+    if (entry == nil) {
+        // Show alert.
+        [self showPageSavedAlertMessageForTitle:title.prefixedText];
+
+        // Actually perform the save.
+        entry = [[MWKSavedPageEntry alloc] initWithTitle:title];
+        [list addEntry:entry];
+
+        [store save];
+        [funnel logSaveNew];
+    } else {
+        // Unsave!
+        [list removeEntry:entry];
+        [store save];
+
+        [self fadeAlert];
+        [funnel logDelete];
+    }
 }
 
 -(void)showPageSavedAlertMessageForTitle:(NSString *)title
