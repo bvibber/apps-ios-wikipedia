@@ -2,9 +2,7 @@
 //  Copyright (c) 2014 Wikimedia Foundation. Provided under MIT-style license; please copy and modify!
 
 #import "ArticleFetcher.h"
-//#import "Article.h"
 #import "Defines.h"
-#import "Section.h"
 #import "QueuesSingleton.h"
 #import "MWKSection+ImageRecords.h"
 #import "NSString+Extras.h"

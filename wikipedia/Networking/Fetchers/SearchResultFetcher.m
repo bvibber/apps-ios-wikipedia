@@ -8,9 +8,6 @@
 #import "NSObject+Extras.h"
 #import "NSString+Extras.h"
 #import "WikipediaAppUtils.h"
-#import "ArticleDataContextSingleton.h"
-#import "ArticleCoreDataObjects.h"
-#import "NSManagedObjectContext+SimpleFetch.h"
 
 #define GET_SNIPPET_WITH_IN_ARTICLE_RESULTS YES
 
@@ -271,6 +268,8 @@
 
 -(void)preparePlaceholderImageRecordsForSearchResults:(NSArray *)searchResults
 {
+    // @TODO placeholder images
+    /*
     // Prepare placeholder Image records.
     [[ArticleDataContextSingleton sharedInstance].mainContext performBlockAndWait:^(){
         for (NSDictionary *page in searchResults) {
@@ -292,6 +291,7 @@
         NSError *error = nil;
         [[ArticleDataContextSingleton sharedInstance].mainContext save:&error];
     }];
+     */
 }
 
 -(void)insertPlaceHolderImageEntityIntoContext: (NSManagedObjectContext *)context
@@ -299,6 +299,8 @@
                                          width: (NSNumber *)width
                                         height: (NSNumber *)height
 {
+    // @TODO placeholder images
+    /*
     Image *existingImage = (Image *)[context getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", [url getUrlWithoutScheme]];
     // If there's already an image record for this exact url, don't create another one!!!
     if (!existingImage) {
@@ -317,6 +319,7 @@
         image.height = @(height.integerValue);
         image.mimeType = [image.extension getImageMimeTypeForExtension];
     }
+     */
 }
 
 /*

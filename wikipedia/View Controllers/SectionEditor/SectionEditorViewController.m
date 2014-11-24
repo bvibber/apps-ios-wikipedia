@@ -4,8 +4,6 @@
 #import "SectionEditorViewController.h"
 
 #import "WikipediaAppUtils.h"
-#import "ArticleDataContextSingleton.h"
-#import "ArticleCoreDataObjects.h"
 #import "Defines.h"
 #import "UIViewController+Alert.h"
 #import "QueuesSingleton.h"
@@ -25,7 +23,7 @@
 #define EDIT_TEXT_VIEW_LINE_HEIGHT_MAX (25.0f * MENUS_SCALE_MULTIPLIER)
 
 @interface SectionEditorViewController (){
-    ArticleDataContextSingleton *articleDataContext_;
+    //ArticleDataContextSingleton *articleDataContext_;
 }
 
 @property (weak, nonatomic) IBOutlet UITextView *editTextView;
@@ -63,7 +61,7 @@
         self.editTextView.layoutManager.allowsNonContiguousLayout = NO;
     }
     
-    articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
+    //articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
 
     [self loadLatestWikiTextForSectionFromServer];
 

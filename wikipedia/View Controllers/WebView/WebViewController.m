@@ -5,9 +5,7 @@
 
 #import "WikipediaAppUtils.h"
 #import "WikipediaZeroMessageFetcher.h"
-#import "ArticleDataContextSingleton.h"
 #import "SectionEditorViewController.h"
-#import "ArticleCoreDataObjects.h"
 #import "CommunicationBridge.h"
 #import "TOCViewController.h"
 #import "SessionSingleton.h"
@@ -18,7 +16,6 @@
 #import "CenterNavController.h"
 #import "Defines.h"
 #import "UIViewController+SearchChildViewControllers.h"
-#import "NSManagedObjectContext+SimpleFetch.h"
 #import "UIScrollView+NoHorizontalScrolling.h"
 #import "UIViewController+HideKeyboard.h"
 #import "UIWebView+HideScrollGradient.h"
@@ -29,7 +26,7 @@
 #import "NSString+Extras.h"
 #import "PaddedLabel.h"
 #import "DataMigrator.h"
-#import "ArticleImporter.h"
+//#import "ArticleImporter.h"
 #import "RootViewController.h"
 #import "TopMenuViewController.h"
 #import "BottomMenuViewController.h"
@@ -40,7 +37,6 @@
 #import "EditFunnel.h"
 #import "ProtectedEditAttemptFunnel.h"
 #import "CoreDataHousekeeping.h"
-#import "Article+Convenience.h"
 #import "NSDate-Utilities.h"
 #import "AccountCreationViewController.h"
 #import "OnboardingViewController.h"
@@ -144,7 +140,7 @@ typedef enum {
 
 @implementation WebViewController {
     CGFloat scrollViewDragBeganVerticalOffset_;
-    ArticleDataContextSingleton *articleDataContext_;
+    //ArticleDataContextSingleton *articleDataContext_;
     SessionSingleton *session;
 }
 
@@ -217,7 +213,7 @@ typedef enum {
 
     [self fadeAlert];
 
-    articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
+    //articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
     
     scrollViewDragBeganVerticalOffset_ = 0.0f;
     
@@ -2052,13 +2048,14 @@ typedef enum {
     if ([dataMigrator hasData]) {
         NSLog(@"Old data to migrate found!");
         NSArray *titles = [dataMigrator extractSavedPages];
-        ArticleImporter *importer = [[ArticleImporter alloc] init];
+        // @TODO UPDATE UPDATER
+        /*ArticleImporter *importer = [[ArticleImporter alloc] init];
         
         for (NSDictionary *item in titles) {
             NSLog(@"Will import saved page: %@ %@", item[@"lang"], item[@"title"]);
         }
         
-        [importer importArticles:titles];
+        [importer importArticles:titles];*/
         
         [dataMigrator removeOldData];
     } else {

@@ -2,12 +2,9 @@
 //  Copyright (c) 2014 Wikimedia Foundation. Provided under MIT-style license; please copy and modify!
 
 #import "BottomMenuViewController.h"
-#import "ArticleDataContextSingleton.h"
-#import "ArticleCoreDataObjects.h"
 #import "WebViewController.h"
 #import "UINavigationController+SearchNavStack.h"
 #import "SessionSingleton.h"
-#import "NSManagedObjectContext+SimpleFetch.h"
 #import "WikiGlyph_Chars_iOS.h"
 #import "WikiGlyph_Chars.h"
 #import "WikiGlyphButton.h"
@@ -15,9 +12,8 @@
 #import "UIViewController+Alert.h"
 #import "UIView+TemporaryAnimatedXF.h"
 #import "NSString+Extras.h"
-#import "Article+Convenience.h"
+#import "MWKArticle+Convenience.h"
 #import "ShareMenuSavePageActivity.h"
-#import "Article+Convenience.h"
 #import "Defines.h"
 #import "WikipediaAppUtils.h"
 #import "WMF_Colors.h"
@@ -51,7 +47,7 @@ typedef NS_ENUM(NSInteger, BottomMenuItemTag) {
 
 @implementation BottomMenuViewController{
 
-    ArticleDataContextSingleton *articleDataContext_;
+    //ArticleDataContextSingleton *articleDataContext_;
 
 }
 
@@ -60,7 +56,7 @@ typedef NS_ENUM(NSInteger, BottomMenuItemTag) {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
+    //articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
 
     UIColor *buttonColor = [UIColor blackColor];
 
