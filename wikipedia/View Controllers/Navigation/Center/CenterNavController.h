@@ -2,7 +2,6 @@
 //  Copyright (c) 2013 Wikimedia Foundation. Provided under MIT-style license; please copy and modify!
 
 #import "SectionEditorViewController.h"
-#import "MWPageTitle.h"
 #import "FetcherBase.h"
 
 #import "MediaWikiKit.h"
@@ -27,8 +26,6 @@
 
 //-(ArticleDiscoveryMethod)getDiscoveryMethodForString:(NSString *)string;
 //-(NSString *)getStringForDiscoveryMethod:(ArticleDiscoveryMethod)method;
-
--(void)switchPreferredLanguageToId:(NSString *)languageId name:(NSString *)name;
 
 -(void)switchPreferredLanguageToId:(NSString *)languageId name:(NSString *)name;
 

@@ -17,7 +17,7 @@
 
 - (NSURL *)desktopURL;
 
-@property (readonly) MWPageTitle* titleObj;
+//@property (readonly) MWPageTitle* titleObj;
 
 @property (readonly) BOOL editableBool;
 

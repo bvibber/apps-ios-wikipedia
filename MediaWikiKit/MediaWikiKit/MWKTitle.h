@@ -10,12 +10,12 @@
 @interface MWKTitle : NSObject <NSCopying>
 
 /**
- * Initialize a new MWPageTitle object from string input
+ * Initialize a new MWKTitle object from string input
  */
 -(instancetype)initWithString:(NSString *)str site:(MWKSite *)site;
 
 /**
- * Create a new MWPageTitle object from string input
+ * Create a new MWKTitle object from string input
  */
 +(MWKTitle *)titleWithString:(NSString *)str site:(MWKSite *)site;
 
