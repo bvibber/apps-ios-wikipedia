@@ -519,7 +519,7 @@
 
 -(NSAttributedString *)getIconLabelAttributedStringForDiscoveryMethod:(MWKHistoryDiscoveryMethod)discoveryMethod
 {
-    NSString *wikiFontCharacter = nil;;
+    NSString *wikiFontCharacter = nil;
     switch (discoveryMethod) {
         case MWK_DISCOVERY_METHOD_RANDOM:
             wikiFontCharacter = WIKIGLYPH_DICE;
