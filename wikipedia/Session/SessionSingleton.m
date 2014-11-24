@@ -158,7 +158,12 @@
 
 -(MWKTitle *)title
 {
-    assert(_title != nil);
+    if (_title == nil) {
+        NSString *lang = [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentArticleDomain"];
+        NSString *title = [[NSUserDefaults standardUserDefaults] objectForKey:@"CurrentArticleTitle"];
+        MWKSite *site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:lang];
+        _title = [site titleWithString:title];
+    }
     return _title;
 }
 
