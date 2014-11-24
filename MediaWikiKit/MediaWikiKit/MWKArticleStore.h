@@ -35,6 +35,7 @@
 -(UIImage *)UIImageWithImage:(MWKImage *)image;
 
 @property (readonly) MWKImage *thumbnailImage;
+@property (readonly) UIImage *thumbnailUIImage;
 
 @property (readwrite) BOOL needsRefresh;
 

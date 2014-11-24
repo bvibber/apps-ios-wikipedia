@@ -12,7 +12,6 @@
 #import "UIViewController+Alert.h"
 #import "UIView+TemporaryAnimatedXF.h"
 #import "NSString+Extras.h"
-#import "MWKArticle+Convenience.h"
 #import "ShareMenuSavePageActivity.h"
 #import "Defines.h"
 #import "WikipediaAppUtils.h"

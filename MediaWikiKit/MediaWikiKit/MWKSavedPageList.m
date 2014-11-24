@@ -59,6 +59,13 @@
     _dirty = YES;
 }
 
+-(void)removeAllEntries
+{
+    [entries removeAllObjects];
+    [entriesByTitle removeAllObjects];
+    _dirty = YES;
+}
+
 #pragma mark - data i/o methods
 
 -(instancetype)initWithDict:(NSDictionary *)dict

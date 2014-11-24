@@ -26,6 +26,8 @@
 -(void)addEntry:(MWKSavedPageEntry *)entry;
 /// Remove one.
 -(void)removeEntry:(MWKSavedPageEntry *)entry;
+/// Remove all
+-(void)removeAllEntries;
 
 -(instancetype)initWithDict:(NSDictionary *)dict;
 

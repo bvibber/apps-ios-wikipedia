@@ -27,6 +27,7 @@
 /// May prune out old entries.
 -(void)addEntry:(MWKHistoryEntry *)entry;
 -(void)removeEntry:(MWKHistoryEntry *)entry;
+-(void)removeAllEntries;
 
 -(instancetype)initWithDict:(NSDictionary *)dict;
 
