@@ -189,7 +189,6 @@
 		D42E75EB18D11237002EA7E5 /* MWLanguageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D42E75EA18D11237002EA7E5 /* MWLanguageInfo.m */; };
 		D46CD8C418A1AC4F0042959E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CD8C018A1AC4F0042959E /* InfoPlist.strings */; };
 		D46CD8C518A1AC4F0042959E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CD8C218A1AC4F0042959E /* Localizable.strings */; };
-		D474CC15182AE196002BDE45 /* MWSite.m in Sources */ = {isa = PBXBuildFile; fileRef = D474CC14182AE196002BDE45 /* MWSite.m */; };
 		D47BF5D4197870390067C3BC /* SavedPagesFunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D47BF5D3197870390067C3BC /* SavedPagesFunnel.m */; };
 		D47FEE2019C8CB0000B998C8 /* (null) in Resources */ = {isa = PBXBuildFile; };
 		D497FCFB1A080810004A36A5 /* libMediaWikiKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D497FCF51A0807EE004A36A5 /* libMediaWikiKit.a */; };
@@ -725,8 +724,6 @@
 		D46CD8D218A1B10A0042959E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		D46CD8D318A1B1140042959E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		D474CC12182AE07C002BDE45 /* WikipediaApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikipediaApp.h; sourceTree = "<group>"; };
-		D474CC13182AE196002BDE45 /* MWSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MWSite.h; path = "mw-support/MWSite.h"; sourceTree = "<group>"; };
-		D474CC14182AE196002BDE45 /* MWSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MWSite.m; path = "mw-support/MWSite.m"; sourceTree = "<group>"; };
 		D47BF5D2197870390067C3BC /* SavedPagesFunnel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SavedPagesFunnel.h; path = EventLogging/SavedPagesFunnel.h; sourceTree = "<group>"; };
 		D47BF5D3197870390067C3BC /* SavedPagesFunnel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SavedPagesFunnel.m; path = EventLogging/SavedPagesFunnel.m; sourceTree = "<group>"; };
 		D47FEE1F19C8CB0000B998C8 /* av */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = av; path = av.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
@@ -1772,8 +1769,6 @@
 			isa = PBXGroup;
 			children = (
 				D474CC12182AE07C002BDE45 /* WikipediaApp.h */,
-				D474CC13182AE196002BDE45 /* MWSite.h */,
-				D474CC14182AE196002BDE45 /* MWSite.m */,
 				D42E75E918D11237002EA7E5 /* MWLanguageInfo.h */,
 				D42E75EA18D11237002EA7E5 /* MWLanguageInfo.m */,
 			);
@@ -2136,7 +2131,6 @@
 				0487047E19F8262600B7D307 /* AccountCreationTokenFetcher.m in Sources */,
 				049566C218F5F4CB0058EA12 /* ZeroConfigState.m in Sources */,
 				04F27B7518FE0F2E00EDD838 /* PageHistoryResultCell.m in Sources */,
-				D474CC15182AE196002BDE45 /* MWSite.m in Sources */,
 				0463639818A844570049EE4F /* KeychainCredentials.m in Sources */,
 				04414DDB1A140FAF00A41B4E /* SearchDidYouMeanButton.m in Sources */,
 				047528AF19107DAA00F2CDA8 /* Section.m in Sources */,

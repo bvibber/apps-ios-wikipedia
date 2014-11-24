@@ -17,7 +17,6 @@
 #import "MWLanguageInfo.h"
 #import "CenterNavController.h"
 #import "Defines.h"
-#import "MWPageTitle.h"
 #import "UIViewController+SearchChildViewControllers.h"
 #import "NSManagedObjectContext+SimpleFetch.h"
 #import "UIScrollView+NoHorizontalScrolling.h"

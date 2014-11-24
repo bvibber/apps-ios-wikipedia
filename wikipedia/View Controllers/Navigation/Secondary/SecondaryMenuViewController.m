@@ -19,7 +19,6 @@
 #import "Defines.h"
 #import "ModalMenuAndContentViewController.h"
 #import "UIViewController+ModalPresent.h"
-#import "MWPageTitle.h"
 #import "UIViewController+ModalPop.h"
 #import "LoginViewController.h"
 #import "PaddedLabel.h"

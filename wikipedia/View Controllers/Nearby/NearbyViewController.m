@@ -10,7 +10,6 @@
 #import "WikipediaAppUtils.h"
 #import "UIViewController+ModalPop.h"
 #import "SessionSingleton.h"
-#import "MWPageTitle.h"
 #import "RootViewController.h"
 #import "CenterNavController.h"
 #import "UIViewController+Alert.h"
