@@ -106,7 +106,14 @@
 
 -(NSString *)safeFilenameWithImageURL:(NSString *)str
 {
-    NSString *prefix = @"https://upload.wikimedia.org/";
+    NSLog(@"WWW %@", str);
+    if ([str hasPrefix:@"http:"]) {
+        str = [str substringFromIndex:[@"http:" length]];
+    }
+    if ([str hasPrefix:@"https:"]) {
+        str = [str substringFromIndex:[@"https:" length]];
+    }
+    NSString *prefix = @"//upload.wikimedia.org/";
     if ([str hasPrefix:prefix]) {
         NSString *suffix = [str substringFromIndex:[prefix length]];
 
@@ -268,7 +275,7 @@
 -(NSString *)sectionTextWithId:(NSUInteger)sectionId article:(MWKArticle *)article
 {
     NSString *path = [self pathForSectionId:sectionId title:article.title];
-    NSString *filePath = [path stringByAppendingPathComponent:@"Section.plist"];
+    NSString *filePath = [path stringByAppendingPathComponent:@"Section.html"];
     
     NSError *err;
     NSString *html = [NSString stringWithContentsOfFile:filePath encoding:NSUTF8StringEncoding error:&err];
