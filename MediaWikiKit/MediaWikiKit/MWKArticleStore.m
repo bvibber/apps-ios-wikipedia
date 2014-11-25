@@ -63,7 +63,9 @@
             [self.dataStore saveSectionText:sectionData[@"text"] section:section];
         }
     }
-    _sections = [NSArray arrayWithArray:sections];
+    //if (_sections == nil) {
+    //    _sections = [NSArray arrayWithArray:sections];
+    //}
 
     [self.dataStore saveArticle:self.article];
     
@@ -84,17 +86,33 @@
     }
     return _article;
 }
+
 -(NSArray *)sections
 {
+    static NSString *prefix = @"section";
     if (_sections == nil) {
         NSMutableArray *array = [@[] mutableCopy];
         NSFileManager *fm = [NSFileManager defaultManager];
-        NSString *path = [self.dataStore pathForTitle:self.title];
+        NSString *path = [[self.dataStore pathForTitle:self.title] stringByAppendingPathComponent:@"sections"];
         NSArray *files = [fm contentsOfDirectoryAtPath:path error:nil];
+        files = [files sortedArrayUsingComparator:^NSComparisonResult(NSString *obj1, NSString *obj2) {
+            NSString *suffix1 = [obj1 substringFromIndex:[prefix length]];
+            int sectionId1 = [suffix1 intValue];
+            NSString *suffix2 = [obj2 substringFromIndex:[prefix length]];
+            int sectionId2 = [suffix2 intValue];
+            if (sectionId1 < sectionId2) {
+                return NSOrderedAscending;
+            } else if (sectionId1 == sectionId2) {
+                return NSOrderedSame;
+            } else {
+                return NSOrderedDescending;
+            }
+        }];
         for (NSString *subpath in files) {
             NSString *filename = [subpath lastPathComponent];
-            if ([filename hasPrefix:@"Section"]) {
-                NSString *suffix = [filename substringFromIndex:[@"Section" length]];
+            NSLog(@"qqq %@", filename);
+            if ([filename hasPrefix:prefix]) {
+                NSString *suffix = [filename substringFromIndex:[prefix length]];
                 int sectionId = [suffix intValue];
                 array[sectionId] = [self sectionAtIndex:sectionId];
             }

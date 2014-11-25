@@ -65,4 +65,15 @@
     XCTAssertTrue([fm fileExistsAtPath:[[self.dataStore pathForSectionId:35 title:self.title] stringByAppendingPathComponent:@"Section.html"]]);
 }
 
+-(void)testArticleStoreReadSections
+{
+    XCTAssertNoThrow([self.articleStore importMobileViewJSON:self.json0]);
+    XCTAssertNoThrow([self.articleStore importMobileViewJSON:self.json1]);
+
+    NSArray *sections;
+    XCTAssertNoThrow(sections = self.articleStore.sections);
+    
+    XCTAssertEqual([sections count], 36);
+}
+
 @end

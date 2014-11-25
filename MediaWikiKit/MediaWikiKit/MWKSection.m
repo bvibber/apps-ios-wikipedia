@@ -50,7 +50,7 @@
     if (self.fromtitle) {
         dict[@"fromtitle"] = [self.fromtitle prefixedText];
     }
-    dict[@"sectionId"] = @(self.sectionId);
+    dict[@"id"] = @(self.sectionId);
     if (self.references) {
         dict[@"references"] = @"";
     }
