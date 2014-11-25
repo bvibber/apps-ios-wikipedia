@@ -17,6 +17,16 @@
 {
     self = [self init];
     if (self) {
+        if (title == nil) {
+            @throw [NSException exceptionWithName:@"MWArticleStoreException"
+                                           reason:@"invalid input, title is nil"
+                                         userInfo:nil];
+        }
+        if (dataStore == nil) {
+            @throw [NSException exceptionWithName:@"MWArticleStoreException"
+                                           reason:@"invalid input, dataStore is nil"
+                                         userInfo:nil];
+        }
         _title = title;
         _dataStore = dataStore;
         _article = nil;
@@ -65,19 +75,33 @@
 -(MWKArticle *)article
 {
     if (!_article) {
-        _article = [self.dataStore articleWithTitle:self.title];
+        @try {
+            _article = [self.dataStore articleWithTitle:self.title];
+        }
+        @catch (NSException *e) {
+            NSLog(@"Exception loading article: %@", e);
+        }
     }
     return _article;
 }
 -(NSArray *)sections
 {
-    if (_sections) {
-        return _sections;
-    } else {
-        @throw [NSException exceptionWithName:@"MWKArticleStoreException"
-                                       reason:@"not yet implmemented sections loader"
-                                     userInfo:@{}];
+    if (_sections == nil) {
+        NSMutableArray *array = [@[] mutableCopy];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSString *path = [self.dataStore pathForTitle:self.title];
+        NSArray *files = [fm contentsOfDirectoryAtPath:path error:nil];
+        for (NSString *subpath in files) {
+            NSString *filename = [subpath lastPathComponent];
+            if ([filename hasPrefix:@"Section"]) {
+                NSString *suffix = [filename substringFromIndex:[@"Section" length]];
+                int sectionId = [suffix intValue];
+                array[sectionId] = [self sectionAtIndex:sectionId];
+            }
+        }
+        _sections = [NSArray arrayWithArray:array];
     }
+    return _sections;
 }
 
 -(MWKSection *)sectionAtIndex:(NSUInteger)index

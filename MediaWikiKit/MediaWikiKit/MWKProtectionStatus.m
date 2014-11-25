@@ -60,4 +60,10 @@
     return _protection;
 }
 
+-(id)copyWithZone:(NSZone *)zone
+{
+    // immutable
+    return self;
+}
+
 @end

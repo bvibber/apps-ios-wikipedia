@@ -32,6 +32,9 @@
                                 thenNotifyDelegate: (id <FetchFinishedDelegate>) delegate
 {
     self = [super init];
+    assert(articleStore != nil);
+    assert(manager != nil);
+    assert(delegate != nil);
     if (self) {
         self.articleStore = articleStore;
         self.fetchFinishedDelegate = delegate;

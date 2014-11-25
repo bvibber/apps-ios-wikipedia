@@ -12,7 +12,7 @@
 
 @class MWKArticle;
 
-@interface MWKProtectionStatus : MWKDataObject
+@interface MWKProtectionStatus : MWKDataObject <NSCopying>
 
 -(instancetype)initWithData:(id)data;
 

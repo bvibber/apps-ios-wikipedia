@@ -319,7 +319,7 @@
     NSDictionary *dict = self.historyDataArray[indexPath.section];
     NSArray *array = [dict objectForKey:@"data"];
     
-    MWKHistoryEntry *historyEntry = [[SessionSingleton sharedInstance].userDataStore.historyList entryAtIndex:indexPath.row];
+    MWKHistoryEntry *historyEntry = array[indexPath.row];
     
     NSString *title = [historyEntry.title prefixedText];
     NSString *language = [NSString stringWithFormat:@"\n%@", historyEntry.title.site.language]; // languageName

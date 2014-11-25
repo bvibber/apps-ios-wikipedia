@@ -164,6 +164,7 @@
         MWKSite *site = [[MWKSite alloc] initWithDomain:@"wikipedia.org" language:lang];
         _title = [site titleWithString:title];
     }
+    assert(_title != nil);
     return _title;
 }
 
@@ -174,9 +175,11 @@
 
 - (MWKArticleStore *)articleStore
 {
-    if (_articleStore) {
+    assert(self.dataStore != nil);
+    if (_articleStore == nil) {
         _articleStore = [self.dataStore articleStoreWithTitle:self.title];
     }
+    assert(_articleStore != nil);
     return _articleStore;
 }
 
