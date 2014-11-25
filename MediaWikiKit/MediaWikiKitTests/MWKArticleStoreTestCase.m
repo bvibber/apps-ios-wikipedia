@@ -18,7 +18,7 @@
     self.json0 = [self loadJSON:@"section0"];
     self.json1 = [self loadJSON:@"section1-end"];
     
-    NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) firstObject];
+    NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
     self.basePath = [documentsFolder stringByAppendingPathComponent:@"unit-test-data"];
     
     self.dataStore = [[MWKDataStore alloc] initWithBasePath:self.basePath];

@@ -33,7 +33,7 @@
         // Wiki language character sets that iOS doesn't seem to render properly...
         self.unsupportedCharactersLanguageIds = [@"my am km dv lez arc got ti" componentsSeparatedByString:@" "];
 
-        NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentationDirectory, NSUserDomainMask, YES) firstObject];
+        NSString *documentsFolder = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         NSString *basePath = [documentsFolder stringByAppendingPathComponent:@"Data"];
         _dataStore = [[MWKDataStore alloc] initWithBasePath:basePath];
         _userDataStore = [self.dataStore userDataStore];
