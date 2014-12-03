@@ -1512,7 +1512,7 @@
 				
 				// Update the toc and web view.
 				[self.tocVC setTocSectionDataForSections:articleStore.sections];
-				[self displayArticle:article.title mode:DISPLAY_LEAD_SECTION];
+				[self displayArticle:article.title];
 				
 			}
 				break;
@@ -1537,28 +1537,6 @@
 			default:
 				break;
                 
-            }
-                break;
-            case FETCH_FINAL_STATUS_FAILED:
-            {
-                NSString *errorMsg = error.localizedDescription;
-                [self showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
-
-                [self loadingIndicatorHide];
-
-                // Remove the article so it doesn't get saved.
-                [article.managedObjectContext deleteObject:article];
-            }
-                break;
-            case FETCH_FINAL_STATUS_CANCELLED:
-            {
-                // Remove the article so it doesn't get saved.
-                [article.managedObjectContext deleteObject:article];
-            }
-                break;
-                
-            default:
-                break;
         }
 
     } else if ([sender isKindOfClass:[WikipediaZeroMessageFetcher class]]) {
@@ -1617,7 +1595,7 @@
         // If article with sections just show them (unless needsRefresh is YES)
         if ([session.articleStore.sections count] > 0 && !session.articleStore.needsRefresh) {
             [self.tocVC setTocSectionDataForSections:session.articleStore.sections];
-            [self displayArticle:session.title mode:DISPLAY_ALL_SECTIONS];
+            [self displayArticle:session.title];
             //[self showAlert:MWLocalizedString(@"search-loading-article-loaded", nil) type:ALERT_TYPE_TOP duration:-1];
             [self fadeAlert];
             return;
@@ -1673,7 +1651,7 @@
 
 #pragma mark Display article from core data
 
-- (void)displayArticle:(MWKTitle *)title mode:(DisplayMode)mode
+- (void)displayArticle:(MWKTitle *)title
 {
     // this will reset session.articleStore
     session.title = title;
@@ -1697,9 +1675,6 @@
     NSMutableArray *sectionTextArray = [[NSMutableArray alloc] init];
 
     for (MWKSection *section in session.articleStore.sections) {
-        if (mode == DISPLAY_APPEND_NON_LEAD_SECTIONS) {
-            if ([section isLeadSection]) continue;
-        }
         NSString *html = [session.articleStore sectionTextAtIndex:section.sectionId];
         if (html) {
             // Structural html added around section html just before display.
@@ -1723,7 +1698,10 @@
     //[article ifNoThumbnailUseFirstSectionImageAsThumbnailUsingContext:articleDataContext_.mainContext];
     
     if ((self.jumpToFragment == nil) || (self.jumpToFragment.length == 0)) {
+        // @TODO fix scroll position?
+        /*
         self.lastScrollOffset = CGPointMake(article.lastScrollX.floatValue, article.lastScrollY.floatValue);
+         */
     }else{
         self.lastScrollOffset = CGPointZero;
     }
@@ -1731,7 +1709,7 @@
     if (![[SessionSingleton sharedInstance] isCurrentArticleMain]) {
         [sectionTextArray addObject: [self renderFooterDivider]];
         [sectionTextArray addObject: [self renderLastModified:lastModified by:lastModifiedBy]];
-        [sectionTextArray addObject: [self renderLanguageButtonForCount: langCount.integerValue]];
+        [sectionTextArray addObject: [self renderLanguageButtonForCount: langCount]];
         [sectionTextArray addObject: [self renderLicenseFooter]];
     }
     
