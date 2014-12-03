@@ -13,6 +13,12 @@
     MWKArticleStore *articleStore;
 }
 
+// Reminder: When using this debugging image to test caching (i.e. seeing if article images
+// show the placeholder) be sure to quit and restart the app (double-tap the home button
+// and flick the app up offscreen) otherwise the web view keeps showing its memory cache
+// version of the actual image it downloaded - that is, it has no need to attempt a cache hit.
+// Once the app is then restarted if everything is working the article images should all
+// show the placeholder image.
 //@property (strong, nonatomic) NSData *debuggingPlaceHolderImageData;
 
 @end
@@ -25,7 +31,7 @@
     if (self) {
         //articleDataContext_ = [ArticleDataContextSingleton sharedInstance];
         articleStore = [SessionSingleton sharedInstance].articleStore;
-        //self.debuggingPlaceHolderImageData = UIImagePNGRepresentation([UIImage imageNamed:@"w@2x.png"]);
+        //self.debuggingPlaceHolderImageData = UIImagePNGRepresentation([UIImage imageNamed:@"logo-onboarding-subtitle.png"]);
     }
     return self;
 }
@@ -106,18 +112,18 @@
 }
 
 - (NSCachedURLResponse *)cachedResponseForRequest:(NSURLRequest *)request {
-    /*
-     NSData *imgData = UIImagePNGRepresentation([UIImage imageNamed:@"w@2x.png"]);
-     NSURLResponse *r = [[NSURLResponse alloc] initWithURL:request.URL MIMEType:@"image/jpeg" expectedContentLength:imgData.length textEncodingName:nil];
-     NSCachedURLResponse *d = [[NSCachedURLResponse alloc] initWithResponse:r data:imgData];
-     return d;
-     */
-    
     //NSLog(@"Default Cache.db usage:\n\tcurrentDiskUsage: %lu\n\tdiskCapacity = %lu\n\tcurrentMemoryUsage = %lu\n\tmemoryCapacity = %lu", (unsigned long)self.currentDiskUsage, (unsigned long)self.diskCapacity, (unsigned long)self.currentMemoryUsage, (unsigned long)self.memoryCapacity);
 
     if (![self isMIMETypeRerouted:[request.URL.pathExtension getImageMimeTypeForExtension]]) {
         return [super cachedResponseForRequest:request];
     }
+
+    /*
+     NSData *imgData = UIImagePNGRepresentation([UIImage imageNamed:@"logo-onboarding-subtitle.png"]);
+     NSURLResponse *r = [[NSURLResponse alloc] initWithURL:request.URL MIMEType:@"image/jpeg" expectedContentLength:imgData.length textEncodingName:nil];
+     NSCachedURLResponse *d = [[NSCachedURLResponse alloc] initWithResponse:r data:imgData];
+     return d;
+    */
 
     NSURL *requestURL = [request.URL copy];
     

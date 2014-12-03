@@ -267,7 +267,7 @@ typedef NS_ENUM(NSInteger, BottomMenuItemTag) {
         [webVC navigateToPage: historyEntry.title
               discoveryMethod: MWK_DISCOVERY_METHOD_BACKFORWARD
             invalidatingCache: NO
-         showLoadingIndicator: NO];
+         showLoadingIndicator: YES];
     }
 }
 
@@ -282,7 +282,7 @@ typedef NS_ENUM(NSInteger, BottomMenuItemTag) {
         [webVC navigateToPage: historyEntry.title
              discoveryMethod: MWK_DISCOVERY_METHOD_BACKFORWARD
             invalidatingCache: NO
-         showLoadingIndicator: NO];
+         showLoadingIndicator: YES];
     }
 }
 

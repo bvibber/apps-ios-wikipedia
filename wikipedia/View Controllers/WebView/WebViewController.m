@@ -52,7 +52,6 @@
 #import "NSString+FormattedAttributedString.h"
 #import "SavedPagesFunnel.h"
 #import "SearchResultsController.h"
-
 #import "ArticleFetcher.h"
 #import "AssetsFileFetcher.h"
 
@@ -75,19 +74,13 @@
 // This controls what angle from the horizontal axis will trigger the swipe.
 #define TOC_SWIPE_TRIGGER_MAX_ANGLE 45.0f
 
-typedef enum {
-    DISPLAY_LEAD_SECTION = 0,
-    DISPLAY_APPEND_NON_LEAD_SECTIONS = 1,
-    DISPLAY_ALL_SECTIONS = 2
-} DisplayMode;
-
 @interface WebViewController () <LanguageSelectionDelegate>{
 
 }
 
 @property (strong, nonatomic) CommunicationBridge *bridge;
 
-@property (nonatomic) CGPoint scrollOffset;
+@property (nonatomic) CGPoint lastScrollOffset;
 
 @property (nonatomic) BOOL unsafeToScroll;
 
@@ -187,14 +180,19 @@ typedef enum {
     
     self.sectionToEditId = 0;
 
-    [[NSNotificationCenter defaultCenter] addObserver: self
-                                             selector: @selector(webViewFinishedLoading)
-                                                 name: @"WebViewFinishedLoading"
-                                               object: nil];
+    [self setupBridge];
+
+    __weak WebViewController *weakSelf = self;
+    [self.bridge addListener:@"DOMContentLoaded" withBlock:^(NSString *type, NSDictionary *payload) {
+        [weakSelf performSelector:@selector(loadingIndicatorHide) withObject:nil afterDelay:0.22f];
+        [weakSelf.tocVC centerCellForWebViewTopMostSectionAnimated:NO];
+        [weakSelf jumpToFragmentIfNecessary];
+        //[weakSelf performSelector:@selector(autoScrollToLastScrollOffsetIfNecessary) withObject:nil afterDelay:0.5f];
+    }];
     
     self.unsafeToScroll = NO;
     self.unsafeToToggleTOC = NO;
-    self.scrollOffset = CGPointZero;
+    self.lastScrollOffset = CGPointZero;
     
     [[NSNotificationCenter defaultCenter] addObserver: self
                                              selector: @selector(saveCurrentPage)
@@ -261,23 +259,29 @@ typedef enum {
     //[[NSUserDefaults standardUserDefaults] setObject:@YES forKey:@"ShowOnboarding"];
     //[[NSUserDefaults standardUserDefaults] synchronize];
 
-    //self.referencesContainerView.layer.borderWidth = 10;
-    //self.referencesContainerView.layer.borderColor = [UIColor redColor].CGColor;
-
     // Ensure toc show/hide animation scales the web view w/o vertical motion.
     BOOL isRTL = [WikipediaAppUtils isDeviceLanguageRTL];
     self.webView.scrollView.layer.anchorPoint = CGPointMake((isRTL ? 1.0 : 0.0), 0.0);
 
-    /*
-    self.webView.scrollView.layer.borderWidth = 6;
-    self.webView.scrollView.layer.borderColor = [UIColor redColor].CGColor;
-    self.webView.layer.borderWidth = 2;
-    self.webView.layer.borderColor = [UIColor greenColor].CGColor;
-    */
-
     [self tocUpdateViewLayout];
     
     [self loadingIndicatorAdd];
+}
+
+-(void)jumpToFragmentIfNecessary
+{
+    if (self.jumpToFragment && (self.jumpToFragment.length > 0)) {
+        [self.bridge sendMessage: @"scrollToFragment"
+                     withPayload: @{@"hash": self.jumpToFragment}];
+    }
+    self.jumpToFragment = nil;
+}
+
+-(void)autoScrollToLastScrollOffsetIfNecessary
+{
+    if (!self.jumpToFragment) {
+        [self.webView.scrollView setContentOffset:self.lastScrollOffset animated:YES];
+    }
 }
 
 -(void)tocUpdateViewLayout
@@ -882,11 +886,6 @@ typedef enum {
         [keyPath isEqual:@"contentSize"]
         ) {
         [object preventHorizontalScrolling];
-        if (self.jumpToFragment) {
-            // See if this works
-            [self.bridge sendMessage:@"scrollToFragment"
-                         withPayload:@{@"hash": self.jumpToFragment}];
-        }
     }
 }
 
@@ -899,24 +898,9 @@ typedef enum {
 
 #pragma mark Webview obj-c to javascript bridge
 
--(void)resetBridge
+-(void)setupBridge
 {
-    // This needs to be called before sending a new page of html to the embedded UIWebView.
-    // The bridge is the web view's delegate, and one of the web view delegate methods which
-    // the bridge implements is "webViewDidFinishLoad:". This method only gets called the first
-    // time a page is displayed unless the bridge is reset before beginning to send a page of
-    // html. "webViewDidFinishLoad:" seems the only *reliable* way of being notified when the
-    // page dom has been loaded and the web view's view had taken on the size of the content
-    // it is rendering. It is only then that we can scroll to a saved article's previous
-    // scroll offsets.
-
-    // Because the bridge is a property now, rather than a private var, ARC should take care of
-    // cleanup when the bridge is reset.
-//TODO: confirm this comment ^
-    self.bridge = [[CommunicationBridge alloc] initWithWebView:self.webView htmlFileName:@"index.html"];
-    [self.bridge addListener:@"DOMLoaded" withBlock:^(NSString *messageType, NSDictionary *payload) {
-        //NSLog(@"QQQ HEY DOMLoaded!");
-    }];
+    self.bridge = [[CommunicationBridge alloc] initWithWebView:self.webView];
 
     __weak WebViewController *weakSelf = self;
     [self.bridge addListener:@"linkClicked" withBlock:^(NSString *messageType, NSDictionary *payload) {
@@ -1031,7 +1015,6 @@ typedef enum {
     }];
 
     self.unsafeToScroll = NO;
-    self.scrollOffset = CGPointZero;
 }
 
 #pragma mark History
@@ -1189,17 +1172,6 @@ typedef enum {
     // Awesome! Now works regarless of pinch-zoom scale!
     CGPoint p = [self.webView getWebViewCoordsForHtmlImageWithSrc:@"//upload.wikimedia.org/wikipedia/commons/thumb/d/da/SF_From_Marin_Highlands3.jpg/280px-SF_From_Marin_Highlands3.jpg"];
     [self.webView.scrollView setContentOffset:p animated:YES];
-}
-
-#pragma mark Web view scroll offset - using it!
-
--(void)webViewFinishedLoading
-{
-    if(!self.unsafeToScroll){
-        [self.webView.scrollView setContentOffset:self.scrollOffset animated:NO];
-    }
-    
-    [self.tocVC centerCellForWebViewTopMostSectionAnimated:NO];
 }
 
 #pragma mark Web view limit scroll up
@@ -1490,122 +1462,101 @@ typedef enum {
         MWKArticleStore *articleStore = articleFetcher.articleStore;
         MWKArticle *article = articleStore.article;
         
-        NSNumber *articleSectionType = (NSNumber *)fetchedData;
-        
-        switch (articleSectionType.integerValue) {
-            case ARTICLE_SECTION_TYPE_LEAD:
+		switch (status) {
+			case FETCH_FINAL_STATUS_SUCCEEDED:
+			{
+				// Redirect if necessary.
+				MWKTitle *redirectedTitle = article.redirected;
+				if (redirectedTitle) {
+					// Get discovery method for call to "retrieveArticleForPageTitle:".
+					// There should only be a single history item (at most).
+					MWKHistoryEntry *history = [session.userDataStore.historyList entryForTitle:article.title];
+					// Get the article's discovery method.
+					MWKHistoryDiscoveryMethod discoveryMethod =
+					(history) ? history.discoveryMethod : MWK_DISCOVERY_METHOD_SEARCH;
+					
+					// Remove the article so it doesn't get saved.
+					//[article.managedObjectContext deleteObject:article];
+					
+					
+					// Redirect!
+					[self retrieveArticleForPageTitle: redirectedTitle
+									  discoveryMethod: discoveryMethod];
+					return;
+				}
+				
+				// Associate thumbnail with article.
+				// If search result for this pageTitle had a thumbnail url associated with it, see if
+				// a core data image object exists with a matching sourceURL. If so make the article
+				// thumbnailImage property point to that core data image object. This associates the
+				// search result thumbnail with the article.
+				/*
+				NSPredicate *articlePredicate =
+				[NSPredicate predicateWithFormat:@"(title == %@) AND (thumbnail.source.length > 0)", article.titleObj.text];
+				NSDictionary *articleDictFromSearchResults =
+				[ROOT.topMenuViewController.searchResultsController.searchResults firstMatchForPredicate:articlePredicate];
+				if (articleDictFromSearchResults) {
+					NSString *thumbURL = articleDictFromSearchResults[@"thumbnail"][@"source"];
+					thumbURL = [thumbURL getUrlWithoutScheme];
+					Image *thumb = (Image *)[article.managedObjectContext getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", thumbURL];
+					if (thumb) article.thumbnailImage = thumb;
+				}
+				*/
+				
+				/*
+				// Actually save the article record.
+				NSError *err = nil;
+				[article.managedObjectContext save:&err];
+				if (err) NSLog(@"Lead section save error = %@", err);
+				*/
+				
+				// Update the toc and web view.
+				[self.tocVC setTocSectionDataForSections:articleStore.sections];
+				[self displayArticle:article.title mode:DISPLAY_LEAD_SECTION];
+				
+			}
+				break;
+			case FETCH_FINAL_STATUS_FAILED:
+			{
+				NSString *errorMsg = error.localizedDescription;
+				[self showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
+				
+				// Remove the article so it doesn't get saved.
+				//[article.managedObjectContext deleteObject:article];
+				[articleStore remove];
+			}
+				break;
+			case FETCH_FINAL_STATUS_CANCELLED:
+			{
+				// Remove the article so it doesn't get saved.
+				//[article.managedObjectContext deleteObject:article];
+				[articleStore remove];
+			}
+				break;
+				
+			default:
+				break;
                 
-                switch (status) {
-                    case FETCH_FINAL_STATUS_SUCCEEDED:
-                    {
-                        // Redirect if necessary.
-                        MWKTitle *redirectedTitle = article.redirected;
-                        if (redirectedTitle) {
-                            // Get discovery method for call to "retrieveArticleForPageTitle:".
-                            // There should only be a single history item (at most).
-                            MWKHistoryEntry *history = [session.userDataStore.historyList entryForTitle:article.title];
-                            // Get the article's discovery method.
-                            MWKHistoryDiscoveryMethod discoveryMethod =
-                            (history) ? history.discoveryMethod : MWK_DISCOVERY_METHOD_SEARCH;
-                            
-                            // Remove the article so it doesn't get saved.
-                            //[article.managedObjectContext deleteObject:article];
-                            
-                            
-                            // Redirect!
-                            [self retrieveArticleForPageTitle: redirectedTitle
-                                              discoveryMethod: discoveryMethod];
-                            return;
-                        }
-                        
-                        // Associate thumbnail with article.
-                        // If search result for this pageTitle had a thumbnail url associated with it, see if
-                        // a core data image object exists with a matching sourceURL. If so make the article
-                        // thumbnailImage property point to that core data image object. This associates the
-                        // search result thumbnail with the article.
-                        /*
-                        NSPredicate *articlePredicate =
-                        [NSPredicate predicateWithFormat:@"(title == %@) AND (thumbnail.source.length > 0)", article.titleObj.text];
-                        NSDictionary *articleDictFromSearchResults =
-                        [ROOT.topMenuViewController.searchResultsController.searchResults firstMatchForPredicate:articlePredicate];
-                        if (articleDictFromSearchResults) {
-                            NSString *thumbURL = articleDictFromSearchResults[@"thumbnail"][@"source"];
-                            thumbURL = [thumbURL getUrlWithoutScheme];
-                            Image *thumb = (Image *)[article.managedObjectContext getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", thumbURL];
-                            if (thumb) article.thumbnailImage = thumb;
-                        }
-                        */
-                        
-                        /*
-                        // Actually save the article record.
-                        NSError *err = nil;
-                        [article.managedObjectContext save:&err];
-                        if (err) NSLog(@"Lead section save error = %@", err);
-                        */
-                        
-                        // Update the toc and web view.
-                        [self.tocVC setTocSectionDataForSections:articleStore.sections];
-                        [self displayArticle:article.title mode:DISPLAY_LEAD_SECTION];
-                        
-                    }
-                        break;
-                    case FETCH_FINAL_STATUS_FAILED:
-                    {
-                        NSString *errorMsg = error.localizedDescription;
-                        [self showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
-                        
-                        // Remove the article so it doesn't get saved.
-                        //[article.managedObjectContext deleteObject:article];
-                        [articleStore remove];
-                    }
-                        break;
-                    case FETCH_FINAL_STATUS_CANCELLED:
-                    {
-                        // Remove the article so it doesn't get saved.
-                        //[article.managedObjectContext deleteObject:article];
-                        [articleStore remove];
-                    }
-                        break;
-                        
-                    default:
-                        break;
-                }
-                
+            }
+                break;
+            case FETCH_FINAL_STATUS_FAILED:
+            {
+                NSString *errorMsg = error.localizedDescription;
+                [self showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
+
+                [self loadingIndicatorHide];
+
+                // Remove the article so it doesn't get saved.
+                [article.managedObjectContext deleteObject:article];
+            }
+                break;
+            case FETCH_FINAL_STATUS_CANCELLED:
+            {
+                // Remove the article so it doesn't get saved.
+                [article.managedObjectContext deleteObject:article];
+            }
                 break;
                 
-            case ARTICLE_SECTION_TYPE_NON_LEAD:
-                
-                switch (status) {
-                    case FETCH_FINAL_STATUS_SUCCEEDED:
-                    {
-                        /*
-                        // Save the article record.
-                        NSError *err = nil;
-                        [article.managedObjectContext save:&err];
-                        if (err) NSLog(@"Non-lead section save error = %@", err);
-                        */
-                        
-                        // Update the toc and web view.
-                        [self.tocVC setTocSectionDataForSections:articleStore.sections];
-                        [self displayArticle:article.title mode:DISPLAY_APPEND_NON_LEAD_SECTIONS];
-                        
-                    }
-                        break;
-                    case FETCH_FINAL_STATUS_FAILED:
-                    {
-                        NSString *errorMsg = error.localizedDescription;
-                        [self showAlert:errorMsg type:ALERT_TYPE_TOP duration:-1];
-                    }
-                        break;
-                    case FETCH_FINAL_STATUS_CANCELLED:
-                        [self fadeAlert];
-                        break;
-                        
-                    default:
-                        break;
-                }
-                
-                break;
             default:
                 break;
         }
@@ -1740,7 +1691,7 @@ typedef enum {
     self.protectionStatus = article.protection;
     
     [self.bottomMenuViewController updateBottomBarButtonsEnabledState];
-
+    
     [ROOT.topMenuViewController updateTOCButtonVisibility];
 
     NSMutableArray *sectionTextArray = [[NSMutableArray alloc] init];
@@ -1756,7 +1707,6 @@ typedef enum {
 
             [sectionTextArray addObject:sectionHTMLWithID];
         }
-        if (mode == DISPLAY_LEAD_SECTION) break;
     }
     
     // If article has no thumbnailImage, use the first section image instead.
@@ -1764,93 +1714,71 @@ typedef enum {
     // image. That way, if the housekeeping code removes all section images, it won't remove this
     // particular one because it checks to see if an article is referencing an image before it
     // removes them.
-//    [article ifNoThumbnailUseFirstSectionImageAsThumbnailUsingContext:articleDataContext_.mainContext];
 
     // Pull the scroll offset out so the article object doesn't have to be passed into the block below.
     MWKHistoryEntry *historyEntry = [session.userDataStore.historyList entryForTitle:article.title];
     CGPoint scrollOffset = historyEntry ? CGPointMake(0, historyEntry.scrollPosition) : CGPointMake(0, 0);
     NSString *jumpToFragment = self.jumpToFragment;
     
-    [[NSOperationQueue mainQueue] addOperationWithBlock: ^ {
-        if (mode != DISPLAY_APPEND_NON_LEAD_SECTIONS) {
-            // See comments inside resetBridge.
-            [self resetBridge];
-        }
-        
-        if (jumpToFragment == nil) {
-            self.scrollOffset = scrollOffset;
-        }
+    //[article ifNoThumbnailUseFirstSectionImageAsThumbnailUsingContext:articleDataContext_.mainContext];
+    
+    if ((self.jumpToFragment == nil) || (self.jumpToFragment.length == 0)) {
+        self.lastScrollOffset = CGPointMake(article.lastScrollX.floatValue, article.lastScrollY.floatValue);
+    }else{
+        self.lastScrollOffset = CGPointZero;
+    }
+    
+    if (![[SessionSingleton sharedInstance] isCurrentArticleMain]) {
+        [sectionTextArray addObject: [self renderFooterDivider]];
+        [sectionTextArray addObject: [self renderLastModified:lastModified by:lastModifiedBy]];
+        [sectionTextArray addObject: [self renderLanguageButtonForCount: langCount.integerValue]];
+        [sectionTextArray addObject: [self renderLicenseFooter]];
+    }
+    
+    // This is important! Ensures bottom of web view article can be scrolled closer to the top of
+    // the screen. Works in conjunction with "limitScrollUp:" method.
+    // Note: had to add "px" to the height because we added "<!DOCTYPE html>" to the top
+    // of the index.html - it won't actually give the div height w/o this now (no longer
+    // using quirks mode now that doctype specified).
+    [sectionTextArray addObject: [NSString stringWithFormat:@"<div style='height:%dpx;background-color:white;'></div>", BOTTOM_SCROLL_LIMIT_HEIGHT]];
+    
+    // Join article sections text
+    NSString *joint = @""; //@"<div style=\"height:20px;\"></div>";
+    NSString *htmlStr = [sectionTextArray componentsJoinedByString:joint];
+    
+    // If any of these are nil, the bridge "sendMessage:" calls will crash! So catch 'em here.
+    BOOL safeToCrossBridge = (languageInfo.code && languageInfo.dir && uidir && htmlStr);
+    if (!safeToCrossBridge) {
+        NSLog(@"\n\nUnsafe to cross JS bridge!");
+        NSLog(@"\tlanguageInfo.code = %@", languageInfo.code);
+        NSLog(@"\tlanguageInfo.dir = %@", languageInfo.dir);
+        NSLog(@"\tuidir = %@", uidir);
+        NSLog(@"\thtmlStr is nil = %d\n\n", (htmlStr == nil));
+        //TODO: output "could not load page" alert and/or show last page?
+        return;
+    }
+    
+    [self.bridge loadHTML:htmlStr withAssetsFile:@"index.html"];
 
-        if (mode != DISPLAY_APPEND_NON_LEAD_SECTIONS) {
-            if (![session isCurrentArticleMain]) {
-                if (mode == DISPLAY_LEAD_SECTION) {
-                    [sectionTextArray addObject: [NSString stringWithFormat:@"<div id='nonLeadSectionsInjectionPoint' style='margin-top:2em;margin-bottom:2em;'>%@</div>", MWLocalizedString(@"search-loading-section-remaining", nil)]];
-                }
-
-                [sectionTextArray addObject: [self renderFooterDivider]];
-                [sectionTextArray addObject: [self renderLastModified:lastModified by:lastModifiedBy]];
-                [sectionTextArray addObject: [self renderLanguageButtonForCount: langCount]];
-                [sectionTextArray addObject: [self renderLicenseFooter]];
-            }
-
-            // This is important! Ensures bottom of web view article can be scrolled closer to the top of
-            // the screen. Works in conjunction with "limitScrollUp:" method.
-            // Note: had to add "px" to the height because we added "<!DOCTYPE html>" to the top
-            // of the index.html - it won't actually give the div height w/o this now (no longer
-            // using quirks mode now that doctype specified).
-            [sectionTextArray addObject: [NSString stringWithFormat:@"<div style='height:%dpx;background-color:white;'></div>", BOTTOM_SCROLL_LIMIT_HEIGHT]];
-        }
-
-        
-        // Join article sections text
-        NSString *joint = @""; //@"<div style=\"background-color:#ffffff;height:55px;\"></div>";
-        NSString *htmlStr = [sectionTextArray componentsJoinedByString:joint];
-
-        // If any of these are nil, the bridge "sendMessage:" calls will crash! So catch 'em here.
-        BOOL safeToCrossBridge = (languageInfo.code && languageInfo.dir && uidir && htmlStr);
-        if (!safeToCrossBridge) {
-            NSLog(@"\n\nUnsafe to cross JS bridge!");
-            NSLog(@"\tlanguageInfo.code = %@", languageInfo.code);
-            NSLog(@"\tlanguageInfo.dir = %@", languageInfo.dir);
-            NSLog(@"\tuidir = %@", uidir);
-            NSLog(@"\thtmlStr is nil = %d\n\n", (htmlStr == nil));
-            //TODO: output "could not load page" alert and/or show last page?
-            return;
-        }
-        
-        // NSLog(@"languageInfo = %@", languageInfo.code);
-        // Display all sections
-        [self.bridge sendMessage: @"setLanguage"
-                     withPayload: @{
-                                   @"lang": languageInfo.code,
-                                   @"dir": languageInfo.dir,
-                                   @"uidir": uidir
-                                   }];
-        if (mode != DISPLAY_APPEND_NON_LEAD_SECTIONS) {
-        
-            [self.bridge sendMessage:@"append" withPayload:@{@"html": htmlStr}];
-
-            [self loadingIndicatorHide];
-
-        }else{
-            [self.bridge sendMessage:@"injectNonLeadSections" withPayload:@{@"html": htmlStr}];
-        }
-        // Note: we set the scroll position later, after the size has been calculated
-
-
-        
-        if (!self.editable) {
-            [self.bridge sendMessage:@"setPageProtected" withPayload:@{}];
-        }
-        
-        if ([self tocDrawerIsOpen]) {
-            // Drawer is already open, so just refresh the toc quickly w/o animation.
-            // Make sure "tocShowWithDuration:" is allowed to happen even if the TOC
-            // is already onscreen or non-lead sections won't appear in the TOC when
-            // they've been retrieved if the TOC is open.
-            [self tocShowWithDuration:@0.0f];
-        }
-    }];
+    // NSLog(@"languageInfo = %@", languageInfo.code);
+    [self.bridge sendMessage: @"setLanguage"
+                 withPayload: @{
+                                @"lang": languageInfo.code,
+                                @"dir": languageInfo.dir,
+                                @"uidir": uidir
+                                }];
+    
+    if (!self.editable) {
+        [self.bridge sendMessage:@"setPageProtected" withPayload:@{}];
+    }
+    
+    if ([self tocDrawerIsOpen]) {
+        // Drawer is already open, so just refresh the toc quickly w/o animation.
+        // Make sure "tocShowWithDuration:" is allowed to happen even if the TOC
+        // is already onscreen or non-lead sections won't appear in the TOC when
+        // they've been retrieved if the TOC is open.
+        [self tocShowWithDuration:@0.0f];
+    }
 }
 
 -(NSString *)renderFooterDivider
