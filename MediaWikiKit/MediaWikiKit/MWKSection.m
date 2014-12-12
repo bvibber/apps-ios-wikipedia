@@ -8,7 +8,10 @@
 
 #import "MediaWikiKit.h"
 
-@implementation MWKSection
+@implementation MWKSection {
+    NSString *_text;
+    MWKImageList *_images;
+}
 
 -(instancetype)initWithArticle:(MWKArticle *)article dict:(NSDictionary *)dict
 {
@@ -76,5 +79,19 @@
     }
 }
 
+-(NSString *)text
+{
+    if (_text == nil) {
+        _text = [self.article.dataStore sectionTextWithId:self.sectionId article:self.article];
+    }
+    return _text;
+}
+
+-(MWKImageList *)images
+{
+    if (_images == nil) {
+        _images = [self.article.dataStore imageListWithSection:self];
+    }
+}
 
 @end

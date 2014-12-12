@@ -10,10 +10,12 @@
 
 @implementation MWKArticle
 
--(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict
+-(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore dict:(NSDictionary *)dict
 {
     self = [self initWithSite:title.site];
     if (self) {
+        _dataStore = dataStore;
+
         _title = title;
 
         _redirected     =  [self optionalTitle:           @"redirected"     dict:dict];

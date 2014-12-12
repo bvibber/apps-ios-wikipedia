@@ -9,23 +9,12 @@
 #import "MediaWikiKit.h"
 
 @implementation MWKImageList {
-    NSMutableDictionary *entriesBySection;
+    NSMutableArray *entries;
     NSMutableDictionary *entriesByURL;
     NSMutableDictionary *entriesByNameWithoutSize;
 }
 
--(NSMutableArray *)entriesBySection:(int)sectionId
-{
-    id key = [@(sectionId) stringValue];
-    NSMutableArray *entries = entriesBySection[key];
-    if (entries == nil) {
-        entries = [[NSMutableArray alloc] init];
-        entriesBySection[key] = entries;
-    }
-    return entries;
-}
-
--(void)addImageURL:(NSString *)imageURL sectionId:(int)sectionId
+-(void)addImageURL:(NSString *)imageURL
 {
     NSMutableArray *entries = [self entriesBySection:sectionId];
     [entries addObject:imageURL];
@@ -40,14 +29,19 @@
     [byname addObject:imageURL];
 }
 
--(NSString *)imageURLAtIndex:(NSUInteger)index sectionId:(int)sectionId
+-(NSString *)imageURLAtIndex:(NSUInteger)index
 {
-    NSMutableArray *entries = [self entriesBySection:sectionId];
     if (index < [entries count]) {
         return entries[index];
     } else {
         return nil;
     }
+}
+
+-(MWKImage *)objectAtIndexedSubscript:(NSUInteger)index
+{
+    NSString *imageURL = [self imageURLAtIndex:index];
+    [self.article.dataStore imageWithURL:imageURL article:self.article];
 }
 
 -(BOOL)hasImageURL:(NSString *)imageURL
@@ -115,11 +109,11 @@
 
 #pragma mark - data i/o
 
--(instancetype)initWithTitle:(MWKTitle *)title
+-(instancetype)initWithArticle:(MWKArticle *)article
 {
-    self = [self initWithSite:title.site];
+    self = [self initWithSite:article.site];
     if (self) {
-        _title = title;
+        _article = article;
         entriesBySection = [[NSMutableDictionary alloc] init];
         entriesByURL = [[NSMutableDictionary alloc] init];
         entriesByNameWithoutSize = [[NSMutableDictionary alloc] init];
@@ -127,14 +121,12 @@
     return self;
 }
 
--(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict
+-(instancetype)initWithArticle:(MWKArticle *)article dict:(NSDictionary *)dict
 {
-    self = [self initWithTitle:title];
+    self = [self initWithArticle:article];
     if (self) {
-        for (NSNumber *key in [dict allKeys]) {
-            for (NSString *url in dict[key]) {
-                [self addImageURL:url sectionId:[key intValue]];
-            }
+        for (NSString *url in dict[@"entries"]) {
+            [self addImageURL:url];
         }
     }
     return self;
@@ -142,7 +134,7 @@
 
 -(id)dataExport
 {
-    return [NSDictionary dictionaryWithDictionary:entriesBySection];
+    return @{@"entries": entries};
 }
 
 @end
