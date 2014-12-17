@@ -92,6 +92,7 @@
     if (_images == nil) {
         _images = [self.article.dataStore imageListWithSection:self];
     }
+    return _images;
 }
 
 @end

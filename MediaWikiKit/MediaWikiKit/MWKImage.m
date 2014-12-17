@@ -12,11 +12,11 @@
 
 @implementation MWKImage
 
--(instancetype)initWithTitle:(MWKTitle *)title sourceURL:(NSString *)url
+-(instancetype)initWithArticle:(MWKArticle *)article sourceURL:(NSString *)url
 {
-    self = [super initWithSite:title.site];
+    self = [super initWithSite:article.site];
     if (self) {
-        _title = title;
+        _article = article;
         _sourceURL = [url copy];
 
         _dateLastAccessed = nil;
@@ -28,10 +28,10 @@
     return self;
 }
 
--(instancetype)initWithTitle:(MWKTitle *)title dict:(NSDictionary *)dict
+-(instancetype)initWithArticle:(MWKArticle *)article dict:(NSDictionary *)dict
 {
     NSString *sourceURL = [self requiredString:@"sourceURL" dict:dict];
-    self = [self initWithTitle:title sourceURL:sourceURL];
+    self = [self initWithArticle:article sourceURL:sourceURL];
     if (self) {
         _dateLastAccessed = [self optionalDate:@"dateLastAccessed" dict:dict];
         _dateRetrieved = [self optionalDate:@"dateRetrieved" dict:dict];
@@ -117,6 +117,12 @@
 -(void)updateLastAccessed
 {
     _dateLastAccessed = [[NSDate alloc] init];
+}
+
+-(UIImage *)asUIImage
+{
+    NSData *imageData = [self.article.dataStore imageDataWithImage:self];
+    return [UIImage imageWithData:imageData scale:1.0];
 }
 
 @end

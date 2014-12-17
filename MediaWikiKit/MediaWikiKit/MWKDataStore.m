@@ -89,7 +89,7 @@
 
 -(NSString *)pathForImage:(MWKImage *)image
 {
-    return [self pathForImageURL:image.sourceURL title:image.title];
+    return [self pathForImageURL:image.sourceURL title:image.article.title];
 }
 
 -(NSString *)safeFilenameWithString:(NSString *)str
@@ -268,7 +268,7 @@
     if (dict == nil) {
         return nil;
     } else {
-        return [[MWKArticle alloc] initWithTitle:title dict:dict];
+        return [[MWKArticle alloc] initWithTitle:title dataStore:self dict:dict];
     }
 }
 
@@ -296,13 +296,13 @@
     return html;
 }
 
--(MWKImage *)imageWithURL:(NSString *)url title:(MWKTitle *)title
+-(MWKImage *)imageWithURL:(NSString *)url article:(MWKArticle *)article
 {
-    NSString *path = [self pathForImageURL:url title:title];
+    NSString *path = [self pathForImageURL:url title:article.title];
     NSString *filePath = [path stringByAppendingPathComponent:@"Image.plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (dict) {
-        return [[MWKImage alloc] initWithTitle:title dict:dict];
+        return [[MWKImage alloc] initWithArticle:article dict:dict];
     } else {
         return nil;
     }
@@ -366,14 +366,22 @@
 
 #pragma mark - helper methods
 
--(MWKArticleStore *)articleStoreWithTitle:(MWKTitle *)title
-{
-    return [[MWKArticleStore alloc] initWithTitle:title dataStore:self];
-}
-
 -(MWKUserDataStore *)userDataStore
 {
     return [[MWKUserDataStore alloc] initWithDataStore:self];
+}
+
+
+-(MWKImageList *)imageListWithSection:(MWKSection *)section
+{
+    NSString *path = [self pathForSection:section];
+    NSString *filePath = [path stringByAppendingPathComponent:@"Images.plist"];
+    NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
+    if (dict) {
+        return [[MWKImageList alloc] initWithSection:section dict:dict];
+    } else {
+        return [[MWKImageList alloc] initWithSection:section];
+    }
 }
 
 @end

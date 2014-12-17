@@ -10,13 +10,15 @@
 
 @class MWKImage;
 
-@interface MWKImageList : MWKSiteDataObject
-@property (weak, readonly) MWKArticle *article;
+@interface MWKImageList : MWKSiteDataObject <NSFastEnumeration>
+@property (weak, readonly) MWKSection *section;
 
-@property (readonly) NSUInteger length;
+-(instancetype)initWithSection:(MWKSection *)section;
+-(instancetype)initWithSection:(MWKSection *)section dict:(NSDictionary *)dict;
 
--(instancetype)initWithArticle:(MWKArticle *)article;
--(instancetype)initWithArticle:(MWKArticle *)article dict:(NSDictionary *)dict;
+-(NSUInteger)count;
+-(NSString *)imageURLAtIndex:(NSUInteger)index;
+-(MWKImage *)objectAtIndexedSubscript:(NSUInteger)index;
 
 -(void)addImageURL:(NSString *)imageURL;
 
@@ -25,7 +27,6 @@
 
 @property (readonly) BOOL dirty;
 
--(NSString *)imageURLAtIndex:(NSUInteger)index;
--(MWKImage *)objectAtIndexedSubscript:(NSUInteger)index;
+-(void)save;
 
 @end

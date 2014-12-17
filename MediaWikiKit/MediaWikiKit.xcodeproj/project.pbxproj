@@ -30,8 +30,6 @@
 		D48405C819E47542006F4139 /* MWKImage.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405C619E47542006F4139 /* MWKImage.m */; };
 		D48405CB19E47559006F4139 /* MWKTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CA19E47559006F4139 /* MWKTitle.m */; };
 		D48405CC19E47559006F4139 /* MWKTitle.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CA19E47559006F4139 /* MWKTitle.m */; };
-		D48405CF19E47572006F4139 /* MWKArticleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleStore.m */; };
-		D48405D019E47572006F4139 /* MWKArticleStore.m in Sources */ = {isa = PBXBuildFile; fileRef = D48405CE19E47572006F4139 /* MWKArticleStore.m */; };
 		D494A6FE19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */; };
 		D494A6FF19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */; };
 		D494A70119F6CAB30098AA18 /* MWKProtectionStatusTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D494A70019F6CAB30098AA18 /* MWKProtectionStatusTests.m */; };
@@ -112,8 +110,6 @@
 		D48405C619E47542006F4139 /* MWKImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKImage.m; sourceTree = "<group>"; };
 		D48405C919E47559006F4139 /* MWKTitle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKTitle.h; sourceTree = "<group>"; };
 		D48405CA19E47559006F4139 /* MWKTitle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKTitle.m; sourceTree = "<group>"; };
-		D48405CD19E47572006F4139 /* MWKArticleStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKArticleStore.h; sourceTree = "<group>"; };
-		D48405CE19E47572006F4139 /* MWKArticleStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKArticleStore.m; sourceTree = "<group>"; };
 		D494A6FC19F6C7C30098AA18 /* MWKProtectionStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MWKProtectionStatus.h; sourceTree = "<group>"; };
 		D494A6FD19F6C7C30098AA18 /* MWKProtectionStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKProtectionStatus.m; sourceTree = "<group>"; };
 		D494A70019F6CAB30098AA18 /* MWKProtectionStatusTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MWKProtectionStatusTests.m; sourceTree = "<group>"; };
@@ -278,8 +274,6 @@
 				D44EA7881A1BCD1400631A1D /* MWKRecentSearchEntry.m */,
 				D44EA78B1A1BCD2600631A1D /* MWKRecentSearchList.h */,
 				D44EA78C1A1BCD2600631A1D /* MWKRecentSearchList.m */,
-				D4B94B1D1A2FE975007FC79B /* MWKImageList.h */,
-				D4B94B1E1A2FE975007FC79B /* MWKImageList.m */,
 			);
 			name = "Data classes";
 			sourceTree = "<group>";
@@ -302,10 +296,10 @@
 				D494A70D19F6E8F20098AA18 /* MWKDataStore.m */,
 				D48405C119E47535006F4139 /* MWKArticle.h */,
 				D48405C219E47535006F4139 /* MWKArticle.m */,
-				D48405CD19E47572006F4139 /* MWKArticleStore.h */,
-				D48405CE19E47572006F4139 /* MWKArticleStore.m */,
 				D44EA7831A1BCC0300631A1D /* MWKUserDataStore.h */,
 				D44EA7841A1BCC0300631A1D /* MWKUserDataStore.m */,
+				D4B94B1D1A2FE975007FC79B /* MWKImageList.h */,
+				D4B94B1E1A2FE975007FC79B /* MWKImageList.m */,
 				D4209C9C1A3A50C9000E1A60 /* MWKSectionList.h */,
 				D4209C9D1A3A50C9000E1A60 /* MWKSectionList.m */,
 			);
@@ -422,7 +416,6 @@
 				D494A6FE19F6C7C30098AA18 /* MWKProtectionStatus.m in Sources */,
 				D494A70E19F6E8F20098AA18 /* MWKDataStore.m in Sources */,
 				D47F56281A1A89B4004D9856 /* MWKHistoryList.m in Sources */,
-				D48405CF19E47572006F4139 /* MWKArticleStore.m in Sources */,
 				D4612CED1A116E97008945A5 /* MWKSavedPageEntry.m in Sources */,
 				D4B94B1F1A2FE975007FC79B /* MWKImageList.m in Sources */,
 				D4209C9E1A3A50C9000E1A60 /* MWKSectionList.m in Sources */,
@@ -455,7 +448,6 @@
 				D4B94B201A2FE975007FC79B /* MWKImageList.m in Sources */,
 				D494A71819F7103D0098AA18 /* MWKTestCase.m in Sources */,
 				D494A71319F70F910098AA18 /* MWKDataStoreStorageTests.m in Sources */,
-				D48405D019E47572006F4139 /* MWKArticleStore.m in Sources */,
 				D49ADCCE1A00346B0010F839 /* MWKArticleStoreTestCase.m in Sources */,
 				D494A70119F6CAB30098AA18 /* MWKProtectionStatusTests.m in Sources */,
 				D44EA7861A1BCC0300631A1D /* MWKUserDataStore.m in Sources */,

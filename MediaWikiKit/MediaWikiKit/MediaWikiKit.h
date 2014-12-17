@@ -38,7 +38,6 @@
 #import "MWKSectionList.h"
 #import "MWKImageList.h"
 
-#import "MWKArticleStore.h"
 #import "MWKUserDataStore.h"
 
 @interface MediaWikiKit : NSObject

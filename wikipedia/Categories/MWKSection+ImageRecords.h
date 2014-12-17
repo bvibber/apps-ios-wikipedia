@@ -7,6 +7,6 @@
 // images objects. When the web view starts downloading these images the
 // URLCache object can then associate the images (via their url) to these
 // core data image objects.
--(void)createImageRecordsForHtmlOnArticleStore:(MWKArticleStore *)articleStore;
+-(void)createImageRecordsForHtml;
 
 @end

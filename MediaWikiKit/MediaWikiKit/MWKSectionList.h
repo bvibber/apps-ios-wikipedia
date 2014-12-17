@@ -8,9 +8,9 @@
 
 #import "MWKDataObject.h"
 
-@interface MWKSectionList : MWKDataObject
+@interface MWKSectionList : MWKDataObject <NSFastEnumeration>
 
-@property MWKArticle *article;
+@property (readonly) MWKArticle *article;
 
 - (NSUInteger)count;
 

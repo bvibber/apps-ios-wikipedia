@@ -8,7 +8,7 @@
 
 @implementation MWKSection (ImageRecords)
 
--(void)createImageRecordsForHtmlOnArticleStore:(MWKArticleStore *)articleStore
+-(void)createImageRecordsForHtml
 {
     // Parse the section html extracting the image urls (in order)
     // See: http://www.raywenderlich.com/14172/how-to-parse-html-on-ios
@@ -19,7 +19,7 @@
     // Reminder: don't do "context performBlockAndWait" here - createImageRecordsForHtmlOnContext gets
     // called in a loop which is encompassed by such a block already!
     
-    NSString *html = [articleStore sectionTextAtIndex:self.sectionId];
+    NSString *html = self.text;
     if (html.length == 0) return;
     
     NSData *sectionHtmlData = [html dataUsingEncoding:NSUTF8StringEncoding];
@@ -85,7 +85,7 @@
             }
         }
         
-        MWKImage *image = [articleStore imageWithURL:src];
+        MWKImage *image = [self.article imageWithURL:src];
         
         if (image) {
             // If Image record already exists, update its attributes.
@@ -95,7 +95,7 @@
         }else{
             // If no Image record, create one setting its "data" attribute to nil. This allows the record to be
             // created so it can be associated with the section in which this , then when the URLCache intercepts the request for this image
-            image = [articleStore importImageURL:src sectionId:self.sectionId];
+            image = [self.article importImageURL:src sectionId:self.sectionId];
         }
         
         // If imageSection doesn't already exist with the same index and image, create sectionImage record

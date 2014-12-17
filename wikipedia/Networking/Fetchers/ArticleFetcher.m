@@ -23,22 +23,22 @@
 @interface ArticleFetcher()
 
 // The Article object to be updated with the downloaded data.
-@property (nonatomic, strong) MWKArticleStore *articleStore;
+@property (nonatomic, strong) MWKArticle *article;
 
 @end
 
 @implementation ArticleFetcher
 
--(instancetype)initAndFetchSectionsForArticleStore: (MWKArticleStore *)articleStore
-                                       withManager: (AFHTTPRequestOperationManager *)manager
-                                thenNotifyDelegate: (id <FetchFinishedDelegate>) delegate
+-(instancetype)initAndFetchSectionsForArticle: (MWKArticle *)article
+                                  withManager: (AFHTTPRequestOperationManager *)manager
+                           thenNotifyDelegate: (id <FetchFinishedDelegate>) delegate
 {
     self = [super init];
-    assert(articleStore != nil);
+    assert(article != nil);
     assert(manager != nil);
     assert(delegate != nil);
     if (self) {
-        self.articleStore = articleStore;
+        self.article = article;
         self.fetchFinishedDelegate = delegate;
         [self fetchWithManager:manager];
     }
@@ -47,11 +47,11 @@
 
 -(void)fetchWithManager:(AFHTTPRequestOperationManager *)manager
 {
-    NSString *title = self.articleStore.title.prefixedText;
-    NSString *subdomain = self.articleStore.title.site.language;
+    NSString *title = self.article.title.prefixedText;
+    NSString *subdomain = self.article.title.site.language;
     
-    if (!self.articleStore) {
-        NSLog(@"NO ARTICLE DELEGATE");
+    if (!self.article) {
+        NSLog(@"NO ARTICLE OBJECT");
         return;
     }
     if (!self.fetchFinishedDelegate) {
@@ -87,7 +87,7 @@
         
         //NSDictionary *leadSectionResults = [self prepareResultsFromResponse:responseObject forTitle:title];
         @try {
-            [self.articleStore importMobileViewJSON:responseObject];
+            [self.article importMobileViewJSON:responseObject];
         }
         @catch (NSException *e) {
             NSError *err = [NSError errorWithDomain:@"ArticleFetcher" code:666 userInfo:@{@"exception": e}];
@@ -97,10 +97,10 @@
         }
         
         //[self applyResultsForLeadSection:leadSectionResults];
-        for (int n = 0; n < [self.articleStore.sections count]; n++) {
+        for (int n = 0; n < [self.article.sections count]; n++) {
             [self createImageRecordsForSection:n];
         }
-        [self.articleStore saveImageList];
+        [self.article.images save];
 
         [self finishWithError: nil
                   fetchedData: nil];
@@ -412,7 +412,7 @@
 
 -(void)createImageRecordsForSection:(int)sectionId
 {
-    NSString *html = [self.articleStore sectionTextAtIndex:sectionId];
+    NSString *html = self.article.sections[sectionId].text;
     
     // Parse the section html extracting the image urls (in order)
     // See: http://www.raywenderlich.com/14172/how-to-parse-html-on-ios
@@ -488,7 +488,7 @@
             }
         }
         
-        MWKImage *image = [self.articleStore imageWithURL:src];
+        MWKImage *image = [self.article imageWithURL:src];
         //Image *image = (Image *)[context getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", src];
         
         if (image) {
@@ -502,7 +502,7 @@
             // If no Image record, create one setting its "data" attribute to nil. This allows the record to be
             // created so it can be associated with the section in which this , then when the URLCache intercepts the request for this image
             //image = [NSEntityDescription insertNewObjectForEntityForName:@"Image" inManagedObjectContext:context];
-            image = [self.articleStore importImageURL:src sectionId:sectionId];
+            image = [self.article importImageURL:src sectionId:sectionId];
             
             /*
              Moved imageData into own entity:

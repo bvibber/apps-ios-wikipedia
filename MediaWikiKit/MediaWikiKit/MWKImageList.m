@@ -12,11 +12,11 @@
     NSMutableArray *entries;
     NSMutableDictionary *entriesByURL;
     NSMutableDictionary *entriesByNameWithoutSize;
+    unsigned long mutationState;
 }
 
 -(void)addImageURL:(NSString *)imageURL
 {
-    NSMutableArray *entries = [self entriesBySection:sectionId];
     [entries addObject:imageURL];
     entriesByURL[imageURL] = imageURL;
     
@@ -27,6 +27,12 @@
         entriesByNameWithoutSize[key] = byname;
     }
     [byname addObject:imageURL];
+    mutationState++;
+}
+
+-(NSUInteger)count
+{
+    return [entries count];
 }
 
 -(NSString *)imageURLAtIndex:(NSUInteger)index
@@ -41,7 +47,7 @@
 -(MWKImage *)objectAtIndexedSubscript:(NSUInteger)index
 {
     NSString *imageURL = [self imageURLAtIndex:index];
-    [self.article.dataStore imageWithURL:imageURL article:self.article];
+    return [self.section.article.dataStore imageWithURL:imageURL title:self.section.article.title];
 }
 
 -(BOOL)hasImageURL:(NSString *)imageURL
@@ -72,58 +78,24 @@
     return biggestURL;
 }
 
--(NSArray *)imageURLsForSectionId:(int)sectionId
-{
-    return [[self entriesBySection:sectionId] copy];
-}
-
--(NSArray *)imagesBySection
-{
-    NSMutableArray *arr = [[NSMutableArray alloc] init];
-    NSArray *keys = [entriesBySection.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString *key1, NSString *key2) {
-        int int1 = [key1 intValue];
-        int int2 = [key2 intValue];
-        if (int1 == int2 ) {
-            return NSOrderedSame;
-        } else if (int1 > int2) {
-            return NSOrderedDescending;
-        } else {
-            return NSOrderedAscending;
-        }
-    }];
-    int lastSection = -1;
-    for (NSString *key in keys) {
-        lastSection = [key intValue];
-    }
-    for (int i = 0; i <= lastSection; i++) {
-        NSString *key = [NSString stringWithFormat:@"%d", i];
-        NSMutableArray *subarr = [[NSMutableArray alloc] init];
-        for (NSString *url in entriesBySection[key]) {
-            [subarr addObject:url];
-        }
-        [arr addObject:subarr];
-    }
-    return [NSArray arrayWithArray:arr];
-}
-
 
 #pragma mark - data i/o
 
--(instancetype)initWithArticle:(MWKArticle *)article
+-(instancetype)initWithSection:(MWKSection *)section
 {
-    self = [self initWithSite:article.site];
+    self = [self initWithSite:section.site];
     if (self) {
-        _article = article;
-        entriesBySection = [[NSMutableDictionary alloc] init];
+        _section = section;
+        mutationState = 0;
         entriesByURL = [[NSMutableDictionary alloc] init];
         entriesByNameWithoutSize = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
 
--(instancetype)initWithArticle:(MWKArticle *)article dict:(NSDictionary *)dict
+-(instancetype)initWithSection:(MWKSection *)section dict:(NSDictionary *)dict
 {
-    self = [self initWithArticle:article];
+    self = [self initWithSection:section];
     if (self) {
         for (NSString *url in dict[@"entries"]) {
             [self addImageURL:url];
@@ -135,6 +107,25 @@
 -(id)dataExport
 {
     return @{@"entries": entries};
+}
+
+- (NSUInteger)countByEnumeratingWithState:(NSFastEnumerationState *)state
+                                  objects:(__unsafe_unretained id [])stackbuf
+                                    count:(NSUInteger)len
+{
+    NSUInteger start = state->state,
+        count = 0;
+    
+    for (NSUInteger i = 0; i < len && start + count < [self count]; i++) {
+        stackbuf[i] = self[i + start];
+        count++;
+    }
+    state->state += count;
+    
+    state->itemsPtr = stackbuf;
+    state->mutationsPtr = &mutationState;
+
+    return count;
 }
 
 @end

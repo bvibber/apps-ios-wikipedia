@@ -41,9 +41,6 @@
 @property (readonly) MWKSectionList *sections;
 
 @property (readonly) MWKImageList *images;
--(MWKImage *)imageWithURL:(NSString *)url;
--(MWKImage *)largestImageWithURL:(NSString *)url;
-
 @property (readwrite) MWKImage *thumbnail;
 @property (readwrite) MWKImage *image;
 
@@ -57,7 +54,9 @@
  * from an API mobileview JSON response, save it to the database,
  * and make it available through this object.
  */
--(MWKArticle *)importMobileViewJSON:(NSDictionary *)jsonDict;
+-(void)importMobileViewJSON:(NSDictionary *)jsonDict;
+
+-(MWKImage *)imageWithURL:(NSString *)url;
 
 /**
  * Create a stub record for an image with given URL.
