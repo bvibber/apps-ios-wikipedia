@@ -22,20 +22,22 @@
 - (void)setUp {
     [super setUp];
     self.goldenGateImageURL = @"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Golden_Gate_Bridge%2C_SF_%28cropped%29.jpg/500px-Golden_Gate_Bridge%2C_SF_%28cropped%29.jpg";
-    [self.article importMobileViewJSON:self.json0];
-    [self.article importMobileViewJSON:self.json1];
+    [self.article importMobileViewJSON:self.json0[@"mobileview"]];
+    [self.article importMobileViewJSON:self.json1[@"mobileview"]];
 }
 
 - (void)testLoadNonexistentImage {
     // This should hand us a new image object
-    XCTAssertNoThrow([self.article imageWithURL:self.goldenGateImageURL]);
+    XCTAssertNotNil([self.article importImageURL:self.goldenGateImageURL sectionId:0]);
 }
 
 - (void)testLoadNonexistentImageData {
-    MWKImage *image = [self.article imageWithURL:self.goldenGateImageURL];
+    MWKImage *image = [self.article importImageURL:self.goldenGateImageURL sectionId:0];
+    XCTAssertNotNil(image);
     
     // But this data should explode
-    XCTAssertNil([self.article.dataStore imageDataWithImage:image]);
+    NSData *data = [self.article.dataStore imageDataWithImage:image];
+    XCTAssertNil(data);
 }
 
 - (void)testLoadExistentImageData {

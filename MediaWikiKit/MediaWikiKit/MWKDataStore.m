@@ -128,7 +128,7 @@
     } else {
         @throw [NSException exceptionWithName:@"MWKDataStoreException"
                                        reason:@"Tried to save non-upload.wikimedia.org URL as image"
-                                     userInfo:@{@"str": str}];
+                                     userInfo:@{@"str": str ? str : [NSNull null]}];
     }
     
 }
@@ -310,6 +310,10 @@
 
 -(NSData *)imageDataWithImage:(MWKImage *)image
 {
+    if (image == nil) {
+        NSLog(@"nil image passed to imageDataWithImage");
+        return nil;
+    }
     NSString *path = [self pathForImage:image];
     NSString *fileName = [@"Image" stringByAppendingPathExtension:image.extension];
     NSString *filePath = [path stringByAppendingPathComponent:fileName];
