@@ -16,5 +16,6 @@
 
 - (MWKSection *)objectAtIndexedSubscript:(NSUInteger)idx;
 
+- (instancetype)initWithArticle:(MWKArticle *)article;
 
 @end

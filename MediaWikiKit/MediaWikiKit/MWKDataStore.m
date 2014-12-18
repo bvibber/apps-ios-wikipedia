@@ -266,7 +266,7 @@
     NSString *filePath = [path stringByAppendingPathComponent:@"Article.plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (dict == nil) {
-        return nil;
+        return [[MWKArticle alloc] initWithTitle:title dataStore:self];
     } else {
         return [[MWKArticle alloc] initWithTitle:title dataStore:self dict:dict];
     }

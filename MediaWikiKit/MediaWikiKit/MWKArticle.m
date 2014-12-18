@@ -160,6 +160,10 @@
     [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
 }
 
+-(MWKSectionList *)sections
+{
+    return [[MWKSectionList alloc] initWithArticle:self];
+}
 
 #pragma mark - protection status methods
 

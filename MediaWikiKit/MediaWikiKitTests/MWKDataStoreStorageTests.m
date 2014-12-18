@@ -19,7 +19,7 @@
 
 - (void)testWriteReadArticle
 {
-    XCTAssertNil([self.dataStore articleWithTitle:self.title], @"article cannot be loaded before we save it");
+    XCTAssertNotNil([self.dataStore articleWithTitle:self.title], @"article stub can be loaded before we save it");
     
     MWKArticle *article;
     article = [[MWKArticle alloc] initWithTitle:self.title dataStore:self.dataStore dict:self.json0[@"mobileview"]];
@@ -34,8 +34,6 @@
 
 - (void)testArticleStoreSection0
 {
-    XCTAssertNil([self.dataStore articleWithTitle:self.title], @"article cannot be loaded before we save it");
-    
     XCTAssertNoThrow([self.article importMobileViewJSON:self.json0[@"mobileview"]]);
     
     MWKArticle *article;
@@ -70,8 +68,8 @@
     XCTAssertNoThrow([self.article importMobileViewJSON:self.json0[@"mobileview"]]);
     XCTAssertNoThrow([self.article importMobileViewJSON:self.json1[@"mobileview"]]);
 
-    MWKSectionList *sections;
-    XCTAssertNoThrow(sections = self.article.sections);
+    MWKSectionList *sections = self.article.sections;
+    XCTAssertNotNil(sections);
     
     XCTAssertEqual([sections count], 36);
 }
