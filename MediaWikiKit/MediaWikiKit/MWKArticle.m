@@ -95,25 +95,21 @@
     
     // This doesn't come from mobileview api, queried separately
     _entitydescription = [self optionalString:        @"entitydescription" dict:dict];
-
     
     [self.dataStore saveArticle:self];
     // @fixme should this save here or mark as dirty somehow?
 
     // Populate sections
     NSArray *sectionsData = dict[@"sections"];
-    if (!sectionsData || ![sectionsData isKindOfClass:[NSArray class]]) {
-        @throw [NSException exceptionWithName:@"MWArticleStoreException"
-                                       reason:@"invalid input, sections missing or not an array"
-                                     userInfo:nil];
-    }
-    NSMutableArray *sections = [NSMutableArray arrayWithCapacity:[sectionsData count]];
-    for (NSDictionary *sectionData in sectionsData) {
-        MWKSection *section = [[MWKSection alloc] initWithArticle:self dict:sectionData];
-        [sections addObject:section];
-        [self.dataStore saveSection:section];
-        if (sectionData[@"text"]) {
-            [self.dataStore saveSectionText:sectionData[@"text"] section:section];
+    if (sectionsData && [sectionsData isKindOfClass:[NSArray class]]) {
+        NSMutableArray *sections = [NSMutableArray arrayWithCapacity:[sectionsData count]];
+        for (NSDictionary *sectionData in sectionsData) {
+            MWKSection *section = [[MWKSection alloc] initWithArticle:self dict:sectionData];
+            [sections addObject:section];
+            [self.dataStore saveSection:section];
+            if (sectionData[@"text"]) {
+                [self.dataStore saveSectionText:sectionData[@"text"] section:section];
+            }
         }
     }
 }

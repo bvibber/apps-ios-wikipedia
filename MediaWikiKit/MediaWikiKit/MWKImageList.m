@@ -47,7 +47,7 @@
 -(MWKImage *)objectAtIndexedSubscript:(NSUInteger)index
 {
     NSString *imageURL = [self imageURLAtIndex:index];
-    return [self.section.article.dataStore imageWithURL:imageURL title:self.section.article.title];
+    return [self.section.article.dataStore imageWithURL:imageURL article:self.section.article];
 }
 
 -(BOOL)hasImageURL:(NSString *)imageURL

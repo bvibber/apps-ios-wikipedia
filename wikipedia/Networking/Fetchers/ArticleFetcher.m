@@ -87,7 +87,7 @@
         
         //NSDictionary *leadSectionResults = [self prepareResultsFromResponse:responseObject forTitle:title];
         @try {
-            [self.article importMobileViewJSON:responseObject];
+            [self.article importMobileViewJSON:responseObject[@"mobileview"]];
         }
         @catch (NSException *e) {
             NSError *err = [NSError errorWithDomain:@"ArticleFetcher" code:666 userInfo:@{@"exception": e}];
