@@ -127,7 +127,7 @@
     @"noheadings": @"true",
     @"sections": @"all",
     @"page": title,
-    @"prop": @"sections|text|lastmodified|lastmodifiedby|languagecount|id|protection|editable|displaytitle",
+    @"prop": @"sections|text|lastmodified|lastmodifiedby|languagecount|id|protection|editable|displaytitle|thumb",
     }.mutableCopy;
 
     if ([SessionSingleton sharedInstance].sendUsageReports) {

@@ -35,6 +35,7 @@
 @property (readonly) NSString            *displaytitle;   // optional
 @property (readonly) MWKProtectionStatus *protection;     // required
 @property (readonly) BOOL                 editable;       // required
+@property (readonly) NSString            *thumb;          // optional;
 
 @property (readonly) NSString            *description; // optional; currently pulled separately via wikidata
 
@@ -42,7 +43,7 @@
 
 @property (readonly) MWKImageList *images;
 @property (readwrite) MWKImage *thumbnail;
-@property (readwrite) MWKImage *image;
+@property (readonly) MWKImage *image;
 
 @property (readwrite) BOOL needsRefresh;
 
@@ -70,6 +71,5 @@
 -(MWKImage *)importImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType;
 
 -(void)remove;
-
 
 @end

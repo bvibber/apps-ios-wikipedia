@@ -55,6 +55,10 @@
         // Added https://gerrit.wikimedia.org/r/#/c/180895
         dict[@"description"] = self.description;
     }
+    
+    if (self.thumb) {
+        dict[@"thumb"] = @{@"url": self.thumb};
+    }
 
     return [NSDictionary dictionaryWithDictionary:dict];
 }
@@ -75,7 +79,8 @@
             self.languagecount == other.languagecount &&
             [self.displaytitle isEqualToString:other.displaytitle] &&
             [self.protection isEqual:other.protection] &&
-            self.editable == other.editable;
+            self.editable == other.editable &&
+            (self.thumb == other.thumb || [self.thumb isEqualToString:other.thumb]);
         
     }
 }
@@ -95,6 +100,12 @@
     // This doesn't come from mobileview api, queried separately
     // Added https://gerrit.wikimedia.org/r/#/c/180895/2
     _description    = [self optionalString:           @"description"     dict:dict];
+    
+    if (dict[@"thumb"]) {
+        _thumb = dict[@"thumb"][@"url"]; // optional
+    } else {
+        _thumb = nil;
+    }
     
     [self.dataStore saveArticle:self];
     // @fixme should this save here or mark as dirty somehow?
@@ -177,6 +188,21 @@
     } else {
         return [[MWKProtectionStatus alloc] initWithData:obj];
     }
+}
+
+-(MWKImage *)thumbnail
+{
+    return [self imageWithURL:self.thumb];
+}
+
+-(void)setThumbnail:(MWKImage *)thumbnail
+{
+    _thumb = thumbnail.sourceURL;
+}
+
+-(MWKImage *)image
+{
+    return self.thumbnail;
 }
 
 @end
