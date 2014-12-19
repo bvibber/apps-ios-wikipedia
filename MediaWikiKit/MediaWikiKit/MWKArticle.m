@@ -10,6 +10,7 @@
 
 @implementation MWKArticle {
     NSString *_description;
+    MWKImageList *_images;
 }
 
 -(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore
@@ -166,8 +167,8 @@
 
 -(void)save
 {
-    // @fixme should this save here or mark as dirty somehow?
     [self.dataStore saveArticle:self];
+    [_images save];
 }
 
 -(void)remove
@@ -208,6 +209,14 @@
 -(MWKImage *)image
 {
     return self.thumbnail;
+}
+
+-(MWKImageList *)images
+{
+    if (_images == nil) {
+        _images = [self.dataStore imageListWithArticle:self section:nil];
+    }
+    return _images;
 }
 
 @end

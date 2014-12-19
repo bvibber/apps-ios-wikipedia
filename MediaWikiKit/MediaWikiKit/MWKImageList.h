@@ -11,10 +11,11 @@
 @class MWKImage;
 
 @interface MWKImageList : MWKSiteDataObject <NSFastEnumeration>
+@property (weak, readonly) MWKArticle *article;
 @property (weak, readonly) MWKSection *section;
 
--(instancetype)initWithSection:(MWKSection *)section;
--(instancetype)initWithSection:(MWKSection *)section dict:(NSDictionary *)dict;
+-(instancetype)initWithArticle:(MWKArticle *)article section:(MWKSection *)section;
+-(instancetype)initWithArticle:(MWKArticle *)article section:(MWKSection *)section dict:(NSDictionary *)dict;
 
 -(NSUInteger)count;
 -(NSString *)imageURLAtIndex:(NSUInteger)index;

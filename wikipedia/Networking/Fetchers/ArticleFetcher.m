@@ -488,7 +488,7 @@
             }
         }
         
-        MWKImage *image = [self.article imageWithURL:src];
+        MWKImage *image = [self.article importImageURL:src sectionId:sectionId];
         //Image *image = (Image *)[context getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", src];
         
         if (image) {

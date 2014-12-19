@@ -90,7 +90,7 @@
 -(MWKImageList *)images
 {
     if (_images == nil) {
-        _images = [self.article.dataStore imageListWithSection:self];
+        _images = [self.article.dataStore imageListWithArticle:self.article section:self];
     }
     return _images;
 }

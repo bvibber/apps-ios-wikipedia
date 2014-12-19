@@ -47,7 +47,7 @@
 -(MWKImage *)objectAtIndexedSubscript:(NSUInteger)index
 {
     NSString *imageURL = [self imageURLAtIndex:index];
-    return [self.section.article.dataStore imageWithURL:imageURL article:self.section.article];
+    return [self.article.dataStore imageWithURL:imageURL article:self.article];
 }
 
 -(BOOL)hasImageURL:(NSString *)imageURL
@@ -81,11 +81,13 @@
 
 #pragma mark - data i/o
 
--(instancetype)initWithSection:(MWKSection *)section
+-(instancetype)initWithArticle:(MWKArticle *)article section:(MWKSection *)section
 {
     self = [self initWithSite:section.site];
     if (self) {
+        _article = article;
         _section = section;
+        entries = [[NSMutableArray alloc] init];
         mutationState = 0;
         entriesByURL = [[NSMutableDictionary alloc] init];
         entriesByNameWithoutSize = [[NSMutableDictionary alloc] init];
@@ -93,9 +95,9 @@
     return self;
 }
 
--(instancetype)initWithSection:(MWKSection *)section dict:(NSDictionary *)dict
+-(instancetype)initWithArticle:(MWKArticle *)article section:(MWKSection *)section dict:(NSDictionary *)dict
 {
-    self = [self initWithSection:section];
+    self = [self initWithArticle:article section:section];
     if (self) {
         for (NSString *url in dict[@"entries"]) {
             [self addImageURL:url];
@@ -126,6 +128,11 @@
     state->mutationsPtr = &mutationState;
 
     return count;
+}
+
+-(void)save
+{
+    [self.article.dataStore saveImageList:self];
 }
 
 @end

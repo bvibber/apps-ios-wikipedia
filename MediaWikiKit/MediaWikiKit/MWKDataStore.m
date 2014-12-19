@@ -257,6 +257,18 @@
     [self saveDictionary:export path:path name:@"RecentSearches.plist"];
 }
 
+-(void)saveImageList:(MWKImageList *)imageList
+{
+    NSString *path;
+    if (imageList.section) {
+        path = [self pathForSection:imageList.section];
+    } else {
+        path = [self pathForArticle:imageList.article];
+    }
+    NSDictionary *export = [imageList dataExport];
+    [self saveDictionary:export path:path name:@"Images.plist"];
+}
+
 #pragma mark - load methods
 
 /// May return nil if no article data available.
@@ -379,15 +391,20 @@
 }
 
 
--(MWKImageList *)imageListWithSection:(MWKSection *)section
+-(MWKImageList *)imageListWithArticle:(MWKArticle *)article section:(MWKSection *)section
 {
-    NSString *path = [self pathForSection:section];
+    NSString *path;
+    if (section) {
+        path = [self pathForSection:section];
+    } else {
+        path = [self pathForArticle:article];
+    }
     NSString *filePath = [path stringByAppendingPathComponent:@"Images.plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];
     if (dict) {
-        return [[MWKImageList alloc] initWithSection:section dict:dict];
+        return [[MWKImageList alloc] initWithArticle:article section:section dict:dict];
     } else {
-        return [[MWKImageList alloc] initWithSection:section];
+        return [[MWKImageList alloc] initWithArticle:article section:section];
     }
 }
 

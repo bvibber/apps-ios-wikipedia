@@ -46,6 +46,7 @@
 -(void)saveHistoryList:(MWKHistoryList *)list;
 -(void)saveSavedPageList:(MWKSavedPageList *)list;
 -(void)saveRecentSearchList:(MWKRecentSearchList *)list;
+-(void)saveImageList:(MWKImageList *)imageList;
 
 // Raw load methods
 -(MWKArticle *)articleWithTitle:(MWKTitle *)title;
@@ -60,6 +61,6 @@
 // Storage helper methods
 -(MWKUserDataStore *)userDataStore;
 
--(MWKImageList *)imageListWithSection:(MWKSection *)section;
+-(MWKImageList *)imageListWithArticle:(MWKArticle *)article section:(MWKSection *)section;
 
 @end
