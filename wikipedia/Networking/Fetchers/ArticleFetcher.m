@@ -87,7 +87,6 @@
         //NSDictionary *leadSectionResults = [self prepareResultsFromResponse:responseObject forTitle:title];
         @try {
             [self.article importMobileViewJSON:responseObject[@"mobileview"]];
-            [self.article save];
         }
         @catch (NSException *e) {
             NSError *err = [NSError errorWithDomain:@"ArticleFetcher" code:666 userInfo:@{@"exception": e}];
@@ -98,9 +97,10 @@
         
         //[self applyResultsForLeadSection:leadSectionResults];
         for (int n = 0; n < [self.article.sections count]; n++) {
+            (void)self.article.sections[n].images; // hack
             [self createImageRecordsForSection:n];
         }
-        [self.article.images save];
+        [self.article save];
 
         [self finishWithError: nil
                   fetchedData: nil];
@@ -489,6 +489,7 @@
         }
         
         MWKImage *image = [self.article importImageURL:src sectionId:sectionId];
+        [image save];
         //Image *image = (Image *)[context getEntityForName: @"Image" withPredicateFormat:@"sourceUrl == %@", src];
         
         if (image) {

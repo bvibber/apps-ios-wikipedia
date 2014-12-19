@@ -9,7 +9,7 @@
 #import "MediaWikiKit.h"
 
 @implementation MWKSectionList {
-    NSArray *_sections;
+    NSMutableArray *_sections;
     unsigned long mutationState;
 }
 
@@ -30,7 +30,7 @@
         _article = article;
         mutationState = 0;
         if (_sections == nil) {
-            NSMutableArray *array = [@[] mutableCopy];
+            _sections = [@[] mutableCopy];
             NSFileManager *fm = [NSFileManager defaultManager];
             NSString *path = [[self.article.dataStore pathForTitle:self.article.title] stringByAppendingPathComponent:@"sections"];
             NSArray *files = [fm contentsOfDirectoryAtPath:path error:nil];
@@ -52,10 +52,9 @@
                 NSArray *matches = [redigits matchesInString:filename options:0 range:NSMakeRange(0, [filename length])];
                 if (matches && [matches count]) {
                     int sectionId = [filename intValue];
-                    array[sectionId] = [self.article.dataStore sectionWithId:sectionId article:self.article];
+                    _sections[sectionId] = [self.article.dataStore sectionWithId:sectionId article:self.article];
                 }
             }
-            _sections = [NSArray arrayWithArray:array];
         }
     }
     return self;
@@ -81,6 +80,16 @@
     return count;
 }
 
+-(void)addSection:(MWKSection *)section
+{
+    [_sections addObject:section];
+}
 
+-(void)save
+{
+    for (MWKSection *section in self) {
+        [section save];
+    }
+}
 
 @end

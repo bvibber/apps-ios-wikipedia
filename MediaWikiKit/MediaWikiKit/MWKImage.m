@@ -119,6 +119,11 @@
     _dateLastAccessed = [[NSDate alloc] init];
 }
 
+-(void)save
+{
+    [self.article.dataStore saveImage:self];
+}
+
 -(UIImage *)asUIImage
 {
     NSData *imageData = [self.article.dataStore imageDataWithImage:self];

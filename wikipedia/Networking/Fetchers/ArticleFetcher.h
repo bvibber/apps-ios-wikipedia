@@ -15,4 +15,5 @@
                                   withManager: (AFHTTPRequestOperationManager *)manager
                            thenNotifyDelegate: (id <FetchFinishedDelegate>) delegate;
 
+
 @end

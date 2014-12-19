@@ -11,6 +11,7 @@
 @implementation MWKArticle {
     NSString *_description;
     MWKImageList *_images;
+    MWKSectionList *_sections;
 }
 
 -(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore
@@ -111,14 +112,9 @@
     // Populate sections
     NSArray *sectionsData = dict[@"sections"];
     if (sectionsData && [sectionsData isKindOfClass:[NSArray class]]) {
-        NSMutableArray *sections = [NSMutableArray arrayWithCapacity:[sectionsData count]];
         for (NSDictionary *sectionData in sectionsData) {
             MWKSection *section = [[MWKSection alloc] initWithArticle:self dict:sectionData];
-            [sections addObject:section];
-            [self.dataStore saveSection:section];
-            if (sectionData[@"text"]) {
-                [self.dataStore saveSectionText:sectionData[@"text"] section:section];
-            }
+            [self.sections addSection:section];
         }
     }
 }
@@ -168,7 +164,8 @@
 -(void)save
 {
     [self.dataStore saveArticle:self];
-    [_images save];
+    [self.images save];
+    [self.sections save];
 }
 
 -(void)remove
@@ -179,7 +176,10 @@
 
 -(MWKSectionList *)sections
 {
-    return [[MWKSectionList alloc] initWithArticle:self];
+    if (_sections == nil) {
+        _sections = [[MWKSectionList alloc] initWithArticle:self];
+    }
+    return _sections;
 }
 
 #pragma mark - protection status methods

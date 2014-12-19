@@ -37,6 +37,7 @@
 
 -(void)updateWithData:(NSData *)data mimeType:(NSString *)mimeType;
 -(void)updateLastAccessed;
+-(void)save;
 
 -(UIImage *)asUIImage;
 

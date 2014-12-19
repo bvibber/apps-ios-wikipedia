@@ -38,4 +38,6 @@
 -(BOOL)isLeadSection;
 -(MWKTitle *)sourceTitle;
 
+-(void)save;
+
 @end
