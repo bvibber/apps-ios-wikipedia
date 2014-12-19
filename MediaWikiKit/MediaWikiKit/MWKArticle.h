@@ -36,7 +36,7 @@
 @property (readonly) MWKProtectionStatus *protection;     // required
 @property (readonly) BOOL                 editable;       // required
 
-@property (readonly) NSString            *entitydescription; // optional; pulled via wikidata
+@property (readonly) NSString            *description; // optional; currently pulled separately via wikidata
 
 @property (readonly) MWKSectionList *sections;
 

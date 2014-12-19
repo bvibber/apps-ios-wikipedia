@@ -8,7 +8,9 @@
 
 #import "MediaWikiKit.h"
 
-@implementation MWKArticle
+@implementation MWKArticle {
+    NSString *_description;
+}
 
 -(instancetype)initWithTitle:(MWKTitle *)title dataStore:(MWKDataStore *)dataStore
 {
@@ -48,16 +50,13 @@
     dict[@"protection"] = [self.protection dataExport];
     dict[@"editable"] = @(self.editable);
 
-    if (self.entitydescription) {
-        // This doesn't come from mobileview api, queried separately
-        dict[@"entitydescription"] = self.entitydescription;
+    if (self.description) {
+        // This doesn't come from mobileview api yet, queried separately
+        // Added https://gerrit.wikimedia.org/r/#/c/180895
+        dict[@"description"] = self.description;
     }
 
     return [NSDictionary dictionaryWithDictionary:dict];
-}
-
-- (NSString *)description {
-    return [NSString stringWithFormat:@"%@", [self dataExport]];
 }
 
 - (BOOL)isEqual:(id)object
@@ -94,7 +93,8 @@
     _editable       = [[self requiredNumber:          @"editable"       dict:dict] boolValue];
     
     // This doesn't come from mobileview api, queried separately
-    _entitydescription = [self optionalString:        @"entitydescription" dict:dict];
+    // Added https://gerrit.wikimedia.org/r/#/c/180895/2
+    _description    = [self optionalString:           @"description"     dict:dict];
     
     [self.dataStore saveArticle:self];
     // @fixme should this save here or mark as dirty somehow?

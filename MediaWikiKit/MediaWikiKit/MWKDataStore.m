@@ -298,6 +298,9 @@
 
 -(MWKImage *)imageWithURL:(NSString *)url article:(MWKArticle *)article
 {
+    if (url == nil) {
+        return nil;
+    }
     NSString *path = [self pathForImageURL:url title:article.title];
     NSString *filePath = [path stringByAppendingPathComponent:@"Image.plist"];
     NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:filePath];

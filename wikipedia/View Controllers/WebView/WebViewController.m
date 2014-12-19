@@ -1491,10 +1491,12 @@
 				[ROOT.topMenuViewController.searchResultsController.searchResults firstMatchForPredicate:articlePredicate];
 				if (articleDictFromSearchResults) {
 					NSString *thumbURL = articleDictFromSearchResults[@"thumbnail"][@"source"];
-					thumbURL = [thumbURL getUrlWithoutScheme];
-                    thumbURL = [article.images largestImageVariant:thumbURL];
-                    MWKImage *thumb = [article imageWithURL:thumbURL];
-					if (thumb) article.thumbnail = thumb;
+                    if (thumbURL) {
+                        thumbURL = [thumbURL getUrlWithoutScheme];
+                        thumbURL = [article.images largestImageVariant:thumbURL];
+                        MWKImage *thumb = [article imageWithURL:thumbURL];
+                        if (thumb) article.thumbnail = thumb;
+                    }
 				}
 				
 				// Update the toc and web view.
