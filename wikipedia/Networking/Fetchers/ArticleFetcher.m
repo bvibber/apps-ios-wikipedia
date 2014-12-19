@@ -6,7 +6,6 @@
 #import "Defines.h"
 #import "Section.h"
 #import "QueuesSingleton.h"
-#import "MWKSection+ImageRecords.h"
 #import "NSString+Extras.h"
 #import "AFHTTPRequestOperationManager.h"
 #import "SessionSingleton.h"
@@ -88,6 +87,7 @@
         //NSDictionary *leadSectionResults = [self prepareResultsFromResponse:responseObject forTitle:title];
         @try {
             [self.article importMobileViewJSON:responseObject[@"mobileview"]];
+            [self.article save];
         }
         @catch (NSException *e) {
             NSError *err = [NSError errorWithDomain:@"ArticleFetcher" code:666 userInfo:@{@"exception": e}];

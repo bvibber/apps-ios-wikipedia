@@ -107,9 +107,6 @@
         _thumb = nil;
     }
     
-    [self.dataStore saveArticle:self];
-    // @fixme should this save here or mark as dirty somehow?
-
     // Populate sections
     NSArray *sectionsData = dict[@"sections"];
     if (sectionsData && [sectionsData isKindOfClass:[NSArray class]]) {
@@ -131,7 +128,9 @@
  */
 -(MWKImage *)importImageURL:(NSString *)url sectionId:(int)sectionId
 {
+    [self.images addImageURL:url];
     [self.sections[sectionId].images addImageURL:url];
+
     return [[MWKImage alloc] initWithArticle:self sourceURL:url];
 }
 
@@ -163,6 +162,12 @@
     NSString *filePath = [self.dataStore pathForArticle:self];
     NSString *fileName = [filePath stringByAppendingPathComponent:@"needsRefresh.lock"];
     return [[NSFileManager defaultManager] fileExistsAtPath:fileName isDirectory:nil];
+}
+
+-(void)save
+{
+    // @fixme should this save here or mark as dirty somehow?
+    [self.dataStore saveArticle:self];
 }
 
 -(void)remove

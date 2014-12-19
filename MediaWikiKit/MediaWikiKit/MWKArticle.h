@@ -70,6 +70,7 @@
  */
 -(MWKImage *)importImageData:(NSData *)data image:(MWKImage *)image mimeType:(NSString *)mimeType;
 
+-(void)save;
 -(void)remove;
 
 @end

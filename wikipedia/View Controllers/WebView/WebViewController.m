@@ -25,7 +25,6 @@
 #import "UIWebView+ElementLocation.h"
 #import "UIView+RemoveConstraints.h"
 #import "UIViewController+Alert.h"
-#import "MWKSection+ImageRecords.h"
 #import "NSString+Extras.h"
 #import "PaddedLabel.h"
 #import "DataMigrator.h"
