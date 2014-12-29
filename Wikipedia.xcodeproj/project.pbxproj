@@ -172,6 +172,7 @@
 		04F27B7818FE0F2E00EDD838 /* PageHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F27B7418FE0F2E00EDD838 /* PageHistoryViewController.m */; };
 		04F39590186CF80100B0D6FC /* TOCViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 04F3958F186CF80100B0D6FC /* TOCViewController.m */; };
 		C9180EC418AED30C006C1DCA /* WikipediaAppUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C9180EC318AED30C006C1DCA /* WikipediaAppUtils.m */; };
+		D407E6411A51DBDA00CCC8B1 /* SchemaConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = D407E6401A51DBDA00CCC8B1 /* SchemaConverter.m */; };
 		D42E75EB18D11237002EA7E5 /* MWLanguageInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D42E75EA18D11237002EA7E5 /* MWLanguageInfo.m */; };
 		D46CD8C418A1AC4F0042959E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CD8C018A1AC4F0042959E /* InfoPlist.strings */; };
 		D46CD8C518A1AC4F0042959E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = D46CD8C218A1AC4F0042959E /* Localizable.strings */; };
@@ -582,6 +583,8 @@
 		04F3958F186CF80100B0D6FC /* TOCViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TOCViewController.m; sourceTree = "<group>"; };
 		C9180EC218AED30C006C1DCA /* WikipediaAppUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WikipediaAppUtils.h; sourceTree = "<group>"; };
 		C9180EC318AED30C006C1DCA /* WikipediaAppUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WikipediaAppUtils.m; sourceTree = "<group>"; };
+		D407E63F1A51DBDA00CCC8B1 /* SchemaConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SchemaConverter.h; sourceTree = "<group>"; };
+		D407E6401A51DBDA00CCC8B1 /* SchemaConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SchemaConverter.m; sourceTree = "<group>"; };
 		D42E75E918D11237002EA7E5 /* MWLanguageInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MWLanguageInfo.h; path = "mw-support/MWLanguageInfo.h"; sourceTree = "<group>"; };
 		D42E75EA18D11237002EA7E5 /* MWLanguageInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MWLanguageInfo.m; path = "mw-support/MWLanguageInfo.m"; sourceTree = "<group>"; };
 		D442F58619709E540013A2CA /* qqq */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = qqq; path = qqq.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
@@ -1700,6 +1703,8 @@
 				D4E8A8A3190835C100DA4765 /* DataMigrator.m */,
 				D4E8A8A519084F1300DA4765 /* SQLiteHelper.h */,
 				D4E8A8A619084F1300DA4765 /* SQLiteHelper.m */,
+				D407E63F1A51DBDA00CCC8B1 /* SchemaConverter.h */,
+				D407E6401A51DBDA00CCC8B1 /* SchemaConverter.m */,
 			);
 			name = "Data Migration";
 			path = ..;
@@ -2135,6 +2140,7 @@
 				047801BE18AE987900DBB747 /* UIButton+ColorMask.m in Sources */,
 				0429300A18604898002A13FC /* SavedPagesResultCell.m in Sources */,
 				0487048419F8262600B7D307 /* CaptchaResetter.m in Sources */,
+				D407E6411A51DBDA00CCC8B1 /* SchemaConverter.m in Sources */,
 				04821CD119895EDC007558F6 /* ReferenceGradientView.m in Sources */,
 				0460F8DC19B0F932001BC59B /* CenteredPathView.m in Sources */,
 				0472BC18193AD88C00C40BDA /* MWKSection+DisplayHtml.m in Sources */,
@@ -2500,6 +2506,7 @@
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/AFNetworking",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/hpple",
 					"$(PROJECT_DIR)/MediaWikiKit/MediaWikiKit",
+					"$(PROJECT_DIR)/OldDataSchema/**",
 				);
 				INFOPLIST_FILE = "Wikipedia/Wikipedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -2597,6 +2604,7 @@
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/AFNetworking",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/hpple",
 					"$(PROJECT_DIR)/MediaWikiKit/MediaWikiKit",
+					"$(PROJECT_DIR)/OldDataSchema/**",
 				);
 				INFOPLIST_FILE = "Wikipedia/Wikipedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
@@ -2623,6 +2631,7 @@
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/AFNetworking",
 					"$(PROJECT_DIR)/cocoapods/Pods/Headers/Public/hpple",
 					"$(PROJECT_DIR)/MediaWikiKit/MediaWikiKit",
+					"$(PROJECT_DIR)/OldDataSchema/**",
 				);
 				INFOPLIST_FILE = "Wikipedia/Wikipedia-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
