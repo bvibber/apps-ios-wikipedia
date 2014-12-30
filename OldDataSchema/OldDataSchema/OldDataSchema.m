@@ -32,7 +32,13 @@
 -(void)migrateArticle:(Article *)article
 {
     NSDictionary *dict = [self exportArticle:article];
-    [self.delegate oldDataSchema:self migrateHistoryEntry:dict];
+    [self.delegate oldDataSchema:self migrateArticle:dict];
+    
+    // Find its images...
+    // export them
+    // migrate them
+    
+    
 }
 
 -(NSDictionary *)exportArticle:(Article *)article
