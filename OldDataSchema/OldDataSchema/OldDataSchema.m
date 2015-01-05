@@ -14,6 +14,16 @@
 
 @implementation OldDataSchema {
     ArticleDataContextSingleton *context;
+    NSMutableSet *savedTitles;
+}
+
+-(instancetype)init
+{
+    self = [super init];
+    if (self) {
+        savedTitles = [[NSMutableSet alloc] init];
+    }
+    return self;
 }
 
 -(BOOL)exists
@@ -27,18 +37,81 @@
 -(void)migrateData
 {
     // TODO
+    // 1) Go through saved article list, saving entries and (articles and images)
+    // 2) Go through page reading history, saving entries and (articles and images) when not already transferred
+    
+    NSSet *savedEntries = nil;
+    for (Saved *saved in savedEntries) {
+        [self migrateSaved:saved];
+        [self migrateArticle:saved.article];
+    }
+    
+    NSSet *historyEntries = nil;
+    for (History *history in historyEntries) {
+        [self migrateHistory:history];
+        [self migrateArticle:history.article];
+    }
+}
+
+-(void)migrateSaved:(Saved *)saved
+{
+    NSDictionary *dict = [self exportSaved:saved];
+    [self.delegate oldDataSchema:self migrateSavedEntry:dict];
+}
+
+-(void)migrateHistory:(History *)history
+{
+    NSDictionary *dict = [self exportHistory:history];
+    [self.delegate oldDataSchema:self migrateHistoryEntry:dict];
 }
 
 -(void)migrateArticle:(Article *)article
 {
-    NSDictionary *dict = [self exportArticle:article];
-    [self.delegate oldDataSchema:self migrateArticle:dict];
-    
-    // Find its images...
-    // export them
-    // migrate them
-    
-    
+    NSString *key = [NSString stringWithFormat:@"%@:%@", article.domain, article.title];
+    if ([savedTitles containsObject:key]) {
+        // already imported this article
+    } else {
+        // Record for later to avoid dupe imports
+        [savedTitles addObject:key];
+
+        NSDictionary *dict = [self exportArticle:article];
+        [self.delegate oldDataSchema:self migrateArticle:dict];
+        
+        // Find its images...
+        for (Section *section in article.section) {
+            for (SectionImage *sectionImage in section.sectionImage) {
+                [self migrateImage:sectionImage];
+            }
+        }
+    }
+}
+
+-(void)migrateImage:(SectionImage *)sectionImage
+{
+    NSDictionary *dict = [self exportImage:sectionImage];
+    [self.delegate oldDataSchema:self migrateImage:dict];
+}
+
+-(NSDictionary *)exportSaved:(Saved *)saved
+{
+    return @{
+             @"domain": @"wikipedia.org",
+             @"language": saved.article.domain,
+             @"title": saved.article.title,
+             @"date": [self stringWithDate:saved.dateSaved]
+             };
+}
+
+-(NSDictionary *)exportHistory:(History *)history
+{
+    return @{
+             @"domain": @"wikipedia.org",
+             @"language": history.article.domain,
+             @"title": history.article.title,
+             @"date": [self stringWithDate:history.dateVisited],
+             @"discoveryMethod": history.discoveryMethod,
+             @"scrollPosition": history.article.lastScrollY
+             };
 }
 
 -(NSDictionary *)exportArticle:(Article *)article
@@ -93,6 +166,50 @@
     }
     
     return dict;
+}
+
+-(NSDictionary *)exportImage:(SectionImage *)sectionImage
+{
+    Section *section = sectionImage.section;
+    Article *article = section.article;
+    Image *image = sectionImage.image;
+    ImageData *imageData = image.imageData;
+
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
+    
+    dict[@"domain"] = @"wikipedia.org";
+    dict[@"language"] = article.domain;
+    dict[@"title"] = article.title;
+
+    dict[@"sectionId"] = section.sectionId;
+
+    dict[@"sourceURL"] = image.sourceUrl;
+    if (imageData.data) {
+        dict[@"data"] = imageData.data;
+    }
+    
+    return dict;
+}
+
+#pragma mark - date methods
+
+- (NSDateFormatter *)iso8601Formatter
+{
+    // See: https://www.mediawiki.org/wiki/Manual:WfTimestamp
+    NSDateFormatter * formatter = [[NSDateFormatter alloc] init];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    [formatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+    return formatter;
+}
+
+- (NSDate *)dateWithString:(NSString *)string
+{
+    return  [[self iso8601Formatter] dateFromString:string];
+}
+
+- (NSString *)stringWithDate:(NSDate *)date
+{
+    return [[self iso8601Formatter] stringFromDate:date];
 }
 
 @end
