@@ -69,6 +69,7 @@
     
     MWKHistoryList *historyList = self.userDataStore.historyList;
     [historyList addEntry:entry];
+    [self.userDataStore save];
 }
 
 -(void)oldDataSchema:(OldDataSchema *)schema migrateSavedEntry:(NSDictionary *)savedDict
@@ -83,7 +84,9 @@
     
     MWKSavedPageEntry *entry = [[MWKSavedPageEntry alloc] initWithDict:dict];
     
-    [self.userDataStore.savedPageList addEntry:entry];
+    MWKSavedPageList *savedPageList = self.userDataStore.savedPageList;
+    [savedPageList addEntry:entry];
+    [self.userDataStore save];
 }
 
 @end

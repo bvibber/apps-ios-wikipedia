@@ -133,20 +133,47 @@
 {
     NSMutableDictionary *dict = [@{} mutableCopy];
     
-    dict[@"redirected"] = // optional
-    dict[@"lastmodified"] = // date
-    dict[@"lastmodifiedby"] = // dict structure for user or empty
-    dict[@"id"] = // number
-    dict[@"languagecount"] = // number
-    dict[@"displaytitle"] = // optional
-    dict[@"protection"] = // struct
-    dict[@"editable"] = // boolean
+    if (article.redirected) {
+        dict[@"redirected"] = article.redirected;
+    }
+    if (article.lastmodified) {
+        dict[@"lastmodified"] = [self stringWithDate:article.lastmodified];
+    }
+    if (article.lastmodifiedby) {
+        dict[@"lastmodifiedby"] = @{
+                                    @"name": article.lastmodifiedby,
+                                    @"gender": @"unknown"
+                                    };
+    }
+    if (article.articleId) {
+        dict[@"id"] = article.articleId;
+    }
+    if (article.languagecount) {
+        dict[@"languagecount"] = article.languagecount;
+    }
+    if (article.displayTitle) {
+        dict[@"displaytitle"] = article.displayTitle;
+    }
+    if (article.protectionStatus) {
+        dict[@"protection"] = @{
+                                @"edit": article.protectionStatus
+                                };
+    }
+    if (article.editable) {
+        dict[@"editable"] = @"";
+    }
     
     // sections!
-    dict[@"sections"] = [@[] mutableCopy];
-    for (Section *section in article.section) {
-        int sectionId = [section.sectionId intValue];
-        dict[@"sections"][sectionId] = [self exportSection:section];
+    NSUInteger numSections = [article.section count];
+    if (numSections) {
+        dict[@"sections"] = [[NSMutableArray alloc] initWithCapacity:numSections];
+        for (int i = 0; i < numSections; i++) {
+            dict[@"sections"][i] = [NSNull null]; // stub out
+        }
+        for (Section *section in article.section) {
+            int sectionId = [section.sectionId intValue];
+            dict[@"sections"][sectionId] = [self exportSection:section];
+        }
     }
     
     return @{
