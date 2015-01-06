@@ -196,6 +196,8 @@
 		D4B0AE0E19366A5400F0AC90 /* LoginFunnel.m in Sources */ = {isa = PBXBuildFile; fileRef = D4B0AE0D19366A5400F0AC90 /* LoginFunnel.m */; };
 		D4BC22B4181E9E6300CAC673 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = D4BC22B3181E9E6300CAC673 /* empty.png */; };
 		D4C16A6819709CDF00CD91AD /* (null) in Resources */ = {isa = PBXBuildFile; };
+		D4E6D9121A5C65F9004916C1 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040E5C4E184566F4007AFE6F /* CoreData.framework */; };
+		D4E6D9181A5C69CA004916C1 /* OldDataSchemaBundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D4E6D9161A5C65FA004916C1 /* OldDataSchemaBundle.bundle */; };
 		D4E8A8A4190835C100DA4765 /* DataMigrator.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E8A8A3190835C100DA4765 /* DataMigrator.m */; };
 		D4E8A8A719084F1300DA4765 /* SQLiteHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = D4E8A8A619084F1300DA4765 /* SQLiteHelper.m */; };
 		D4E8A8A919085CEA00DA4765 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4E8A8A819085CEA00DA4765 /* libsqlite3.dylib */; };
@@ -260,6 +262,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = C73D7690357B1F8585BBD225;
 			remoteInfo = "Pods-hpple";
+		};
+		D4E6D9151A5C65FA004916C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D4F478441A48CD8500D8043C /* OldDataSchema.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D4E6D90A1A5C65B5004916C1;
+			remoteInfo = OldDataSchemaBundle;
 		};
 		D4F478491A48CD8700D8043C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -819,6 +828,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4E6D9121A5C65F9004916C1 /* CoreData.framework in Frameworks */,
 				D4F478741A48D1B100D8043C /* libOldDataSchema.a in Frameworks */,
 				D497FCFB1A080810004A36A5 /* libMediaWikiKit.a in Frameworks */,
 				D4AD975019F99E9000957451 /* libPods-hpple.a in Frameworks */,
@@ -1724,6 +1734,7 @@
 			isa = PBXGroup;
 			children = (
 				D4F4784A1A48CD8700D8043C /* libOldDataSchema.a */,
+				D4E6D9161A5C65FA004916C1 /* OldDataSchemaBundle.bundle */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1914,6 +1925,13 @@
 			remoteRef = D4AD974819F99CD700957451 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		D4E6D9161A5C65FA004916C1 /* OldDataSchemaBundle.bundle */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = OldDataSchemaBundle.bundle;
+			remoteRef = D4E6D9151A5C65FA004916C1 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		D4F4784A1A48CD8700D8043C /* libOldDataSchema.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1928,6 +1946,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D4E6D9181A5C69CA004916C1 /* OldDataSchemaBundle.bundle in Resources */,
 				04D3082C19991CB60034F106 /* logo-placeholder-nearby@2x.png in Resources */,
 				D46CD8C418A1AC4F0042959E /* InfoPlist.strings in Resources */,
 				045EFF1B19A25FEB00D0EDBB /* logo-placeholder-search@2x.png in Resources */,
