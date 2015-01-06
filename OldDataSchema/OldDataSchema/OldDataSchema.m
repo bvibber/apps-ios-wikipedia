@@ -22,6 +22,11 @@
     self = [super init];
     if (self) {
         savedTitles = [[NSMutableSet alloc] init];
+        if (self.exists) {
+            context = [ArticleDataContextSingleton sharedInstance];
+        } else {
+            context = nil;
+        }
     }
     return self;
 }
@@ -40,13 +45,23 @@
     // 1) Go through saved article list, saving entries and (articles and images)
     // 2) Go through page reading history, saving entries and (articles and images) when not already transferred
     
-    NSSet *savedEntries = nil;
+    NSFetchRequest *req = [NSFetchRequest fetchRequestWithEntityName:@"Saved"];
+    NSError *err;
+    NSArray *savedEntries = [context.mainContext executeFetchRequest:req error:&err];
+    if (err) {
+        NSLog(@"Error reading old Saved entries: %@", err);
+    }
     for (Saved *saved in savedEntries) {
         [self migrateSaved:saved];
         [self migrateArticle:saved.article];
     }
     
-    NSSet *historyEntries = nil;
+    NSFetchRequest *req2 = [NSFetchRequest fetchRequestWithEntityName:@"History"];
+    NSError *err2;
+    NSArray *historyEntries = [context.mainContext executeFetchRequest:req2 error:&err2];
+    if (err2) {
+        NSLog(@"Error reading old Saved entries: %@", err2);
+    }
     for (History *history in historyEntries) {
         [self migrateHistory:history];
         [self migrateArticle:history.article];

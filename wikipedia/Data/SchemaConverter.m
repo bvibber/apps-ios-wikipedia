@@ -10,11 +10,10 @@
 
 @implementation SchemaConverter
 
--(instancetype)initWithOldSchema:(OldDataSchema *)oldSchema dataStore:(MWKDataStore *)dataStore
+-(instancetype)initWithDataStore:(MWKDataStore *)dataStore
 {
     self = [super init];
     if (self) {
-        self.schema = oldSchema;
         self.dataStore = dataStore;
         self.userDataStore = [self.dataStore userDataStore];
     }
@@ -32,8 +31,6 @@
     MWKArticle *article = [self.dataStore articleWithTitle:title];
     [article importMobileViewJSON:mobileview];
     [article save];
-    
-    // @todo images and stuff?
 }
 
 -(void)oldDataSchema:(OldDataSchema *)schema migrateImage:(NSDictionary *)imageDict

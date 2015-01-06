@@ -18,6 +18,6 @@
 @property MWKDataStore *dataStore;
 @property MWKUserDataStore *userDataStore;
 
--(instancetype)initWithOldSchema:(OldDataSchema *)oldSchema dataStore:(MWKDataStore *)dataStore;
+-(instancetype)initWithDataStore:(MWKDataStore *)dataStore;
 
 @end
