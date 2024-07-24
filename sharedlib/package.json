@@ -1,0 +1,15 @@
+{
+  "name": "sharedlib",
+  "version": "1.0.0",
+  "main": "alt-text.js",
+  "type": "module",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "node tests/test-alt-text.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": ""
+}
